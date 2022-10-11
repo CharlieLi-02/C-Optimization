@@ -65,7 +65,7 @@ void FibVec::resize(size_t size) {
             fibIndex ++;
             Capacity = Fibonacci(fibIndex);
             int * temp = new int[Capacity];
-            for(size_t i = 0; i < count(); i++){
+            for(size_t i = 0; i < count() - 1; i++){
                 * (temp + i) = * (vector + i); //?
             }
             delete [] vector;
