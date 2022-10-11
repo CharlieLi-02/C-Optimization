@@ -150,21 +150,22 @@ void FibVec::push(int value) { //complete
 }
 
 int FibVec::remove(size_t index){
-    if (index > this->count() || index < Min){
+    if (index >= count() || index < Min){
         throw out_of_range("Out of Range");
     }
     int num = * (vector + index);
     resize(count() - 1);
     Count --;
-    int * temp = new int[this->capacity()];
+    int * temp = new int[capacity()];
     for(size_t i = 0; i < index; i++){
     * (temp + i) = * (vector + i);
 }
-    for(size_t i = this->count() ; i >= index; i--){
+    for(size_t i = count() ; i >= index; i--){
     * (temp + i - 1) = * (vector + i);
 }
     delete [] vector;
     vector = temp;
     return num;
 }
+
 
