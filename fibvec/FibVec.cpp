@@ -160,7 +160,7 @@ int FibVec::remove(size_t index){
     for(size_t i = 0; i < index; i++){
     * (temp + i) = * (vector + i);
 }
-    for(size_t i = count() ; i >= index; i--){
+    for(size_t i = count() ; i > index; i--){
     * (temp + i - 1) = * (vector + i);
 }
     delete [] vector;
