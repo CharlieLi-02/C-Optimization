@@ -88,19 +88,19 @@ void FibVec::resize(size_t size) {
 
 
 void FibVec::insert(int value, size_t index){ //complete
-    if (index > count() || index < Min){
+    if (index > this->count() || index < Min){
         throw out_of_range("Out of range.");
     }
         Count ++;
-        this->resize(count());
-        int * temp = new int[capacity()];
+        this->resize(this->count());
+        int * temp = new int[this->capacity()];
         for(size_t i = 0; i < index; i++){
         * (temp + i) = * (vector + i);
             //cout << *(temp + i) << " test1 ";
     }
         * (temp + index) = value;
             //cout << *(temp + index) << " test2 ";
-        for(size_t i = index + 1; i < count(); i++){
+        for(size_t i = index + 1; i < this->count(); i++){
             //cout << * (vector + i - 1) << "test for vector";
         * (temp + i) = * (vector + i - 1);
             //cout << *(temp + i) << " test3 " << endl;
@@ -110,7 +110,7 @@ void FibVec::insert(int value, size_t index){ //complete
 }
 
 int FibVec::lookup(size_t index) const{ //complete
-    if (index >= count() || index < Min){
+    if (index >= this->count() || index < Min){
         throw out_of_range("Out of Range");
     }
         return *(vector + index);
@@ -135,22 +135,22 @@ int FibVec::pop() { //complete
 void FibVec::push(int value) { //complete
     //cout << "test " << this->capacity() + 1 << endl;//test
     Count ++;
-    resize(count());
+    resize(this->count());
     //cout << "test " << this->capacity() << endl;//test
-    int * temp = new int[capacity()];
+    int * temp = new int[this->capacity()];
     //cout << "test1 " << this->count() << endl;//test
-    for(size_t i = 0; i < count() - 1; i++){
+    for(size_t i = 0; i < this->count() - 1; i++){
         * (temp + i) = * (vector + i);
         //cout << "test1 " <<  * (temp + i) << endl;//test
     }
-    * (temp + count() - 1) = value;
+    * (temp + this->count() - 1) = value;
         //cout << "test2 " <<  value << endl;
     delete [] vector;
     vector = temp;
 }
 
 int FibVec::remove(size_t index){
-    if (index > count() || index < Min){
+    if (index >= count() || index < Min){
         throw out_of_range("Out of Range");
     }
     int num = * (vector + index);
@@ -160,11 +160,12 @@ int FibVec::remove(size_t index){
     for(size_t i = 0; i < index; i++){
     * (temp + i) = * (vector + i);
 }
-    for(size_t i = count() ; i >= index; i--){
+    for(size_t i = count() ; i > index; i--){
     * (temp + i - 1) = * (vector + i);
 }
     delete [] vector;
     vector = temp;
     return num;
 }
+
 
