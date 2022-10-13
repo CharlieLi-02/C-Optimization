@@ -29,6 +29,7 @@ List::List(List&& other){
 
 List::~List(){
     Node* current = head;
+    Node* temp = nullptr;
     while(current != nullptr) {
         temp = current;
         current = current -> next;
