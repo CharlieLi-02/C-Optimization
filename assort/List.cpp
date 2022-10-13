@@ -30,7 +30,7 @@ List::List(List&& other){
 List::~List(){
     Node* current = head;
     while(current != nullptr) {
-        Node* temp = current;
+        temp = current;
         current = current -> next;
         temp = nullptr;
     }
