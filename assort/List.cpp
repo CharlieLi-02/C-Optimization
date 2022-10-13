@@ -17,6 +17,7 @@ List::List(const List& other) {
         (*temp) = new Node(*list);
         temp = &((*temp)->next);
     }
+    temp = nullptr;
 }
 
 List::List(List&& other){
