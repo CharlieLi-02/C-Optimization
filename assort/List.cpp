@@ -32,7 +32,7 @@ List::~List(){
     while(current != nullptr) {
         Node* temp = current;
         current = current -> next;
-        delete temp;
+        temp = nullptr;
     }
     head = nullptr;
 }
@@ -135,22 +135,20 @@ std::string List::remove(size_t index){
     Node* current = head;
     std::string str;
     
-    if(count() == Min + 1){
-        str = head->data;
-        delete current->next;
-        current = nullptr;
-        return str;
+    if(count() == Min + 1 || index == Min){
+        Node* temp = head;
+        head = head->next;
+        return temp->data;
     }
 
-    while(index > 2){
+    while(index > 1){
         current = current->next;
         index --;
     }
     
-    Node* temp = current->next->next;
-    str = (temp->next)->data;
-    free(current->next);
-    current = temp;
+    Node* temp = current->next;
+    current = temp->next;
+    str = temp->data;
     
     return str;
 }
