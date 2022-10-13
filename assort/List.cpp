@@ -3,9 +3,10 @@
 #include <algorithm>
 //using namespace std; //whether need to used ?
 
+const size_t Min = 0;
+
 List::List(){
     head = nullptr;
-    num = 0;
 }
 
 List::List(const List& other) {
@@ -33,12 +34,17 @@ List::~List(){
 }
 
 size_t List::count() const{
-    return num;
+    Node* temp = head;
+
+    size_t count = 0;
+    while(temp != NULL) {
+        count ++;
+        temp = temp->next;
+    }
+    return count;
 }
 
 void List::insert(const std::string& value){ // higher piority
-    num ++;
-    
     Node* test = new Node;
     test->data = value;
     test->next = nullptr;
@@ -115,14 +121,15 @@ void List::print(bool reverse) const{ // higher piority
             std::cout << temp->data;
         }
         
-        temp = head;
-        while(index > 1){
-            std::cout << temp->data << ", ";
-            temp = temp->next;
-            index --;
+            else {
+            temp = head;
+            while(index > 1){
+                std::cout << temp->data << ", ";
+                temp = temp->next;
+                index --;
+            }
+            std::cout << temp->data;
         }
-        std::cout << temp->data;
-        
     }
     
     std::cout << "]";
@@ -132,11 +139,10 @@ std::string List::remove(size_t index){
     if(index >= this->count() || index < Min){
         throw std::out_of_range("Out of Range");
     }
-    num --;
     Node* current = head;
     std::string str;
     
-    if(count() == Min){
+    if(count() == Min + 1){
         str = head->data;
         free(current->next);
         current = nullptr;
