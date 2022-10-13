@@ -132,7 +132,7 @@ void List::print(bool reverse) const{ // higher piority
         }
     }
     
-    std::cout << "]";
+    std::cout << "]" << std::endl;
 }
 
 std::string List::remove(size_t index){
