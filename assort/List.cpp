@@ -24,13 +24,13 @@ List::List(List&& other){
 }
 
 List::~List(){
-    /*Node* current = head;
+    Node* current = head;
     while(current != nullptr) {
         Node* temp = current;
         current = current -> next;
         delete temp;
     }
-    head = nullptr;*/
+    head = nullptr;
 }
 
 size_t List::count() const{
