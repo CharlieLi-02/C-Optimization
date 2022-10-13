@@ -39,9 +39,9 @@ List::~List(){
 
 size_t List::count() const{
     Node* temp = head;
-
     size_t count = 0;
-    while(temp != NULL) {
+    
+    while(temp) { //!   !
         count ++;
         temp = temp->next;
     }
@@ -53,7 +53,7 @@ void List::insert(const std::string& value){ // higher piority
     test->data = value;
     test->next = nullptr;
     
-    if(head == nullptr){
+    if(!head) { //!   !
         head = test;
         //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
         return;
