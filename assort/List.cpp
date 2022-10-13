@@ -10,9 +10,12 @@ List::List(){
 }
 
 List::List(const List& other) {
-    for(Node* list = other.head; list; list = list->next){
-        head = list;
-        head = head->next;
+    Node** temp = &head;
+
+    for(Node* list = other.head; list; list = list->next)
+    {
+        (*temp) = new Node(*list);
+        temp = &((*temp)->next);
     }
 }
 
@@ -100,25 +103,14 @@ void List::print(bool reverse) const{ // higher piority
     std::cout << "[";
     Node* temp;
     
-    if(count() > Min){
+    if(index > Min){
         
             if(reverse){
-            Node* temp = nullptr;
-            Node* prev = nullptr;
-            Node* current = head;
-            while(current != nullptr){
-                temp = current ->next;
-                current -> next = prev;
-                prev = current;
-                current = temp;
-            }
-            temp = prev;
             while(index > 1){
-                std::cout << temp->data << ", ";
-                temp = temp->next;
                 index --;
+                std::cout << lookup(index) << ", ";
             }
-            std::cout << temp->data;
+            std::cout << lookup(0);
         }
         
             else {
@@ -144,12 +136,12 @@ std::string List::remove(size_t index){
     
     if(count() == Min + 1){
         str = head->data;
-        free(current->next);
+        delete current->next;
         current = nullptr;
         return str;
     }
 
-    while(index > 1){
+    while(index > 2){
         current = current->next;
         index --;
     }
