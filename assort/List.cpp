@@ -51,7 +51,7 @@ void List::insert(const std::string& value){ // higher piority
     
     if(head == nullptr){
         head = test;
-        std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
+        //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
         return;
     }
     
@@ -75,9 +75,9 @@ void List::insert(const std::string& value){ // higher piority
     
     pre->next = test;
     test->next = current;
-    std::cout << (pre->next)->data << " " << std::endl;
+    //std::cout << (pre->next)->data << " " << std::endl;
     
-    std::cout << "insert() executed!" << " " << (head->next)->data << " " << "inserted" << std::endl;
+    //std::cout << "insert() executed!" << " " << (head->next)->data << " " << "inserted" << std::endl;
 }
 
 
