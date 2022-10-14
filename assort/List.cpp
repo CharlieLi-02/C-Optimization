@@ -136,13 +136,13 @@ std::string List::remove(size_t index){
     
     std::string str;
     
-    Node* current = head;
     if(count() == Min + 1 || index == Min){
         Node* temp = head;
         head = head->next;
         return temp->data;
     }
 
+    Node* current = head;
     Node* pre = nullptr;
     while(index > 0){
         pre = current;
