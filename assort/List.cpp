@@ -153,8 +153,8 @@ std::string List::remove(size_t index){
     str = current->data;
     Node* temp = current->next;
     pre->next = temp;
-    current = nullptr;
-    free(temp);
+    delete current;
+    delete temp;
     
     return str;
 }
