@@ -3,18 +3,6 @@
 #include <algorithm>
 //using namespace std; //whether need to used ?
 
-<<<<<<< HEAD
-List::List(){
-    head = nullptr;
-    num = 0;
-}
-
-List::List(const List& other) {
-    for(Node* list = other.head; list; list = list->next){
-        head = list;
-        head = head->next;
-    }
-=======
 const size_t Min = 0;
 
 List::List(){
@@ -30,7 +18,6 @@ List::List(const List& other) {
         temp = &((*temp)->next);
     }
     temp = nullptr;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
 }
 
 List::List(List&& other){
@@ -41,26 +28,8 @@ List::List(List&& other){
 }
 
 List::~List(){
-<<<<<<< HEAD
-    /*Node* current = head;
-    while(current != nullptr) {
-        Node* temp = current;
-        current = current -> next;
-        delete temp;
-    }
-    head = nullptr;*/
-}
-
-size_t List::count() const{
-    return num;
-}
-
-void List::insert(const std::string& value){ // higher piority
-    num ++;
-    
-=======
     Node* current = head;
-    Node* temp = nullptr;
+    Node* temp;
     while(current != nullptr) {
         temp = current;
         current = current -> next;
@@ -81,20 +50,13 @@ size_t List::count() const{
 }
 
 void List::insert(const std::string& value){ // higher piority
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
     Node* test = new Node;
     test->data = value;
     test->next = nullptr;
     
-<<<<<<< HEAD
-    if(head == nullptr){
-        head = test;
-        std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
-=======
     if(!head) { //!   !
         head = test;
         //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
         return;
     }
     
@@ -118,15 +80,9 @@ void List::insert(const std::string& value){ // higher piority
     
     pre->next = test;
     test->next = current;
-<<<<<<< HEAD
-    std::cout << (pre->next)->data << " " << std::endl;
-    
-    std::cout << "insert() executed!" << " " << (head->next)->data << " " << "inserted" << std::endl;
-=======
     //std::cout << (pre->next)->data << " " << std::endl;
     
     //std::cout << "insert() executed!" << " " << (head->next)->data << " " << "inserted" << std::endl;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
 }
 
 
@@ -149,21 +105,6 @@ void List::print(bool reverse) const{ // higher piority
     std::cout << "[";
     Node* temp;
     
-<<<<<<< HEAD
-    if(count() > Min){
-        
-            if(reverse){
-            Node* temp = nullptr;
-            Node* prev = nullptr;
-            Node* current = head;
-            while(current != nullptr){
-                temp = current ->next;
-                current -> next = prev;
-                prev = current;
-                current = temp;
-            }
-            temp = prev;
-=======
     if(index > Min){
         
             if(reverse){
@@ -176,7 +117,6 @@ void List::print(bool reverse) const{ // higher piority
         
             else {
             temp = head;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
             while(index > 1){
                 std::cout << temp->data << ", ";
                 temp = temp->next;
@@ -184,41 +124,15 @@ void List::print(bool reverse) const{ // higher piority
             }
             std::cout << temp->data;
         }
-<<<<<<< HEAD
-        
-        temp = head;
-        while(index > 1){
-            std::cout << temp->data << ", ";
-            temp = temp->next;
-            index --;
-        }
-        std::cout << temp->data;
-        
-    }
-    
-    std::cout << "]";
-=======
     }
     
     std::cout << "]" << std::endl;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
 }
 
 std::string List::remove(size_t index){
     if(index >= this->count() || index < Min){
         throw std::out_of_range("Out of Range");
     }
-<<<<<<< HEAD
-    num --;
-    Node* current = head;
-    std::string str;
-    
-    if(count() == Min){
-        str = head->data;
-        free(current->next);
-        current = nullptr;
-        return str;
-=======
     Node* current = head;
     std::string str;
     
@@ -226,24 +140,19 @@ std::string List::remove(size_t index){
         Node* temp = head;
         head = head->next;
         return temp->data;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
     }
 
+    Node* pre = nullptr;
     while(index > 1){
+        pre = current;
         current = current->next;
         index --;
     }
     
-<<<<<<< HEAD
-    Node* temp = current->next->next;
-    str = (temp->next)->data;
-    free(current->next);
-    current = temp;
-=======
+    str = current->data;
     Node* temp = current->next;
-    current = temp->next;
-    str = temp->data;
->>>>>>> fe68cb192c03ab143e20a0b1e91d014c1b4915cd
+    current = nullptr;
+    pre->next = temp;
     
     return str;
 }
