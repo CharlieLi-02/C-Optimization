@@ -29,12 +29,12 @@ List::List(List&& other){
 
 
 List::~List(){
-    Node* current = head;
+    /*Node* current = head;
     while(current != nullptr) {
         Node* temp = current;
         current = temp->next;
         delete temp;
-    }
+    }*/
 }
 
 size_t List::count() const{
