@@ -32,7 +32,7 @@ List::~List(){
     Node* current = head;
     while(current != nullptr) {
         Node* temp = current;
-        current = current->next;
+        current = temp->next;
         temp = nullptr;
     }
 }
