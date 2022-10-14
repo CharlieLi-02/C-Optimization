@@ -27,13 +27,13 @@ List::List(List&& other){
     }
 }
 
-
 List::~List(){
     Node* current = head;
+    Node* temp;
     while(current != nullptr) {
-        Node* temp = current;
+        temp = current;
         current = current -> next;
-        delete temp;
+        temp = nullptr;
     }
     head = nullptr;
 }

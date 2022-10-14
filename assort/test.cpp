@@ -1,3 +1,4 @@
+
 #include "List.h"
 #include <iostream>
 
@@ -5,50 +6,73 @@
 // This file won't be graded - do whatever you want.
 
 int main() {
-    List list;
+    List list1;
 
     std::cout << "This program doesn't do anything interesting yet...\n";
-    list.print();
+    list1.print();
     std::cout << std::endl;
-    std::cout << list.count() << std::endl;
-    std::cout << std::endl;
-    
-    list.insert("Atropos");
-    list.print();
+    std::cout << list1.count() << std::endl;
     std::cout << std::endl;
     
-    list.insert("Clotho");
-    list.print();
+    list1.insert("Atropos");
+    list1.print();
     std::cout << std::endl;
     
-    list.insert("Lachesis");
-    list.print();
+    list1.insert("Clotho");
+    list1.print();
     std::cout << std::endl;
     
-    list.insert("Aa");
-    list.print();
+    list1.insert("Lachesis");
+    list1.print();
     std::cout << std::endl;
     
-    list.insert("Ca");
-    list.print();
+    list1.insert("Aa");
+    list1.print();
     std::cout << std::endl;
     
-    list.insert("Lb");
-    list.print();
+    list1.insert("Ca");
+    list1.print();
+    std::cout << std::endl;
+    
+    list1.insert("Lb");
+    list1.print();
     std::cout << std::endl;
     //std::cout << list.count() << std::endl;
     //std::cout << "print the value at index = 1 " << list.lookup(0);
-    std::cout << std::endl;
-    list.print(true);
+
+    list1.print(true);
     std::cout << std::endl;
     
-    //list.remove(0);
-    //list.print();
+    list1.print();
     std::cout << std::endl;
+    
+    //list1.remove(0);
+    //list1.print();
+    //std::cout << std::endl;
 
     //std::cout << list.count() << std::endl;
     std::cout << std::endl;
+    List* list2 = new List(list1);
+    list2->print();
+    std::cout << "list2" << std::endl;
     
+    List* list3 = new List(list1);
+    list3->print();
+    std::cout << "list3" << std::endl;
+    std::cout << std::endl;
+    
+    list1.print();
+    std::cout << list1.remove(0) << std::endl;
+    list1.print();
+    std::cout << list1.remove(3) << std::endl;
+    list1.print();
+    std::cout << list1.remove(3) << std::endl;
+    list1.print();
+    std::cout << list1.remove(2) << std::endl;
+    list1.print();
+    //std::cout << list1.remove(4) << std::endl;
+    //list1.print();
+    std::cout << std::endl;
     //list.insert("Atropos");
     //list.insert("Clotho");
     //list.insert("Lachesis");
