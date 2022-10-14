@@ -27,12 +27,12 @@ List::List(List&& other){
     }
 }
 
-
-List::~List(){ // work prefectly;
+List::~List(){ // dont chage
     Node* current = head;
-    while(current != nullptr){
+    while(current != nullptr) {
         Node* temp = current;
         current = temp->next;
+        delete temp;
     }
 }
 
@@ -165,6 +165,7 @@ std::string List::remove(size_t index){
     str = current->data;
     Node* temp = current->next;
     pre->next = temp;
+    
     delete current;
     delete temp;
     
