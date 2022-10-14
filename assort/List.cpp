@@ -17,7 +17,7 @@ List::List(const List& other) {
         (*temp) = new Node(*list);
         temp = &((*temp)->next);
     }
-    temp = nullptr;
+    delete temp;
 }
 
 List::List(List&& other){
@@ -28,13 +28,12 @@ List::List(List&& other){
 }
 
 
-List::~List(){
-    /*Node* current = head;
-    while(current != nullptr) {
+List::~List(){ // work prefectly;
+    Node* current = head;
+    while(current != nullptr){
         Node* temp = current;
         current = temp->next;
-        delete temp;
-    }*/
+    }
 }
 
 size_t List::count() const{
@@ -42,10 +41,12 @@ size_t List::count() const{
     size_t count = 0;
     
     while(current) {
+        //std::cout << "countonce ";
         count ++;
         Node* temp = current->next;
         current = temp;
     }
+    delete current;
     return count;
 }
 
@@ -101,7 +102,7 @@ const std::string& List::lookup(size_t index) const{
 }
 
 void List::print(bool reverse) const{ // higher piority
-    size_t index = count();
+    size_t index = this->count();
     std::cout << "[";
     Node* temp;
     
@@ -136,12 +137,23 @@ std::string List::remove(size_t index){
     
     std::string str;
     
-    if(count() == Min + 1 || index == Min){
+    if(count() == Min + 1){
         Node* temp = head;
         head = head->next;
-        return temp->data;
+        str = temp->data;
+        delete temp;
+        return str;
     }
-
+    
+    if(index == Min){
+        Node* temp = head;
+        head = head->next;
+        str = temp->data;
+        delete temp;
+        return str;
+    }
+    
+    
     Node* current = head;
     Node* pre = nullptr;
     while(index > 0){
