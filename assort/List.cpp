@@ -32,26 +32,25 @@ List::~List(){
     Node* current = head;
     while(current != nullptr) {
         Node* temp = current;
-        current = current -> next;
-        delete temp;
+        current = current->next;
+        temp = nullptr;
     }
-    head = nullptr;
 }
 
 size_t List::count() const{
-    Node* temp = nullptr;
-    temp = this->head;
+    Node* current = head;
     size_t count = 0;
     
-    while(temp) { //!   !
+    while(current) {
         count ++;
-        temp = temp->next;
+        Node* temp = current->next;
+        current = temp;
     }
     return count;
 }
 
 void List::insert(const std::string& value){ // higher piority
-    Node* test = new Node;
+    Node* test = new Node();
     test->data = value;
     test->next = nullptr;
     
@@ -134,9 +133,10 @@ std::string List::remove(size_t index){
     if(index >= this->count() || index < Min){
         throw std::out_of_range("Out of Range");
     }
-    Node* current = head;
+    
     std::string str;
     
+    Node* current = head;
     if(count() == Min + 1 || index == Min){
         Node* temp = head;
         head = head->next;
@@ -144,7 +144,7 @@ std::string List::remove(size_t index){
     }
 
     Node* pre = nullptr;
-    while(index > 1){
+    while(index > 0){
         pre = current;
         current = current->next;
         index --;
@@ -152,9 +152,9 @@ std::string List::remove(size_t index){
     
     str = current->data;
     Node* temp = current->next;
-    delete current;
     pre->next = temp;
-    delete temp;
+    current = nullptr;
+    free(temp);
     
     return str;
 }
@@ -162,13 +162,15 @@ std::string List::remove(size_t index){
 size_t List::remove(const std::string& value){
     size_t count = 0;
     size_t index = 0;
-    Node* temp = head;
-    while (temp) {
-        if(value.compare(temp->data)){
+    //std::cout << value;
+    Node* current = head;
+    while (current) {
+        if(value.compare(current->data) == 0){
             count ++;
             remove(index);
+            index --;
         }
-        temp = temp->next;
+        current = current->next;
         index ++;
     }
     return count;
