@@ -33,7 +33,7 @@ List::~List(){
     while(current != nullptr) {
         Node* temp = current;
         current = temp->next;
-        temp = nullptr;
+        delete temp;
     }
 }
 
