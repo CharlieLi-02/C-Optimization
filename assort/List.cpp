@@ -43,8 +43,7 @@ size_t List::count() const{
     while(current) {
         //std::cout << "countonce ";
         count ++;
-        Node* temp = current->next;
-        current = temp;
+        current = current->next;
     }
     delete current;
     return count;
@@ -168,6 +167,7 @@ std::string List::remove(size_t index){
     
     delete current;
     delete temp;
+    delete pre;
     
     return str;
 }
