@@ -153,6 +153,7 @@ std::string List::remove(size_t index){
     Node* temp = current->next;
     current = nullptr;
     pre->next = temp;
+    temp = nullptr;
     
     return str;
 }
