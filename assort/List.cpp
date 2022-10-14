@@ -39,7 +39,8 @@ List::~List(){
 }
 
 size_t List::count() const{
-    Node* temp = head;
+    Node* temp = nullptr;
+    temp = this->head;
     size_t count = 0;
     
     while(temp) { //!   !
