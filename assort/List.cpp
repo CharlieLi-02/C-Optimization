@@ -151,9 +151,9 @@ std::string List::remove(size_t index){
     
     str = current->data;
     Node* temp = current->next;
-    current = nullptr;
+    delete current;
     pre->next = temp;
-    temp = nullptr;
+    delete temp;
     
     return str;
 }
