@@ -173,5 +173,6 @@ size_t List::remove(const std::string& value){
         current = current->next;
         index ++;
     }
+    delete current;
     return count;
 }
