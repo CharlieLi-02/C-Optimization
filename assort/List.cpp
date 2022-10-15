@@ -21,10 +21,8 @@ List::List(const List& other) {
 }
 
 List::List(List&& other){
-    for(Node* list = other.head; list; list = list->next){
-        head->data = list->data;
-        head = head->next;
-    }
+    head = other.head;
+    other.head = nullptr;
 }
 
 List::~List(){ // dont chage
@@ -41,7 +39,7 @@ size_t List::count() const{
     size_t count = 0;
     
     while(current) {
-        //std::cout << "countonce ";
+        std::cout << "countonce ";
         count ++;
         current = current->next;
     }
@@ -135,23 +133,15 @@ std::string List::remove(size_t index){
     }
     
     std::string str;
-    
-    if(count() == Min + 1){
-        Node* temp = head;
+    Node* temp  = nullptr;
+    if(count() == Min + 1 || index == Min){
+        temp = head;
         head = head->next;
         str = temp->data;
-        delete temp;
+        //delete temp;
         return str;
     }
-    
-    if(index == Min){
-        Node* temp = head;
-        head = head->next;
-        str = temp->data;
-        delete temp;
-        return str;
-    }
-    
+
     
     Node* current = head;
     Node* pre = nullptr;
@@ -162,7 +152,7 @@ std::string List::remove(size_t index){
     }
     
     str = current->data;
-    Node* temp = current->next;
+    temp = current->next;
     pre->next = temp;
     
     delete current;
