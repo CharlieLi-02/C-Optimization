@@ -40,9 +40,9 @@ List::~List(){ // dont chage
     Node* current = head;
     
     while(current != nullptr) {
-        Node* temp = current;
-        current = temp->next;
-        delete temp;
+        Node* temp = current->next;
+        delete current;
+        current = next;
     }
 }
 
