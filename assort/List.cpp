@@ -14,9 +14,9 @@ List::List(const List& other)   {
         return;
 
     Node* list = other.head;
-    head = new node;
+    head = new Node;
 
-    head->data = tmp->data;
+    head->data = lust->data;
     head->next = nullptr;
 
     Node* current = head;
