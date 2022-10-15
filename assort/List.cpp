@@ -10,7 +10,7 @@ List::List(){
 }
 
 List::List(const List& other) {
-    if (List.head == nullptr) {
+    if (other.head == nullptr) {
         return;
     }
     Node* list = other.head;
