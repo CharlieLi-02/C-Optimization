@@ -49,8 +49,9 @@ size_t List::count() const{
     size_t count = 0;
     while(current != nullptr) { //uninitialised value
         //std::cout << "countonce ";
-        count ++;
-        current = current->next;
+         Node* temp = current;
+        current = temp->next;
+        delete temp;
     }
     delete current;
     return count;
