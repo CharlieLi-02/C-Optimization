@@ -15,12 +15,9 @@ List::List(const List& other)   {
 
     Node* list = other.head;
     head = new Node;
-
-    head->data = lust->data;
+    head->data = list->data;
     head->next = nullptr;
-
     Node* current = head;
-    
     list = list->next;
 
     while (list != nullptr)
