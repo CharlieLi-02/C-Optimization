@@ -22,13 +22,12 @@ List::List(const List& other)   {
         //std::cout << "test" << std::endl;
         
         while (list != nullptr) {
-            
+            list = list->next;
             Node* temp = new Node;
             temp->data = list->data;
             //std::cout << "test" << std::endl;
             head->next = temp;
             head = head->next;
-            list = list->next;
         }
     delete list;
 }
