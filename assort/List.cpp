@@ -62,12 +62,12 @@ void List::insert(const std::string& value){ // higher piority
     test->data = value;
     test->next = nullptr;
     
-    if(head == nullptr) { //uninitialised value
+    if(!head) { //!   !
         head = test;
         //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
         return;
     }
-   
+    
     Node* current = head;
     Node* pre = nullptr;
     std::string str;
@@ -92,7 +92,6 @@ void List::insert(const std::string& value){ // higher piority
     
     //std::cout << "insert() executed!" << " " << (head->next)->data << " " << "inserted" << std::endl;
 }
-
 
 const std::string& List::lookup(size_t index) const{
     if(index >= this->count() || index < Min){
