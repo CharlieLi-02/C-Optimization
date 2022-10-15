@@ -24,10 +24,10 @@ List::List(const List& other) {
 
     while (current != nullptr)
     {
-        current->next = new Node;
-        current = current->next;
-        current->data = current->data;
-        current->next = nullptr;
+        head->next = new Node;
+        head = current->next;
+        head->data = current->data;
+        head->next = nullptr;
         current = current->next;
     }
     delete current;
