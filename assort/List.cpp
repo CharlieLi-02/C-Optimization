@@ -27,7 +27,7 @@ List::List(const List& other)   {
             temp->data = list->data;
             temp->next = nullptr;
             //std::cout << "test" << std::endl;
-            current->current = temp;
+            current->next = temp;
             list = list->next;
             current = current->next;
             delete temp;
