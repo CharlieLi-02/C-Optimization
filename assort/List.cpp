@@ -17,13 +17,12 @@ List::List(const List& other)   {
 
     Node* list = other.head;
     head->data = list->data;
-    head->next = nullptr;
+    head->next = list->next;
     Node* current = head;
     list = list->next;
 
     while (list != nullptr)
     {
-        current->next = new Node;
         current = current->next;
         current->data = list->data;
         current->next = nullptr;
