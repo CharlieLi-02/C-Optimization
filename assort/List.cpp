@@ -39,7 +39,7 @@ size_t List::count() const{
     size_t count = 0;
     
     while(current) {
-        std::cout << "countonce ";
+        //std::cout << "countonce ";
         count ++;
         current = current->next;
     }
