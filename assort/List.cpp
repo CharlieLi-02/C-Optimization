@@ -10,11 +10,12 @@ List::List(){
 }
 
 List::List(const List& other)   {
-    if (other.head == nullptr)
+    head = new Node;
+    if (other.head == nullptr){
         return;
+    }
 
     Node* list = other.head;
-    this->head = new Node;
     head->data = list->data;
     head->next = nullptr;
     Node* current = head;
