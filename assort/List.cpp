@@ -157,16 +157,14 @@ size_t List::remove(const std::string& value){
     size_t count = 0;
     size_t index = 0;
     //std::cout << value;
-    Node* current = head;
-    while (index < this->count()) {
-        if(value.compare(current->data) == 0){
+    while (index < this->count() && head != nullptr) {
+        if(head->data == value){
             count ++;
             remove(index);
             index --;
         }
-        current = current->next;
         index ++;
+        head = head->next;
     }
-    delete current;
     return count;
 }
