@@ -10,18 +10,27 @@ List::List(){
 }
 
 List::List(const List& other) {
-    if (other.head == nullptr) {
+    if (other.head == nullptr)
         return;
-    }
-    Node* list = other.head;
-    while (list != nullptr) {
-        Node* temp = other.head;
-        head->data = temp->data;
-        list = list->next;
-        head = head->next;
-    }
+
+    Node* temp = other.head;
+    head = new Node;
+    head->data = temp->data;
     head->next = nullptr;
-    delete list;
+
+    current = head;
+
+    temp = temp->next;
+
+    while (tmp != nullptr)
+    {
+        current->next = new Node;
+        current = current->next;
+        current->data = temp->data;
+        current->next = nullptr;
+        temp = temp->next;
+    }
+    delete temp;
 }
 
 List::List(List&& other){
