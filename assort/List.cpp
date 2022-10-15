@@ -38,7 +38,7 @@ List::List(List&& other){
 
 
 List::~List(){ // dont chage
-    if(head = nullptr){
+    if(head == nullptr){
         return;
     }
     
