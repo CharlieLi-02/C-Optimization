@@ -38,7 +38,12 @@ List::List(List&& other){
 
 
 List::~List(){ // dont chage
-    delete head;
+    Node *current = head;
+    while (current != nullptr) {
+        Node* temp = current;
+        current = current->next;
+        delete temp;
+    }
 }
 
 size_t List::count() const{
