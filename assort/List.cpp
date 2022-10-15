@@ -9,15 +9,12 @@ List::List(){
     head = nullptr;
 }
 
-List::List(const List& other) {  
-    Node* list = other.head;
-    while(list) 
+List::List(const List& other) {
+    for(Node* list = other.head; list; list = list->next)
     {
         head->data = list->data;
         head = head->next;
-        list = list->next;
     }
-    delete list;
 }
 
 List::List(List&& other){
@@ -161,15 +158,13 @@ size_t List::remove(const std::string& value){
     size_t index = 0;
     //std::cout << value;
     Node* current = head;
-    while (current) {
+    while (index < this->count()) {
         if(value.compare(current->data) == 0){
             count ++;
             remove(index);
             index --;
         }
-        if(current){
-            current = current->next;
-        }
+        current = current->next;
         index ++;
     }
     delete current;
