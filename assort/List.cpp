@@ -36,10 +36,10 @@ List::List(List&& other){
     other.head = nullptr;
 }
 
+
 List::~List(){ // dont chage
     for (Node *current = head, *next; current; current = next) {
     next = current->next;
-    free(current);
     }
 }
 
