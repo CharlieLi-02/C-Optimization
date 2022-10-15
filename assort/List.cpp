@@ -10,12 +10,12 @@ List::List(){
 }
 
 List::List(const List& other) {
-    Node** temp = &head;
-
+    
+    Node* temp = this->head;
     for(Node* list = other.head; list; list = list->next)
     {
-        (*temp) = new Node(*list);
-        temp = &((*temp)->next);
+        temp->data = list->data);
+        temp = temp->next;
     }
     delete temp;
 }
@@ -167,7 +167,9 @@ size_t List::remove(const std::string& value){
             remove(index);
             index --;
         }
-        current = current->next;
+        if(current){
+            current = current->next;
+        }
         index ++;
     }
     delete current;
