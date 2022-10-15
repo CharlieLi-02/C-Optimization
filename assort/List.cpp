@@ -14,7 +14,7 @@ List::List(const List& other)   {
         return;
 
     Node* list = other.head;
-    head = new Node;
+    this->head = new Node;
     head->data = list->data;
     head->next = nullptr;
     Node* current = head;
@@ -28,6 +28,7 @@ List::List(const List& other)   {
         current->next = nullptr;
         list = list->next;
     }
+    delete current;
 }
 
 List::List(List&& other){
@@ -44,11 +45,10 @@ List::~List(){ // dont chage
     }
 }
 
-
 size_t List::count() const{
     Node* current = head;
     size_t count = 0;
-    while(current) { //uninitialised value
+    while(current != nullptr) { //uninitialised value
         //std::cout << "countonce ";
         count ++;
         current = current->next;
@@ -61,6 +61,12 @@ void List::insert(const std::string& value){ // higher piority
     Node* test = new Node();
     test->data = value;
     test->next = nullptr;
+    
+    if(!head) { //!   !
+        head = test;
+        //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
+        return;
+    }
     
     Node* current = head;
     Node* pre = nullptr;
