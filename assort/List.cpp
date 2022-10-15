@@ -17,11 +17,9 @@ List::List(const List& other)   {
     }
         head = new Node;
         Node *list = other.head;
-        head->data = list->data;
         //std::cout << "test" << std::endl;
         
-        while (list->next != nullptr) {
-            list = list->next;
+        while (list != nullptr) {
             Node* temp = new Node;
             temp->data = list->data;
             temp->next = nullptr;
@@ -29,6 +27,7 @@ List::List(const List& other)   {
             head->next = temp;
             delete temp;
             head = head->next;
+            list = list->next;
         }
     delete list;
 }
