@@ -16,6 +16,8 @@ List::List(const List& other)   {
         return;
     }
         head = new Node;
+        head->data = other.head->data;
+        head->next = nullptr;
         Node *list = other.head;
         //std::cout << "test" << std::endl;
         
@@ -27,7 +29,7 @@ List::List(const List& other)   {
             head->next = temp;
             head = head->next;
             list = list->next;
-             delete temp;
+            delete temp;
         }
     delete list;
 }
