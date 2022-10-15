@@ -45,8 +45,8 @@ List::~List(){ // dont chage
 }
 
 size_t List::count() const{
-    Node* current = nullptr;
-    current = head;
+    Node* current = head;
+    current->next = head->next;
     size_t count = 0;
     while(current) { //uninitialised value
         //std::cout << "countonce ";
