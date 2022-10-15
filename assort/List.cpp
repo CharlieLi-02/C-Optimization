@@ -17,18 +17,15 @@ List::List(const List& other) {
         (*temp) = new Node(*list);
         temp = &((*temp)->next);
     }
-    temp = nullptr;
+    delete temp;
 }
 
 List::List(List&& other){
-    for(Node* list = other.head; list; list = list->next){
-        head->data = list->data;
-        head = head->next;
-    }
+    head = other.head;
+    other.head = nullptr;
 }
 
-
-List::~List(){
+List::~List(){ // dont chage
     Node* current = head;
     while(current != nullptr) {
         Node* temp = current;
@@ -42,10 +39,11 @@ size_t List::count() const{
     size_t count = 0;
     
     while(current) {
+        std::cout << "countonce ";
         count ++;
-        Node* temp = current->next;
-        current = temp;
+        current = current->next;
     }
+    delete current;
     return count;
 }
 
@@ -101,7 +99,7 @@ const std::string& List::lookup(size_t index) const{
 }
 
 void List::print(bool reverse) const{ // higher piority
-    size_t index = count();
+    size_t index = this->count();
     std::cout << "[";
     Node* temp;
     
@@ -135,13 +133,16 @@ std::string List::remove(size_t index){
     }
     
     std::string str;
-    
+    Node* temp  = nullptr;
     if(count() == Min + 1 || index == Min){
-        Node* temp = head;
+        temp = head;
         head = head->next;
-        return temp->data;
+        str = temp->data;
+        //delete temp;
+        return str;
     }
 
+    
     Node* current = head;
     Node* pre = nullptr;
     while(index > 0){
@@ -151,10 +152,12 @@ std::string List::remove(size_t index){
     }
     
     str = current->data;
-    Node* temp = current->next;
+    temp = current->next;
     pre->next = temp;
+    
     delete current;
     delete temp;
+    delete pre;
     
     return str;
 }
