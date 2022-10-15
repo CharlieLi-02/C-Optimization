@@ -10,11 +10,14 @@ List::List(){
 }
 
 List::List(const List& other) {  
-    for(Node* list = other.head; list; list = list->next)
+    Node* list = other.head;
+    while(list) 
     {
         head->data = list->data;
         head = head->next;
+        list = list->next;
     }
+    delete list;
 }
 
 List::List(List&& other){
