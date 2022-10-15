@@ -40,7 +40,7 @@ List::~List(){ // dont chage
     Node* current = head;
     Node* temp = nullptr;
     while(current != nullptr) {
-        temp = curent;
+        temp = current;
         current = temp->next;
     }
     delete temp;
