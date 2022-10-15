@@ -38,6 +38,10 @@ List::List(List&& other){
 
 
 List::~List(){ // dont chage
+    if(head = nullptr){
+        return;
+    }
+    
     Node *current = head;
     while (current != nullptr) {
         Node* temp = current;
