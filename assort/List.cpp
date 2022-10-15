@@ -11,11 +11,10 @@ List::List(){
 
 List::List(const List& other)   {
     //std::cout << "copy constructor called!" << std::endl;
-    if (other.head == NULL) {
-        head = NULL;
+    if (other.head == nullptr) {
+        head = nullptr;
         return;
     }
-    
         head = new Node;
         Node *list = other.head;
         head->data = list->data;
@@ -25,8 +24,10 @@ List::List(const List& other)   {
             list = list->next;
             Node* temp = new Node;
             temp->data = list->data;
+            temp->next = nullptr;
             //std::cout << "test" << std::endl;
             head->next = temp;
+            delete temp;
             head = head->next;
         }
     delete list;
