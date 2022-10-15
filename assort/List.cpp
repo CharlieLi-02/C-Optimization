@@ -39,7 +39,7 @@ List::List(List&& other){
 
 List::~List(){ // dont chage
     Node *current = head;
-    for (current != nullptr) {
+    while (current != nullptr) {
         Node* temp = current;
         current = current->next;
         delete temp;
