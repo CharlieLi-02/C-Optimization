@@ -131,12 +131,11 @@ std::string List::remove(size_t index){
     }
     
     std::string str;
-    Node* temp  = nullptr;
     if(count() == Min + 1 || index == Min){
-        temp = head;
+        Node* temp = head;
         head = head->next;
         str = temp->data;
-        //delete temp;
+        delete temp;
         return str;
     }
 
@@ -150,12 +149,9 @@ std::string List::remove(size_t index){
     }
     
     str = current->data;
-    temp = current->next;
-    pre->next = temp;
+    pre->next = current->next;;
     
     delete current;
-    delete temp;
-    delete pre;
     
     return str;
 }
