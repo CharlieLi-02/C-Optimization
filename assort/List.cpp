@@ -18,6 +18,7 @@ List::List(const List& other)   {
         head = new Node;
         head->data = other.head->data;
         head->next = nullptr;
+        Node* current = head;
         Node *list = other.head;
         //std::cout << "test" << std::endl;
         
@@ -26,9 +27,9 @@ List::List(const List& other)   {
             temp->data = list->data;
             temp->next = nullptr;
             //std::cout << "test" << std::endl;
-            head->next = temp;
-            head = head->next;
+            current->current = temp;
             list = list->next;
+            current = current->next;
             delete temp;
         }
     delete list;
