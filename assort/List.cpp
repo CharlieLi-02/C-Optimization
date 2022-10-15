@@ -25,9 +25,9 @@ List::List(const List& other)   {
             temp->next = nullptr;
             //std::cout << "test" << std::endl;
             head->next = temp;
-            delete temp;
             head = head->next;
             list = list->next;
+             delete temp;
         }
     delete list;
 }
