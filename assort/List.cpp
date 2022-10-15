@@ -37,12 +37,9 @@ List::List(List&& other){
 }
 
 List::~List(){ // dont chage
-    Node* current = head;
-    
-    while(current != nullptr) {
-        Node* temp = current->next;
-        delete current;
-        current = next;
+    for (ListNode *current = head, *next; current; current = next) {
+    next = current->next;
+    free(current);
     }
 }
 
