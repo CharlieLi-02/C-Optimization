@@ -38,8 +38,11 @@ List::List(List&& other){
 
 
 List::~List(){ // dont chage
-    for (Node *current = head, *next; current; current = next) {
-    next = current->next;
+    Node *current = head;
+    for (current != nullptr) {
+        Node* temp = current;
+        current = current->next;
+        delete temp;
     }
 }
 
