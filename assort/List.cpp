@@ -20,7 +20,7 @@ List::List(const List& other)   {
         head->data = list->data;
         //std::cout << "test" << std::endl;
         
-        while (list != nullptr) {
+        while (list->next != nullptr) {
             list = list->next;
             Node* temp = new Node;
             temp->data = list->data;
