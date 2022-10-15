@@ -51,6 +51,7 @@ size_t List::count() const{
         //std::cout << "countonce ";
          Node* temp = current;
         current = temp->next;
+        count++;
         delete temp;
     }
     delete current;
@@ -62,7 +63,7 @@ void List::insert(const std::string& value){ // higher piority
     test->data = value;
     test->next = nullptr;
     
-    if(!head) { //!   !
+    if(this->head == nullptr) { //!   !
         head = test;
         //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
         return;
