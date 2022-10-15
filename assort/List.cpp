@@ -9,15 +9,12 @@ List::List(){
     head = nullptr;
 }
 
-List::List(const List& other) {
-    
-    Node* temp = this->head;
+List::List(const List& other) {  
     for(Node* list = other.head; list; list = list->next)
     {
-        temp->data = list->data);
-        temp = temp->next;
+        head->data = list->data;
+        head = head->next;
     }
-    delete temp;
 }
 
 List::List(List&& other){
