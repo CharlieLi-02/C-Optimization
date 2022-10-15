@@ -51,6 +51,8 @@ int main() {
     //std::cout << std::endl;
 
     //std::cout << list.count() << std::endl;
+    
+    /*Test:Copy & Move{
     std::cout << std::endl;
     List* list2 = new List(list1);
     list2->print();
@@ -59,20 +61,39 @@ int main() {
     List* list3 = new List(list1);
     list3->print();
     std::cout << "list3" << std::endl;
-    std::cout << std::endl;
+    std::cout << std::endl*/
     
-    list1.print();
+    
+    //list1.print();
     std::cout << list1.remove(0) << std::endl;
     list1.print();
     std::cout << list1.remove(3) << std::endl;
     list1.print();
-    std::cout << list1.remove(3) << std::endl;
+    std::cout << list1.remove(0) << std::endl;
+    //std::cout << std::endl;
     list1.print();
-    std::cout << list1.remove(2) << std::endl;
+    std::cout << list1.remove(0) << std::endl;
     list1.print();
+    std::cout << list1.remove(0) << std::endl;
+    //list1.print();
+    std::cout << list1.remove("Lb") << std::endl;
+    //list1.print();
+    //std::cout << list1.remove(2) << std::endl;
+    //list1.print();
     //std::cout << list1.remove(4) << std::endl;
     //list1.print();
     std::cout << std::endl;
+    
+    List list4;
+    list4.insert("Test1");
+    list4.insert("Test1");
+    list4.insert("Test2");
+    list4.insert("Test2");
+    list4.insert("Test2");
+    list4.insert("Test2");
+    std::cout << list4.count() << std::endl;
+    std::cout << list4.remove("Test1") << std::endl;
+    //list4.print();
     //list.insert("Atropos");
     //list.insert("Clotho");
     //list.insert("Lachesis");
