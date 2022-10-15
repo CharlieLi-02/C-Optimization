@@ -10,13 +10,17 @@ List::List(){
 }
 
 List::List(const List& other) {
-    Node* list = other.head;
-    while(list)
-    {
-        head->data = list->data;
-        head = head->next;
-        list = list->next;
+    if (list.head == nullptr) {
+        return;
     }
+    Node* list = other.head;
+    while (list != nullptr) {
+        Node* temp = other.head;
+        head->data = temp->data;
+        list = list->next;
+        head = head->next;
+    }
+    head->next = nullptr;
     delete list;
 }
 
