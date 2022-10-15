@@ -12,7 +12,6 @@ List::List(){
 List::List(const List& other)   {
     if (other.head == nullptr)
         return;
-
     Node* list = other.head;
     head = new Node;
     head->data = list->data;
@@ -28,6 +27,8 @@ List::List(const List& other)   {
         current->next = nullptr;
         list = list->next;
     }
+    delete current;
+    delete list;
 }
 
 List::List(List&& other){
