@@ -62,13 +62,13 @@ void List::insert(const std::string& value){ // higher piority
     test->data = value;
     test->next = nullptr;
     
-    Node* current = head;//
-    if(current == nullptr) { //uninitialised value
-        current = test;
+    if(head == nullptr) { //uninitialised value
+        head = test;
         //std::cout << "insert() executed!" << " " << head->data << " " << "inserted" << std::endl;
         return;
     }
-    
+   
+    Node* current = head;
     Node* pre = nullptr;
     std::string str;
     while(current != nullptr && value.compare((current->data)) > 0){
