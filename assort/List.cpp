@@ -13,24 +13,24 @@ List::List(const List& other) {
     if (other.head == nullptr)
         return;
 
-    Node* temp = other.head;
+    Node* current = other.head;
+    
     head = new Node;
-    head->data = temp->data;
+    head->data = current->data;
     head->next = nullptr;
 
     current = head;
+    current = current->next;
 
-    temp = temp->next;
-
-    while (tmp != nullptr)
+    while (current != nullptr)
     {
         current->next = new Node;
         current = current->next;
-        current->data = temp->data;
+        current->data = current->data;
         current->next = nullptr;
-        temp = temp->next;
+        current = current->next;
     }
-    delete temp;
+    delete current;
 }
 
 List::List(List&& other){
