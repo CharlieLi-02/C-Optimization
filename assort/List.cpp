@@ -10,29 +10,27 @@ List::List(){
 }
 
 List::List(const List& other)   {
-    //std::cout << "copy constructor called!" << std::endl;
-    if (other.head == nullptr) {
-        head = nullptr;
+    if (other.head == nullptr)
         return;
+
+    Node* list = other.head;
+    head = new node;
+
+    head->data = tmp->data;
+    head->next = nullptr;
+
+    Node* current = head;
+    
+    list = list->next;
+
+    while (list != nullptr)
+    {
+        current->next = new Node;
+        current = current->next;
+        current->data = list->data;
+        current->next = nullptr;
+        list = list->next;
     }
-        head = new Node;
-        head->data = other.head->data;
-        head->next = nullptr;
-        Node* current = head;
-        Node *list = other.head;
-        //std::cout << "test" << std::endl;
-        
-        while (list != nullptr) {
-            Node* temp = new Node;
-            temp->data = list->data;
-            temp->next = nullptr;
-            //std::cout << "test" << std::endl;
-            current->next = temp;
-            list = list->next;
-            current = current->next;
-            delete temp;
-        }
-    delete list;
 }
 
 List::List(List&& other){
