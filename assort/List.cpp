@@ -101,7 +101,6 @@ const std::string& List::lookup(size_t index) const{
 void List::print(bool reverse) const{ // higher piority
     size_t index = this->count();
     std::cout << "[";
-    Node* temp;
     
     if(index > Min){
         
@@ -114,13 +113,12 @@ void List::print(bool reverse) const{ // higher piority
         }
         
             else {
-            temp = head;
-            while(index > 1){
-                std::cout << temp->data << ", ";
-                temp = temp->next;
-                index --;
+                size_t cur = 0;
+            while(cur < index - 1){
+                std::cout << lookup(cur) << ", ";
+                cur ++;
             }
-            std::cout << temp->data;
+            std::cout << lookup(count() - 1);
         }
     }
     
