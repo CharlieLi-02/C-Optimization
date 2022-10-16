@@ -9,25 +9,27 @@ List::List(){
     head = nullptr;
 }
 
-List::List(const List& other)   {
-    if (other.head == nullptr){
+List::List(const List& other) {
+    if (other.head == nullptr) {
         head = other.head;
     }
-    head = new Node;
-    head->data = other.head->data;
-    head->next = nullptr;
-    Node* list = other.head;
-    Node* current = head;
+    else {
+        head = new Node;
+        head->data = other.head->data;
+        head->next = nullptr;
+        Node* list = other.head;
+        Node* current = head;
 
 
-    while (list->next != nullptr)
-    {
-        list = list->next;
-        Node* temp = new Node;
-        temp->data = list->data;
-        temp->next = nullptr;
-        current->next = temp;
-        current = current->next;
+        while (list->next != nullptr)
+        {
+            list = list->next;
+            Node* temp = new Node;
+            temp->data = list->data;
+            temp->next = nullptr;
+            current->next = temp;
+            current = current->next;
+        }
     }
 }
 
