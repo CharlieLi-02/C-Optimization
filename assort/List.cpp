@@ -14,11 +14,10 @@ List::List(const List& other)   {
         head = other.head;
     }
     head = new Node;
-    Node* list = other.head;
     head->data = list->data;
     head->next = nullptr;
+    Node* list = other.head;
     Node* current = head;
-    list = list->next;
 
     while (list->next != nullptr)
     {
@@ -27,8 +26,8 @@ List::List(const List& other)   {
         temp->data = list->data;
         temp->next = nullptr;
         current->next = temp;
+        current = current->next;
     }
-    delete current;
 }
 
 List::List(List&& other){
