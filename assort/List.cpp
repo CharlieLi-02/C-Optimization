@@ -28,7 +28,9 @@ List::List(const List& other)   {
         temp->next = nullptr;
         current->next = temp;
         current = current->next;
+        delete temp;
     }
+    delete list;
 }
 
 List::List(List&& other){
