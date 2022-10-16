@@ -15,7 +15,7 @@ List::List(const List& other)   {
     }
     head = new Node;
     Node* list = other.head;
-    head->data = other.head-?data;
+    head->data = other.head->data;
     head->next = nullptr;
     Node* current = head;
 
