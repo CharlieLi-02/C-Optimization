@@ -11,21 +11,22 @@ List::List(){
 
 List::List(const List& other)   {
     if (other.head == nullptr){
-        return;
+        head = other.head;
     }
     head = new Node;
     Node* list = other.head;
     head->data = list->data;
-    head->next = list->next;
+    head->next = nullptr;
     Node* current = head;
     list = list->next;
 
-    while (list != nullptr)
+    while (list->next != nullptr)
     {
-        current = current->next;
-        current->data = list->data;
-        current->next = nullptr;
         list = list->next;
+        Node* temp = new Node;
+        temp->data = list->data;
+        temp->next = nullptr;
+        current->next = temp;
     }
     delete current;
 }
