@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5958792C29010D1400FC7E73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5958792B29010D1400FC7E73 /* main.cpp */; };
+		5958793829010D2900FC7E73 /* Set.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5958793329010D2900FC7E73 /* Set.cpp */; };
+		5958793929010D2900FC7E73 /* test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5958793429010D2900FC7E73 /* test.cpp */; };
+		5958793A29010D2900FC7E73 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5958793529010D2900FC7E73 /* Node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +26,12 @@
 
 /* Begin PBXFileReference section */
 		5958792829010D1400FC7E73 /* CS24 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CS24; sourceTree = BUILT_PRODUCTS_DIR; };
-		5958792B29010D1400FC7E73 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5958793229010D2900FC7E73 /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Set.h; path = ../../setree/Set.h; sourceTree = "<group>"; };
+		5958793329010D2900FC7E73 /* Set.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Set.cpp; path = ../../setree/Set.cpp; sourceTree = "<group>"; };
+		5958793429010D2900FC7E73 /* test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test.cpp; path = ../../setree/test.cpp; sourceTree = "<group>"; };
+		5958793529010D2900FC7E73 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = ../../setree/Node.cpp; sourceTree = "<group>"; };
+		5958793629010D2900FC7E73 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../setree/README.md; sourceTree = "<group>"; };
+		5958793729010D2900FC7E73 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = ../../setree/Node.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +64,12 @@
 		5958792A29010D1400FC7E73 /* CS24 */ = {
 			isa = PBXGroup;
 			children = (
-				5958792B29010D1400FC7E73 /* main.cpp */,
+				5958793429010D2900FC7E73 /* test.cpp */,
+				5958793729010D2900FC7E73 /* Node.h */,
+				5958793529010D2900FC7E73 /* Node.cpp */,
+				5958793229010D2900FC7E73 /* Set.h */,
+				5958793329010D2900FC7E73 /* Set.cpp */,
+				5958793629010D2900FC7E73 /* README.md */,
 			);
 			path = CS24;
 			sourceTree = "<group>";
@@ -119,7 +131,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5958792C29010D1400FC7E73 /* main.cpp in Sources */,
+				5958793829010D2900FC7E73 /* Set.cpp in Sources */,
+				5958793929010D2900FC7E73 /* test.cpp in Sources */,
+				5958793A29010D2900FC7E73 /* Node.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
