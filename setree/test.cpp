@@ -51,8 +51,8 @@ int main() {
     mRoot->Traversal(mRoot);
     std::cout << std::endl << std::endl;
     
-    std::cout << "attempt to execute Search function" << std::endl;
-    mRoot->Search(mRoot, 6);
+    std::cout << "attempt to execute nthLargest function" << std::endl;
+    mRoot->nthLargest(mRoot, 6);
     std::cout << std::endl << std::endl;
 
     return 0;

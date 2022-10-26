@@ -23,7 +23,7 @@ struct Node{
     void Traversal(Node* node); //used in debug()
     void Traversal_Reverse(Node* node); //used in debug()
     void Clear(Node* node); // used in clear()
-    void Search(Node* node, int n); //used in lookup()
+    std::string nthLargest(Node* node, int n); //used in lookup()
 };
 
 #endif

@@ -6,12 +6,6 @@ Node::Node(std::string str){
     right = nullptr;
 }
 
-Node::Node(const std::string& value){
-    data = value;
-    left = nullptr;
-    right = nullptr;
-}
-
 Node::~Node(){
     delete left;
     delete right;
@@ -141,20 +135,54 @@ void Node::Clear(Node* node){
     }
 }
 
-void Node::Search(Node* node, int n){
-    //std::cout << "Search funtion executed" << std::endl;
-    std::cout << n - 1 << " " << std::endl;
-    if (node)
-    {
-        Search(node->left, n);
-        
-        std::cout << node->data << " " << std::endl;
+std::string Node::nthLargest(Node* node, int n){
+        Node* current = node;
+        Node* target = nullptr;
+     
+        // count variable to keep count of visited Nodes
+        int count = 0;
+     
+        while (current != NULL) {
+            // if right child is NULL
+            if (current->right == NULL) {
+     
+                // first increment count and check if count = k
+                if (++count == n)
+                    target = current;
+     
+                // otherwise move to the left child
+                current = current->left;
+            }
+     
+            else {
+                // find inorder successor of current Node
+                Node* succ = current->right;
+     
+                while (current->left != nullptr && current->left != current){
+                    succ = succ->left;
+     
+                    if (succ == nullptr) {
+     
+                        // set left child of successor to the
+                        // current Node
+                        succ  = current;
 
-        /*if(n == 0){
-            std::cout << node->data << " " << std::endl;
-            std::cout << "terminated" << std::endl;
-            return;
-        }*/
-        Search(node->right, n);
-    }
+                        // move current to its right
+                        current = current->right;
+                    }
+                        // restoring the tree back to original binary
+                        //  search tree removing threaded links
+                    else {
+                        succ = nullptr;
+                        if (++count == n) {
+                            target = current;
+                        }
+                        // move current to its left child
+                        current = current->left;
+                    }
+                }
+            }
+        }
+        
+    return target->data;
 }
