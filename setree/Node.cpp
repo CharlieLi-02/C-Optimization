@@ -38,22 +38,30 @@ size_t Node::Count(Node* node){
 Node* Node::Insert(struct Node* node, std::string str)
 {
     /* If the tree is empty, add a new node */
-    if (node == nullptr){
-        Node* temp = new Node(str);
-        return temp;
-    }
-    /* If the tree has this value, return nullptr */
     if (Check(node, str) != nullptr){
+        std::cout << "check is not null for  " << str << std::endl;
         return nullptr;
     }
-    if (str < node->data) {
-        node->left = Insert(node->left, str);
+    
+    else {
+        if (node == nullptr){
+            Node* temp = new Node(str);
+            return temp;
+            //delete temp;
+        }
+        
+        /* If the tree has this value, return nullptr */
+        
+        
+        if (str < node->data) {
+            node->left = Insert(node->left, str);
+        }
+        else {
+            node->right = Insert(node->right, str);
+        }
+        /* only return nullptr when one already exists*/
+        return node;
     }
-    else if (str > node->data){
-        node->right = Insert(node->right, str);
-    }
-    /* only return nullptr when one already exists*/
-    return node;
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
@@ -98,14 +106,15 @@ Node* Node::Remove(struct Node* node, std::string str) {
 /* If the tree is empty, add a new node */
 Node* Node::Check(struct Node* node, std::string str){
     Node* current = node;
+    
     while (current != nullptr){
         if (current->data == str) {
-            return current; //return non-nullptr if exist
+            return current; //only return non-nullptr if exist
         }
-        else if (str < node->data) {
+        else if (str < current->data) {
             current = current->left;
         }
-        else if (str > node->data) {
+        else {
             current = current->right;
         }
     }

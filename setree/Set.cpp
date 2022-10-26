@@ -31,7 +31,7 @@ bool Set::contains(const std::string& value) const{
 }
 
 size_t Set::count() const{
-    return mRoot->Count(mRoot);
+    return (mRoot->Count(mRoot) - 1);
 }
 
 void Set::debug(){
@@ -43,22 +43,26 @@ size_t Set::insert(const std::string& value){
         return 0;
     }
     else {
-        mRoot = mRoot->Insert(mRoot, value);
+        mRoot->Insert(mRoot, value);
     }
     return 1;
 }
 
 const std::string& Set::lookup(size_t n) const{
-    size_t location = mRoot->Count(mRoot) - n;
+    if(n > this->count()){
+        throw std::out_of_range("Out of Range");
+    }
+    size_t location = this->count() - n;
     return (mRoot->nthLargest(mRoot, location))->data;
 }
 
 void Set::print() const{
-    
+    mRoot->Traversal_Reverse(mRoot);
 }
 
 size_t Set::remove(const std::string& value){
-    if(mRoot->Remove(mRoot, value) != nullptr){
+    if(mRoot->Check(mRoot, value) != nullptr) { //already exist
+        mRoot->Remove(mRoot, value);
         return 1;
     }
     return 0;
