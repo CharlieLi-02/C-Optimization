@@ -14,8 +14,9 @@ struct Node{
     Node* right;
     
     Node(std::string str = "");
-    ~Node();
     
+    void Delete(struct Node* node);
+    Node* Copy(struct Node* target);
     size_t Count(struct Node* node);
     Node* Insert(struct Node* node, std::string str);
     Node* Remove(struct Node* node, std::string str); //
@@ -23,7 +24,7 @@ struct Node{
     void Traversal(Node* node); //used in debug()
     void Traversal_Reverse(Node* node); //used in debug()
     void Clear(Node* node); // used in clear()
-    std::string nthLargest(Node* node, int n); //used in lookup()
+    Node* nthLargest(Node* node, size_t n); //used in lookup()
 };
 
 #endif

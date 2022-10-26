@@ -1,4 +1,4 @@
-#include "Node.h"
+#include "Set.h"
 //#include "Set.h"
 #include <iostream>
 
@@ -6,7 +6,22 @@
 // This file won't be graded - do whatever you want.
 
 int main() {
-    Node* mRoot = new Node("C");
+    Set tree;
+    std::cout <<  tree.insert("A") << std::endl;
+    std::cout <<  tree.insert("D") << std::endl;
+    std::cout <<  tree.insert("B") << std::endl;
+    std::cout <<  tree.insert("B") << std::endl;
+    std::cout <<  tree.insert("E") << std::endl;
+    std::cout <<  tree.insert("F") << std::endl;
+    std::cout <<  tree.insert("C") << std::endl;
+    std::cout <<  tree.insert("G") << std::endl;
+    std::cout <<  tree.insert("H") << std::endl;
+    std::cout <<  tree.insert("I") << std::endl;
+    std::cout << "attempt to execute count function: " << std::endl;
+    std::cout <<  tree.count() << std::endl << std::endl;
+    
+    
+    /*Node* mRoot = new Node("C");
     mRoot->Insert(mRoot, "A");
     mRoot->Insert(mRoot, "D");
     mRoot->Insert(mRoot, "B");
@@ -42,18 +57,18 @@ int main() {
     
     std::cout << "attempt to execute Traversal_Reverse function" << std::endl;
     mRoot->Traversal_Reverse(mRoot);
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl << std::endl;*/
  
     /*std::cout << "attempt to execute Clear function" << std::endl;
     mRoot->Clear(mRoot);*/
     
-    std::cout << "attempt to execute Traversal function after Clear" << std::endl;
+    /*std::cout << "attempt to execute Traversal function after Clear" << std::endl;
     mRoot->Traversal(mRoot);
     std::cout << std::endl << std::endl;
     
     std::cout << "attempt to execute nthLargest function" << std::endl;
-    mRoot->nthLargest(mRoot, 6);
-    std::cout << std::endl << std::endl;
+    std::cout << "print nthLargest value: " << mRoot->nthLargest(mRoot, 6) << std::endl;
+    std::cout << std::endl << std::endl;*/
 
     return 0;
 }

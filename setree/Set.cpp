@@ -5,7 +5,8 @@ Set::Set(){
 }
 
 Set::Set(const Set& other){
-
+    Node* temp = mRoot->Copy(other.mRoot);
+    mRoot = temp;
 }
 
 Set::Set(Set&& other){
@@ -18,28 +19,38 @@ Set::~Set(){
 }
 
 size_t Set::clear(){
-    return -1;
+    mRoot->Clear(mRoot);
+    return mRoot->Count(mRoot);
 }
 
 bool Set::contains(const std::string& value) const{
-    return -1;
+    if(mRoot->Check(mRoot, value) != nullptr){
+        return true;
+    }
+    return false;
 }
 
 size_t Set::count() const{
-    return -1;
+    return mRoot->Count(mRoot);
 }
 
 void Set::debug(){
-    
+    mRoot->Traversal(mRoot);
 }
 
 size_t Set::insert(const std::string& value){
-    return -1;
+    if(mRoot->Check(mRoot, value) != nullptr) {
+        return 0;
+    }
+    else {
+        mRoot = mRoot->Insert(mRoot, value);
+    }
+    return 1;
 }
 
 const std::string& Set::lookup(size_t n) const{
-    std::string str = "Hello World";
-    return str;
+    size_t location = mRoot->Count(mRoot) - n;
+    return (mRoot->nthLargest(mRoot, location))->data;
 }
 
 void Set::print() const{
@@ -47,5 +58,8 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-    return -1;
+    if(mRoot->Remove(mRoot, value) != nullptr){
+        return 1;
+    }
+    return 0;
 }

@@ -6,11 +6,26 @@ Node::Node(std::string str){
     right = nullptr;
 }
 
-Node::~Node(){
-    delete left;
-    delete right;
+void Node::Delete(struct Node* node){
+    if (node)
+    {
+        Delete(node->left);
+        Delete(node->right);
+        delete node;   // visit => delete node
+        node = nullptr;
+    }
 }
 
+Node* Node::Copy(struct Node* target){
+    if (target)
+    {
+        Node* copy = new Node(target->data);
+        copy->left = Copy(target->left);
+        copy->right = Copy(target->right);
+        return copy;
+    }
+    return nullptr;
+}
 size_t Node::Count(Node* node){
     if (!node) {
         return 0;
@@ -23,7 +38,7 @@ size_t Node::Count(Node* node){
 Node* Node::Insert(struct Node* node, std::string str)
 {
     /* If the tree is empty, add a new node */
-    if (node == NULL){
+    if (node == nullptr){
         Node* temp = new Node(str);
         return temp;
     }
@@ -41,62 +56,51 @@ Node* Node::Insert(struct Node* node, std::string str)
     return node;
 }
 
-/*Node* Node::Remove(struct Node* node, std:string str)
-{
-
-    if (node == NULL) {
-        return node;
+Node* Node::Remove(struct Node* node, std::string str) {
+    if (node == nullptr) {
+        return node; //return nullptr when node = Null;
     }
-
     if (str < node->data){
-        node->left = deleteNode(node->left, key);
+        node->left = Remove(node->left, str);
     }
-    // If the key to be deleted is
-    // greater than the root's
-    // key, then it lies in right subtree
-    else if (key > root->key) {
-        node->right = deleteNode(node->right, key);
+    else if (str > node->data) {
+        node->right = Remove(node->right, str);
     }
-    // if key is same as root's key, then This is the node
-    // to be deleted
+    // if value is same as str, then this is the node to be deleted
     else {
-        // node has no child
-        if (node->left== NULL && node->right== NULL)
+        // Case1: node has no child
+        if (node->left== nullptr && node->right== nullptr)
             return nullptr;
-        
-        // node with only one child or no child
-        else if (noderoot->left == NULL) {
-            struct node* temp = node->right;
+        // Case2: node with only one child or no child
+        else if (node->left == nullptr) {
+            Node* temp = node->right;
             free(node);
             return temp;
         }
-        
         else if (node->right == NULL) {
-            struct node* temp = node->left;
+            Node* temp = node->left;
             free(node);
             return temp;
         }
-  
-        // node with two children: Get the inorder successor
+        // Case3: node with two children
         // (smallest in the right subtree)
-        struct node* temp = minValueNode(root->right);
-  
-        // Copy the inorder successor's content to this node
-        root->key = temp->key;
-  
-        // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->key);
+        else{
+            Node* temp = nthLargest(node, 1);
+            // Copy the inorder successor's content to this node
+            node->data = temp->data;
+            // Delete the inorder successor
+            node = Remove(node, temp->data);
+        }
     }
-    return root;
-}*/
+    return node;
+}
 
 /* If the tree is empty, add a new node */
 Node* Node::Check(struct Node* node, std::string str){
     Node* current = node;
-    
     while (current != nullptr){
         if (current->data == str) {
-            return nullptr; //return nullptr if exist
+            return current; //return non-nullptr if exist
         }
         else if (str < node->data) {
             current = current->left;
@@ -105,7 +109,7 @@ Node* Node::Check(struct Node* node, std::string str){
             current = current->right;
         }
     }
-    return current;
+    return nullptr;
 }
 
 void Node::Traversal(Node* node){
@@ -135,54 +139,39 @@ void Node::Clear(Node* node){
     }
 }
 
-std::string Node::nthLargest(Node* node, int n){
+Node* Node::nthLargest(Node* node, size_t n){
         Node* current = node;
         Node* target = nullptr;
+        size_t count = 0;
      
-        // count variable to keep count of visited Nodes
-        int count = 0;
-     
-        while (current != NULL) {
-            // if right child is NULL
-            if (current->right == NULL) {
-     
-                // first increment count and check if count = k
+        while (current != nullptr) { // if right child is nullptr
+            if (current->right == nullptr) { // first increment count and check if count = k
                 if (++count == n)
                     target = current;
-     
-                // otherwise move to the left child
-                current = current->left;
+                current = current->left;  // otherwise move to the left child
             }
      
-            else {
-                // find inorder successor of current Node
+            else { // find inorder successor of current Node
                 Node* succ = current->right;
-     
-                while (current->left != nullptr && current->left != current){
-                    succ = succ->left;
-     
-                    if (succ == nullptr) {
-     
-                        // set left child of successor to the
-                        // current Node
-                        succ  = current;
-
-                        // move current to its right
-                        current = current->right;
-                    }
-                        // restoring the tree back to original binary
-                        //  search tree removing threaded links
-                    else {
-                        succ = nullptr;
-                        if (++count == n) {
-                            target = current;
-                        }
-                        // move current to its left child
-                        current = current->left;
-                    }
+                while (succ->left != nullptr && succ->left != current) {
+                     succ = succ->left;
                 }
+                 if (succ->left == nullptr) {
+                     // set left child of successor to the
+                     // current Node
+                     succ->left = current;
+                     // move current to its right
+                     current = current->right;
+                 } // restoring the tree back to original binary //  search tree removing threaded links
+                 else {
+                     succ->left = nullptr;
+                     if (++count == n) {
+                         target = current;
+                     }
+                     // move current to its left child
+                     current = current->left;
+                 }
             }
         }
-        
-    return target->data;
+    return target;
 }
