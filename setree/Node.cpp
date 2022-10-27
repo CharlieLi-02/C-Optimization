@@ -68,11 +68,9 @@ void Node::Print(struct Node* node){
 }
 
 Node* Node::Insert(struct Node* node, std::string str) {
-    /* If the tree is empty, add a new node */    
+    /* If the tree is empty, add a new node */
         if (node == nullptr){
-            Node* temp = new Node(str);
-            node = temp;
-            delete temp;
+            node = new Node(str);
             return node;
             //delete temp;
         }
@@ -87,7 +85,7 @@ Node* Node::Insert(struct Node* node, std::string str) {
             node->right = Insert(node->right, str);
         }
         /* only return nullptr when one already exists*/
-    return node;
+        return node;
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
@@ -169,15 +167,12 @@ void Node::Traversal_Reverse(Node* node){
 }
 
 void Node::Clear(Node* node){
-    Node* temp = node;
     if (node)
     {
         Clear(node->left);
-        delete node;
-        node = temp;
+        node->data = "";
         Clear(node->right);
     }
-    delete temp;
 }
 
 Node* Node::nthLargest(Node* node, size_t n){
