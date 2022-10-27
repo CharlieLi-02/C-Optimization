@@ -10,7 +10,6 @@ void Node::Delete(struct Node* node){
     if(node != nullptr) {
         if((node->left == nullptr) && (node->right == nullptr)) {
             delete node;
-            node = nullptr;
         }
         else {
             Delete(node->left);
@@ -30,7 +29,7 @@ Node* Node::Copy(struct Node* target){
     return nullptr;
 }
 size_t Node::Count(Node* node){
-    if (!node) {
+    if (node == nullptr) {
         return 0;
     }
     else {

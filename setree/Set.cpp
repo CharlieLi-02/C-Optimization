@@ -21,6 +21,7 @@ Set::~Set(){
 size_t Set::clear(){
     size_t count = mRoot->Count(mRoot);
     mRoot->Delete(mRoot);
+    mRoot = nullptr;
     return count;
 }
 
@@ -61,6 +62,7 @@ void Set::print() const{
     else {
         mRoot->Print(mRoot);
     }
+    std::cout << std::endl;
 }
 
 size_t Set::remove(const std::string& value){
