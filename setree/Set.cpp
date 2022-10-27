@@ -54,7 +54,6 @@ const std::string& Set::lookup(size_t n) const{
 }
 
 void Set::print() const{
-    std::cout << "print executed!" << std::endl;
     if(mRoot == nullptr){
         std::cout << "-";
     }
