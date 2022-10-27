@@ -60,6 +60,7 @@ void Set::print() const{
     else {
         mRoot->Print(mRoot);
     }
+    std::cout << std::endl;
 }
 
 size_t Set::remove(const std::string& value){
