@@ -87,7 +87,7 @@ Node* Node::Insert(struct Node* node, std::string str) {
             node->right = Insert(node->right, str);
         }
         /* only return nullptr when one already exists*/
-        return node;
+    return node;
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
