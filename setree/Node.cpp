@@ -122,7 +122,10 @@ Node* Node::Check(struct Node* node, std::string str){
 }
 
 void Node::Traversal(Node* node){
-    if (node)
+    if(node == nullptr){
+        return;
+    }
+    else
     {
         Traversal(node->left);
         std::cout << node->data << " ";
@@ -183,4 +186,62 @@ Node* Node::nthLargest(Node* node, size_t n){
             }
         }
     return target;
+}
+
+/*std::string Node::Notation(Node* node){
+    if(node == nullptr){
+        std::cout << "" << std::endl;
+        return "";
+    }
+    std::cout << node->data << std::endl;
+    
+    if(node->left == nullptr && node->right == nullptr){
+        std::cout << node->data << std::endl;
+        return node->data;
+    }
+    
+    if(node->left == nullptr && node->right == nullptr){
+
+        return node->data;
+    }
+    
+    else
+    {
+        std::string str = "(" + Notation(node->left) + " " + node->data + " " + Notation(node->right) + ")";
+        std::cout << str << std::endl;
+        return str;
+    }
+}*/
+
+std::string Node::Notation(Node* node){
+    /*if (node == nullptr){
+        return "nothing here";
+    }*/
+    
+    std::cout << node->data << std::endl;
+    
+    if (node->left == nullptr && node->right == nullptr){
+        return node->data;
+    }
+    
+    std::string str_left = "";
+    if (node->left != nullptr){
+        str_left = Notation(node->left);
+    }
+    else {
+        str_left = "-";
+    }
+    std::cout << str_left << std::endl;
+    
+    std::string str_right = "-";
+    if(node->right != nullptr){
+        str_right = Notation(node->right);
+    }
+    else {
+        str_right = "-";
+    }
+    std::cout << str_right << std::endl;
+
+    std::string notation = "(" + str_left + " " + node->data + " " + str_right + ")";
+    return notation;
 }

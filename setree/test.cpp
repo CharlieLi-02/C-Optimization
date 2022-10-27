@@ -34,8 +34,24 @@ int main() {
     
     std::cout << "attempt to execute remove function: " << std::endl;
     std::cout <<  "removed value: "  << std::endl << tree.remove("Z") << std::endl;
+    
     tree.print();
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
+    Set tree1;
+    std::cout <<  tree1.insert("a") << std::endl;
+    std::cout <<  tree1.insert("b") << std::endl;
+    std::cout <<  tree1.insert("c") << std::endl;
+    std::cout <<  tree1.insert("d") << std::endl;
+    std::cout <<  tree1.insert("e") << std::endl;
+    std::cout <<  tree1.insert("f") << std::endl;
+    tree1.print();
+    std::cout << std::endl << std::endl;
+    std::cout << "attempt to execute notation function: " << std::endl;
+    std::cout <<  "results: "  << std::endl;
+    tree1.debug();
+    std::cout << std::endl << std::endl;
+    
+    /*std::cout << std::endl;
     std::cout <<  tree.remove("A") << std::endl;
     std::cout <<  tree.remove("B") << std::endl;
     std::cout <<  tree.remove("C") << std::endl;
@@ -54,7 +70,7 @@ int main() {
     std::cout << std::endl << std::endl;
     
     std::cout << "attempt to execute count function: " << std::endl;
-    std::cout <<  tree.count() << std::endl << std::endl;
+    std::cout <<  tree.count() << std::endl << std::endl;*/
     
     return 0;
 }

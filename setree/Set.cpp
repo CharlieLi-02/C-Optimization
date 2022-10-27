@@ -35,10 +35,14 @@ size_t Set::count() const{
 }
 
 void Set::debug(){
-    mRoot->Traversal(mRoot);
+    std::cout << mRoot->Notation(mRoot) << std::endl;
 }
 
 size_t Set::insert(const std::string& value){
+    if(mRoot == nullptr){
+        mRoot = new Node(value);
+        return 1;
+    }
     if(mRoot->Check(mRoot, value) != nullptr) {
         return 0;
     }
@@ -57,7 +61,7 @@ const std::string& Set::lookup(size_t n) const{
 }
 
 void Set::print() const{
-    mRoot->Traversal_Reverse(mRoot);
+    mRoot->Traversal(mRoot);
 }
 
 size_t Set::remove(const std::string& value){

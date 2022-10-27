@@ -25,6 +25,8 @@ struct Node{
     void Traversal_Reverse(Node* node); //used in debug()
     void Clear(Node* node); // used in clear()
     Node* nthLargest(Node* node, size_t n); //used in lookup()
+    std::string Notation(Node* node);
+    void Test(Node* node);
 };
 
 #endif
