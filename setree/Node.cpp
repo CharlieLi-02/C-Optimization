@@ -169,12 +169,15 @@ void Node::Traversal_Reverse(Node* node){
 }
 
 void Node::Clear(Node* node){
+    Node* temp = node;
     if (node)
     {
         Clear(node->left);
-        node->data = "";
+        delete node;
+        node = temp;
         Clear(node->right);
     }
+    delete temp;
 }
 
 Node* Node::nthLargest(Node* node, size_t n){
