@@ -76,7 +76,8 @@ Node* Node::Insert(struct Node* node, std::string str)
     
     else {
         if (node == nullptr){
-            return new Node(str);
+            node = new Node(str);
+            return node;
         }
         
         /* If the tree has this value, return nullptr */
