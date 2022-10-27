@@ -19,8 +19,9 @@ Set::~Set(){
 }
 
 size_t Set::clear(){
-    mRoot->Clear(mRoot);
-    return mRoot->Count(mRoot);
+    size_t count = mRoot->Count(mRoot);
+    mRoot->Delete(mRoot);
+    return count;
 }
 
 bool Set::contains(const std::string& value) const{
@@ -60,7 +61,6 @@ void Set::print() const{
     else {
         mRoot->Print(mRoot);
     }
-    std::cout << std::endl;
 }
 
 size_t Set::remove(const std::string& value){
