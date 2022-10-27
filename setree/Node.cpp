@@ -66,8 +66,8 @@ void Node::Print(struct Node* node){
         std::cout << ")";
     }
 }
-Node* Node::Insert(struct Node* node, std::string str)
-{
+
+Node* Node::Insert(struct Node* node, std::string str) {
     /* If the tree is empty, add a new node */    
         if (node == nullptr){
             node = new Node(str);
@@ -86,7 +86,6 @@ Node* Node::Insert(struct Node* node, std::string str)
         }
         /* only return nullptr when one already exists*/
         return node;
-    }
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
