@@ -72,7 +72,7 @@ Node* Node::Insert(struct Node* node, std::string str) {
         if (node == nullptr){
             Node* temp = new Node(str);
             node = temp;
-            delete temo;
+            delete temp;
             return node;
             //delete temp;
         }
