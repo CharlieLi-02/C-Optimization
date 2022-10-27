@@ -5,7 +5,7 @@ Set::Set(){
 }
 
 Set::Set(const Set& other){
-    Node* temp = mRoot->Copy(other.mRoot);
+    Node* temp = (this->mRoot)->Copy(other.mRoot);
     mRoot = temp;
 }
 
