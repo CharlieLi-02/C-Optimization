@@ -68,16 +68,11 @@ void Node::Print(struct Node* node){
 }
 Node* Node::Insert(struct Node* node, std::string str)
 {
-    /* If the tree is empty, add a new node */
-    if (Check(node, str) != nullptr){
-        std::cout << "check is not null for  " << str << std::endl;
-        return nullptr;
-    }
-    
-    else {
+    /* If the tree is empty, add a new node */    
         if (node == nullptr){
             node = new Node(str);
             return node;
+            //delete temp;
         }
         
         /* If the tree has this value, return nullptr */
