@@ -77,7 +77,8 @@ struct stack {
 };
 
 Node::~Node(){
-    std::cout << "Destuctor executed" << std::endl;
+    delete left;
+    delete right;
 }
 
 std::string Node::prefix() const{
