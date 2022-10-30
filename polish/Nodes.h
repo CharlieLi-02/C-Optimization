@@ -14,6 +14,7 @@ public:
     Node(std::string str, int style);
     Node(double value);
     ~Node();
+    void cleanup(Node* node);
     Node* left;
     Node* right;
     double Evaluate(Node* node) const;

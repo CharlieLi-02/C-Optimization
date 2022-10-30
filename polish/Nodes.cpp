@@ -76,9 +76,13 @@ struct stack {
     }
 };
 
-Node::~Node(){
-    delete left;
-    delete right;
+void Node::cleanup(Node* node) {
+    std::cout <<  "Destructor is called" << std::endl;
+    if(node != nullptr) {
+    cleanup(node->left);
+    cleanup(node->right);
+    delete node;
+    }
 }
 
 std::string Node::prefix() const{
@@ -122,7 +126,7 @@ Node::Node(double value) {
 }
 
 double Node::Evaluate(Node* node) const{
-     if(node == nullptr) {
+    if(node == nullptr) {
         return -1;
     }
     if(node->Type() == 0) {
@@ -193,6 +197,10 @@ int Node::Type() const{
     return this->type;
 }
 
+Node::~Node(){
+cleanup(this->left);
+cleanup(this->right);
+}
 
 /*
 Number::Number(double value){
