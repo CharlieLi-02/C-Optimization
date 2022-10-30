@@ -15,7 +15,7 @@ AST* AST::parse(const std::string& expression) {
             //token is operator
             if(token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ){
                 if(stack.size() < 2) {
-                    throw std::runtime_error("Not enough operands");
+                    throw std::runtime_error("Not enough operands.");
                 }
                 
                 else {
@@ -84,11 +84,11 @@ AST* AST::parse(const std::string& expression) {
     
     //convert stack into AST;
     if(num_operand == 0) {
-        throw std::runtime_error("No input");
+        throw std::runtime_error("No input.");
     }
     
     if(num_operand > 1) {
-        throw std::runtime_error("Too many operands");
+        throw std::runtime_error("Too many operands.");
     }
     
     return stack.pop();
