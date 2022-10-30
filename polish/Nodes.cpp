@@ -21,6 +21,9 @@ std::string Node::postfix() const{
     }
 }
 
+Node::~Node(){
+    
+}
 struct stack {
     std::string *arr;
     int top;
