@@ -122,8 +122,8 @@ Node::Node(double value) {
 }
 
 double Node::Evaluate(Node* node) const{
-    if(node == nullptr) {
-        //throw std::EvaluatorException("Incorrect syntax tree!");
+     if(node == nullptr) {
+        return -1;
     }
     if(node->Type() == 0) {
         return node->data;
