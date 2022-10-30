@@ -45,9 +45,6 @@ AST* AST::parse(const std::string& expression) {
                         Node* current = new Node(token, 4);
                         current->right = stack.pop();
                         current->left = stack.pop();
-                        if(current->right->data == 0){
-                            throw std::runtime_error("Division by zero.");
-                        }
                         stack.push(current);
                         num_operand--;
                     }
@@ -55,9 +52,6 @@ AST* AST::parse(const std::string& expression) {
                         Node* current = new Node(token, 5);
                         current->right = stack.pop();
                         current->left = stack.pop();
-                        if(current->right->data == 0){
-                            throw std::runtime_error("Division by zero.");
-                        }
                         stack.push(current);
                         num_operand--;
                     }
@@ -72,6 +66,15 @@ AST* AST::parse(const std::string& expression) {
             //test if token is double, if not, throw runtime_error
             else {
                 try {
+                    size_t count = 0;
+                    for(size_t i = 0; i < token.length(); i ++){
+                        if(token[i] == '.'){
+                            count++;
+                        }
+                    }
+                    if(count > 1){
+                        throw std::runtime_error("Invalid token: " + token);
+                    }
                     double value = std::stod(token);
                         Node* current = new Node(value);
                         stack.push(current);

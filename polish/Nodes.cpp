@@ -81,7 +81,7 @@ Node::~Node(){
 }
 
 std::string Node::prefix() const{
-    std::string target = postfix();
+    std::string target = this->postfix();
     std::istringstream mystream(target);
     stack s (static_cast<int>(target.size()));
     std::string token;
@@ -136,8 +136,18 @@ double Node::Evaluate(Node* node) const{
         if(node->Type() == 1) { return v1 + v2;}
         if(node->Type() == 2) { return v1 - v2;}
         if(node->Type() == 3)  { return v1 * v2;}
-        if(node->Type() == 4)  { return v1 / v2;}
-        if(node->Type() == 5) { return fmod(v1,v2);}
+        if(node->Type() == 4)  {
+            if(v2 == 0) {
+                throw std::runtime_error("Division by zero.");
+            }
+            return v1 / v2;
+        }
+        if(node->Type() == 5) {
+            if(v2 == 0) {
+                throw std::runtime_error("Division by zero.");
+            }
+            return fmod(v1,v2);
+        }
     }
     return -1;
 }
