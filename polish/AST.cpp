@@ -78,6 +78,9 @@ AST* AST::parse(const std::string& expression) {
                             count ++;
                         }
                     }
+                    if (count == 0){
+                        valid = true;
+                    }
                     if (count == 1){
                         if(arr[1] == '.'){
                             valid = true;
