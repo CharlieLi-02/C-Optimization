@@ -5,7 +5,7 @@ using namespace std;
 
 Stack::Stack(int size)
 {
-    arr = new AST* [size];
+    arr = new AST*[size];
     capacity = size;
     top = -1;
 }
@@ -16,31 +16,36 @@ Stack::~Stack() {
 }
  
 // Utility function to add an element `x` to the stack
-void Stack::push(AST* node)
+void Stack::push(int x)
 {
     if (full())
     {
+        cout << "Overflow\nProgram Terminated\n";
         exit(EXIT_FAILURE);
     }
  
-    // Inserting node;
-    arr[++top] = node;
+    cout << "Inserting " << x << endl;
+    arr[++top] = x;
 }
  
 // Utility function to pop a top element from the stack
-AST* Stack::pop()
+int Stack::pop()
 {
     // check for stack underflow
     if (empty())
     {
+        cout << "Underflow\nProgram Terminated\n";
         exit(EXIT_FAILURE);
     }
+ 
+    cout << "Removing " << peek() << endl;
+ 
     // decrease stack size by 1 and (optionally) return the popped element
     return arr[top--];
 }
  
 // Utility function to return the top element of the stack
-AST* Stack::peek()
+int Stack::peek()
 {
     if (!empty()) {
         return arr[top];
