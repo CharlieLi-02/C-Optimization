@@ -113,7 +113,6 @@ AST* AST::parse(const std::string& expression) {
                 }
             }
         }
-    
             //convert stack into AST;
             if(num_operand == 0) {
                 throw std::runtime_error("No input.");
@@ -122,6 +121,5 @@ AST* AST::parse(const std::string& expression) {
             if(num_operand > 1) {
                 throw std::runtime_error("Too many operands.");
             }
-    Node * root = stack.pop();
-    return root;
+    return stack.pop();
 }

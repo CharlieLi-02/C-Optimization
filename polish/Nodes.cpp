@@ -204,7 +204,8 @@ void Node::Cleanup(Node* node){
 }
 
 Node::~Node(){
-    Cleanup(this);
+    delete left;
+    delete right;
     //std::cout << "Destructor is called " << this->type << std::endl;
 }
 
