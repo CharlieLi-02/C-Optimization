@@ -110,7 +110,6 @@ AST* AST::parse(const std::string& expression) {
                 }
             }
         }
-            std::cout << "Test: whether quit the main" << std::endl;
     
             //convert stack into AST;
             if(num_operand == 0) {
