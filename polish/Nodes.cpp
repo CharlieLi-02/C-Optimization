@@ -109,7 +109,8 @@ std::string Node::prefix() const{
             str = str + s.peek();
             s.pop();
         }
-        return str;
+    s.~stack();
+    return str;
 }
 
 Node::Node(std::string str, int style) {

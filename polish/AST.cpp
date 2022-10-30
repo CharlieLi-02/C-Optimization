@@ -17,6 +17,7 @@ AST* AST::parse(const std::string& expression) {
             if(token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~"){
                 if(stack.size() < 2) {
                     if (!(token == "~"  && stack.size() > 0)){
+                        stack.~Stack();
                         throw std::runtime_error("Not enough operands.");
                     }
                 }
@@ -98,7 +99,8 @@ AST* AST::parse(const std::string& expression) {
                             }
                         
                         if(!valid){
-                                throw std::runtime_error("Invalid token: " + token);
+                            stack.~Stack();
+                            throw std::runtime_error("Invalid token: " + token);
                         }
                             double value = std::stod(token);
                             Node* current = new Node(value);
@@ -106,6 +108,7 @@ AST* AST::parse(const std::string& expression) {
                             num_operand++;
                     }
                     catch(const std::invalid_argument& error) { //throw runtime_error
+                    stack.~Stack();
                     throw std::runtime_error("Invalid token: " + token);
                 }
             }
@@ -119,6 +122,7 @@ AST* AST::parse(const std::string& expression) {
             if(num_operand > 1) {
                 throw std::runtime_error("Too many operands.");
             }
-    
-    return stack.pop();
+    Node * root = stack.pop();
+    stack.~Stack();
+    return rot;
 }
