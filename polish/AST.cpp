@@ -124,5 +124,5 @@ AST* AST::parse(const std::string& expression) {
             }
     Node * root = stack.pop();
     stack.~Stack();
-    return rot;
+    return root;
 }
