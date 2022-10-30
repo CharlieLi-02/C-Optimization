@@ -86,9 +86,15 @@ void Node::cleanup(Node* node) {
 }
 
 std::string Node::prefix() const{
-    std::string target = this->postfix();
-    std::istringstream mystream(target);
-    stack s (static_cast<int>(target.size()));
+    
+    std::string target = postfix();
+    char current[target.size()];
+    for (size_t i = 0; i < target.size(); i++){
+        current[i] = target[i];
+    }
+    std::string object(current);
+    std::istringstream mystream(object);
+    stack s (static_cast<int>(object.size()) );
     std::string token;
         while(mystream >> token) {
             if (token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ) {
