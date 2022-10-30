@@ -4,20 +4,19 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstddef>
-#include "AST.h"
+#include "Nodes.h"
 
 class Stack {
-    AST* *arr;
+    Node* *arr;
     int top;
     int capacity;
  
 public:
     Stack(int size = 0); // constructor
     ~Stack(); // destructor
-    void push(AST* node);
-    AST* pop(); // pop a top element
-    AST* peek(); // return a top element
-    AST* bottom(); // return a top element
+    void push(Node* node);
+    Node* pop(); // pop a top element
+    Node* peek(); // return a top element
     int size(); //  return size
     bool empty(); // check if the stack is empty or not, return true if empty
     bool full(); // check if the stack is full or not, return true if full

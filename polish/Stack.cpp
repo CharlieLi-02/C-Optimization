@@ -1,11 +1,10 @@
 #include "Stack.h"
-using namespace std;
 // Implement your Stack member functions here.
 // Constructor to initialize the stack
 
 Stack::Stack(int size)
 {
-    arr = new AST* [size];
+    arr = new Node* [size];
     capacity = size;
     top = -1;
 }
@@ -16,7 +15,7 @@ Stack::~Stack() {
 }
  
 // Utility function to add an element `x` to the stack
-void Stack::push(AST* node)
+void Stack::push(Node* node)
 {
     if (full())
     {
@@ -28,7 +27,7 @@ void Stack::push(AST* node)
 }
  
 // Utility function to pop a top element from the stack
-AST* Stack::pop()
+Node* Stack::pop()
 {
     // check for stack underflow
     if (empty())
@@ -40,7 +39,7 @@ AST* Stack::pop()
 }
  
 // Utility function to return the top element of the stack
-AST* Stack::peek()
+Node* Stack::peek()
 {
     if (!empty()) {
         return arr[top];
