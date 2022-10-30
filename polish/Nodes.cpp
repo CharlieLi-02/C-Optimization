@@ -195,12 +195,14 @@ int Node::Type() const{
 }
 
 void Node::Cleanup(Node* node){
-    //std::cout << "Cleanup is called " << node->type << std::endl;
-    if (node)
+    if (node != nullptr)
     {
-        Cleanup(node->left);
-        Cleanup(node->right);
-        delete node;
+        std::cout << "Cleanup is called " << node->type << std::endl;//
+        if(node->left != nullptr){
+            Cleanup(node->left);}
+        if(node->right != nullptr){
+            Cleanup(node->right);}
+        free(node);
     }
 }
 
