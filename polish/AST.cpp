@@ -45,7 +45,7 @@ AST* AST::parse(const std::string& expression) {
                         Node* current = new Node(token, 4);
                         current->right = stack.pop();
                         current->left = stack.pop();
-                        if(current->right == 0){
+                        if(current->right->data == 0){
                             throw std::runtime_error("Division by zero.");
                         }
                         stack.push(current);
@@ -55,7 +55,7 @@ AST* AST::parse(const std::string& expression) {
                         Node* current = new Node(token, 5);
                         current->right = stack.pop();
                         current->left = stack.pop();
-                        if(current->right == 0){
+                        if(current->right->data == 0){
                             throw std::runtime_error("Division by zero.");
                         }
                         stack.push(current);
