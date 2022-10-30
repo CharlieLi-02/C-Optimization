@@ -198,8 +198,7 @@ int Node::Type() const{
 }
 
 Node::~Node(){
-cleanup(this->left);
-cleanup(this->right);
+    cleanup(this);
 }
 
 /*
