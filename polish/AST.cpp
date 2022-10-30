@@ -66,32 +66,30 @@ AST* AST::parse(const std::string& expression) {
             //test if token is double, if not, throw runtime_error
             else {
                 try {
-                    size_t count = 0;
-                    for(size_t i = 0; i < token.length(); i ++){
-                        if(token[i] == '.'){
-                            count++;
-                        }
-                    }
-                    if(count > 1){
-                        throw std::runtime_error("Invalid token: " + token);
-                    }
+                    int i = 0;
                     std::string::const_iterator it = token.begin();
-                    if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-0")){
+                    if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-")){
                         ++it;
+                        ++i;
                     }
                     while (it != token.end() && std::isdigit(*it)) {
+                        std::string str = token.substr(i, i + 1);
                         ++it;
+                        ++i;
                     }
-                    if( !token.empty() && it == token.end()){
+                    if (!(!token.empty() && it == token.end())){
+                    }
+                    else if (str.compare(".")){
                     }
                     else {
-                        throw std::runtime_error("Invalid token: " + token);
+                            throw std::runtime_error("Invalid token: " + token);
+                        }
+   
+                        double value = std::stod(token);
+                            Node* current = new Node(value);
+                            stack.push(current);
+                            num_operand++;
                     }
-                    double value = std::stod(token);
-                        Node* current = new Node(value);
-                        stack.push(current);
-                        num_operand++;
-                }
                 catch(const std::invalid_argument& error) { //throw runtime_error
                     throw std::runtime_error("Invalid token: " + token);
                 }
@@ -110,3 +108,4 @@ AST* AST::parse(const std::string& expression) {
 
     return stack.pop();
 }
+
