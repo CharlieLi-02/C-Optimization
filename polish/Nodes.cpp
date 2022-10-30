@@ -198,7 +198,6 @@ int Node::Type() const{
 }
 
 Node::~Node(){
-    cleanup(this);
 }
 
 /*
