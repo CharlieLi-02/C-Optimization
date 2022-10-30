@@ -77,7 +77,7 @@ struct stack {
 };
 
 Node::~Node(){
-    
+    std::cout << "Destuctor executed" << std::endl;
 }
 
 std::string Node::prefix() const{
@@ -173,9 +173,15 @@ double Node::value() const{
         return v1 * v2;
     }
     if (this->Type() == 4)  {
+        if(v2 == 0) {
+            throw std::runtime_error("Division by zero.");
+        }
         return v1 / v2;
     }
     if (this->Type() == 5){
+        if(v2 == 0) {
+            throw std::runtime_error("Division by zero.");
+        }
         return fmod(v1,v2);
     }
 
