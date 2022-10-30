@@ -123,6 +123,5 @@ AST* AST::parse(const std::string& expression) {
                 throw std::runtime_error("Too many operands.");
             }
     Node * root = stack.pop();
-    stack.~Stack();
     return root;
 }
