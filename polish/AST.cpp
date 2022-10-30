@@ -85,7 +85,7 @@ AST* AST::parse(const std::string& expression) {
     
     //convert stack into AST;
     if(num_operand == 0) {
-        throw std::runtime_error("No input");
+        throw std::runtime_error("No input.");
     }
     
     if(num_operand > 1) {
