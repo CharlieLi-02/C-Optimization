@@ -6,10 +6,10 @@
 int main() {
 std::cout << "> " << std::endl;
 std::string line;
-//while(std::getline(std::cin, line)) {
+while(std::getline(std::cin, line)) {
     AST* ast = nullptr;
 
-    ast = AST::parse("12 3 + 5 4 + 2 / *");
+    ast = AST::parse(line);
 
     try {
     double result3 = ast->value();
@@ -29,5 +29,5 @@ std::string line;
 
     delete ast;
     std::cout << "> ";
-    //}
+    }
 }

@@ -12,6 +12,12 @@ std::string Node::postfix() const{
     std::cout << this->right->left->notation << std::endl;
     std::cout << this->right->right->data << std::endl;
     std::cout << this->notation << std::endl;*/
+    if(this->Type() == 6){
+        double value = -(this->left->data);
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
+    }
     if(this->Type() == 0){
         return std::to_string(this->data);
     }
@@ -21,9 +27,6 @@ std::string Node::postfix() const{
     }
 }
 
-Node::~Node(){
-    
-}
 struct stack {
     std::string *arr;
     int top;
@@ -62,6 +65,9 @@ struct stack {
     }
 };
 
+Node::~Node(){
+    
+}
 std::string Node::prefix() const{
     std::istringstream mystream(postfix());
     stack s (static_cast<int>(postfix().size()));
@@ -126,33 +132,49 @@ double Node::Evaluate(Node* node) const{
 }
 
 double Node::value() const{
-        //std::cout << "Test3: " << "Type: " << this->type << std::endl; // delete
-        double v1 = Evaluate(this->left);
-        double v2 = Evaluate(this->right);
-        if (this->Type() == 1) {
-            return v1 + v2;
-        }
-        if (this->Type() == 2) {
-            return v1 - v2;
-        }
-        if (this->Type() == 3){
-            return v1 * v2;
-        }
-        if (this->Type() == 4)  {
-            return v1 / v2;
-        }
-        if (this->Type() == 5){
-            return fmod(v1,v2);
-        }
+        std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
+    if (this->Type() == 6 && this->right == nullptr) {
+        return -(this->left->data);
+    }
+    
+    double v1 = Evaluate(this->left);
+    double v2 = Evaluate(this->right);
+    if (this->Type() == 1) {
+        return v1 + v2;
+    }
+    if (this->Type() == 2) {
+        return v1 - v2;
+    }
+    if (this->Type() == 3){
+        return v1 * v2;
+    }
+    if (this->Type() == 4)  {
+        return v1 / v2;
+    }
+    if (this->Type() == 5){
+        return fmod(v1,v2);
+    }
+    if (this->Type() == 6){
+        return -v1;
+    }
     return -1;
 }
 
 int Node::Type() const{
-    return (this->type);
+    return this->type;
 }
 
 std::string Node::Traversal(Node* node) const{
     std::string RPN;
+    if(node == nullptr){
+        return "";
+    }
+    if(node->Type() == 6){
+        double value = -(node->left->data);
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
+    }
     if(node->Type() == 0){
         std::ostringstream oss;
         oss << std::setprecision(8) << std::noshowpoint << node->data;

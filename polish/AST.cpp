@@ -14,67 +14,62 @@ AST* AST::parse(const std::string& expression) {
         while(mystream >> token) {
             //std::cout << "Test1: " << token << std::endl; // delete
             //token is operator
-            if(token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ){
+            if(token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~"){
                 if(stack.size() < 2) {
-                    throw std::runtime_error("Not enough operands.");
+                    if (!(token == "~"  && stack.size() > 0)){
+                        throw std::runtime_error("Not enough operands.");
+                    }
                 }
-                
-                else {
                     if (token == "+"){
                         Node* current = new Node(token, 1);
                         current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
+                        num_operand--;
                     }
                     else if (token == "-") {
                         Node* current = new Node(token, 2);
                         current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
+                        num_operand--;
                     }
                     else if (token == "*") {
                         Node* current = new Node(token, 3);
                         current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
+                        num_operand--;
                     }
                     else if (token == "/") {
                         Node* current = new Node(token, 4);
                         current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
+                        num_operand--;
                     }
                     else if (token == "%") {
                         Node* current = new Node(token, 5);
                         current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
+                        num_operand--;
                     }
                     else if (token == "~" )
                     {
                         Node* current = new Node(token, 6);
-                        current->right = stack.pop();
                         current->left = stack.pop();
                         stack.push(current);
-                        num_operand++;
                     }
-                    num_operand = num_operand - 2; // two operand pop from the array
-                }
+                    // two operand pop from the array
             }
             //test if token is double, if not, throw runtime_error
             else {
                 try {
-                    if(std::stod(token)){
                     double value = std::stod(token);
                         Node* current = new Node(value);
                         stack.push(current);
                         num_operand++;
-                    }
                 }
                 catch(const std::invalid_argument& error) { //throw runtime_error
                     throw std::runtime_error("Invalid token: " + token);
@@ -85,7 +80,7 @@ AST* AST::parse(const std::string& expression) {
     
     //convert stack into AST;
     if(num_operand == 0) {
-        throw std::runtime_error("No input.");
+        throw std::runtime_error("No input");
     }
     
     if(num_operand > 1) {
