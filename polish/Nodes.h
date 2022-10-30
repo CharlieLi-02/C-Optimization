@@ -13,6 +13,7 @@ public:
     std::string notation = "";
     Node(std::string str, int style);
     Node(double value);
+    ~Node();
     Node* left;
     Node* right;
     double Evaluate(Node* node) const;
