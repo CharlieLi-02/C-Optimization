@@ -75,6 +75,18 @@ AST* AST::parse(const std::string& expression) {
                     if(count > 1){
                         throw std::runtime_error("Invalid token: " + token);
                     }
+                    std::string::const_iterator it = token.begin();
+                    if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-0")){
+                        ++it;
+                    }
+                    while (it != token.end() && std::isdigit(*it)) {
+                        ++it;
+                    }
+                    if( !token.empty() && it == token.end()){
+                    }
+                    else {
+                        throw std::runtime_error("Invalid token: " + token);
+                    }
                     double value = std::stod(token);
                         Node* current = new Node(value);
                         stack.push(current);
