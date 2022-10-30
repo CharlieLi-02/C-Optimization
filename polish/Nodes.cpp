@@ -76,15 +76,6 @@ struct stack {
     }
 };
 
-void Node::cleanup(Node* node) {
-    std::cout <<  "Destructor is called" << std::endl;
-    if(node != nullptr) {
-    cleanup(node->left);
-    cleanup(node->right);
-    delete node;
-    }
-}
-
 std::string Node::prefix() const{
     
     std::string target = postfix();
@@ -203,44 +194,21 @@ int Node::Type() const{
     return this->type;
 }
 
+void Node::Cleanup(Node* node){
+    //std::cout << "Cleanup is called " << node->type << std::endl;
+    if (node)
+    {
+        Cleanup(node->left);
+        Cleanup(node->right);
+        delete node;
+    }
+}
+
 Node::~Node(){
-
+    Cleanup(this);
+    //std::cout << "Destructor is called " << this->type << std::endl;
 }
 
-/*
-Number::Number(double value){
-    data = value;
-}
-
-Addition::Addition(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Subtraction::Subtraction(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Multiply::Multiply(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Division::Division(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Remainder::Remainder(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Negation::Negation(Node* node1, Node* node2) {
-    left = node1;
-    right = node2;
-}*/
 // To format a double for output:
 //   std::ostringstream stream;
 //   stream << value;
