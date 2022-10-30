@@ -67,40 +67,42 @@ AST* AST::parse(const std::string& expression) {
                 try {
                     size_t i = 0;
                     size_t count = 0;
-                    char arr[token.size()];
-                    bool valid = false;
-                    if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-")){
-                        ++i;
-                    }
-                    for(; i < token.size(); i++){
-                        if(!isdigit(str[i])){
-                            arr[i] = str[i];
-                            count ++;
-                        }
-                    }
-                    if (count == 0){
-                        valid = true;
-                    }
-                    if (count == 1){
-                        if(arr[1] == '.'){
-                            valid = true;
-                        }
-                    }
-                    else if (count == 2){
-                        if(arr[1] == 'e' && arr[2] == '-'){
-                            valid = true;
-                        }
-                    }
-                    else if (count == 3){
-                            if((arr[1] == '+' || arr[1] == '-') && arr[2] == 'e' && (arr[3] == '+' || arr[3] == '-')){
-                                valid = true;
+                        char arr[token.size()];
+                            bool valid = false;
+                            if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-")){
+                                    ++i;
+                                }
+                            if(i == 1){
+                                std::cout << "i is one" << std::endl;
                             }
-                    }
+                            for(; i < token.size(); i++){
+                                if(!isdigit(token[i])){
+                                    count ++;
+                                    arr[count] = token[i];
+                                    }
+                            }
+                                    if (count == 0){
+                                        valid = true;
+                                    }
+                                    if (count == 1){
+                                        if(arr[1] == '.'){
+                                            valid = true;
+                                        }
+                                    }
+                                    else if (count == 2){
+                                        if(arr[1] == 'e' && arr[2] == '-'){
+                                            valid = true;
+                                        }
+                                    }
+                                    else if (count == 3){
+                                        if(arr[1] == '.' && arr[2] == 'e' && (arr[3] == '+' || arr[3] == '-')){
+                                            valid = true;
+                                            }
+                                        }
                         
-                    if(!valid){
-                            throw std::runtime_error("Invalid token: " + token);
-                    }
-                    
+                        if(!valid){
+                                throw std::runtime_error("Invalid token: " + token);
+                        }
                             double value = std::stod(token);
                             Node* current = new Node(value);
                             stack.push(current);
