@@ -145,7 +145,7 @@ double Node::value() const{
 }
 
 int Node::Type() const{
-    return type;
+    return (this->type);
 }
 
 std::string Node::Traversal(Node* node) const{
