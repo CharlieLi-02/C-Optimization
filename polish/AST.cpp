@@ -55,8 +55,7 @@ AST* AST::parse(const std::string& expression) {
                         stack.push(current);
                         num_operand--;
                     }
-                    else if (token == "~" )
-                    {
+                    else if (token == "~" ) {
                         Node* current = new Node(token, 6);
                         current->left = stack.pop();
                         stack.push(current);
@@ -66,46 +65,59 @@ AST* AST::parse(const std::string& expression) {
             //test if token is double, if not, throw runtime_error
             else {
                 try {
-                    int i = 0;
-                    std::string::const_iterator it = token.begin();
+                    size_t i = 0;
+                    size_t count = 0;
+                    char arr[token.size()];
+                    bool valid = false;
                     if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-")){
-                        ++it;
                         ++i;
                     }
-                    while (it != token.end() && std::isdigit(*it)) {
-                        std::string str = token.substr(i, i + 1);
-                        ++it;
-                        ++i;
-                    }
-                    if (!(!token.empty() && it == token.end())){
-                    }
-                    else if (str.compare(".")){
-                    }
-                    else {
-                            throw std::runtime_error("Invalid token: " + token);
+                    for(; i < token.size(); i++){
+                        if(!isdigit(str[i])){
+                            arr[i] = str[i];
+                            count ++;
                         }
-   
-                        double value = std::stod(token);
+                    }
+                    if (count == 1){
+                        if(arr[1] == '.'){
+                            valid = true;
+                        }
+                    }
+                    else if (count == 2){
+                        if(arr[1] == 'e' && arr[2] == '-'){
+                            valid = true;
+                        }
+                    }
+                    else if (count == 3){
+                            if((arr[1] == '+' || arr[1] == '-') && arr[2] == 'e' && (arr[3] == '+' || arr[3] == '-')){
+                                valid = true;
+                            }
+                    }
+                        
+                    if(!valid){
+                            throw std::runtime_error("Invalid token: " + token);
+                    }
+                    
+                            double value = std::stod(token);
                             Node* current = new Node(value);
                             stack.push(current);
                             num_operand++;
-                    }
-                catch(const std::invalid_argument& error) { //throw runtime_error
-                    throw std::runtime_error("Invalid token: " + token);
                 }
+                catch(const std::invalid_argument& error) { //throw runtime_error
+                throw std::runtime_error("Invalid token: " + token);
             }
         }
-    //std::cout << "Test: whether quit the main" << std::endl;
+            }
+            //std::cout << "Test: whether quit the main" << std::endl;
     
-    //convert stack into AST;
-    if(num_operand == 0) {
-        throw std::runtime_error("No input.");
-    }
-    
-    if(num_operand > 1) {
-        throw std::runtime_error("Too many operands.");
-    }
-
+            //convert stack into AST;
+            if(num_operand == 0) {
+                throw std::runtime_error("No input.");
+            }
+            
+            if(num_operand > 1) {
+                throw std::runtime_error("Too many operands.");
+        
+            }
     return stack.pop();
 }
-
