@@ -132,7 +132,7 @@ double Node::Evaluate(Node* node) const{
 }
 
 double Node::value() const{
-        std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
+        //std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
     if (this->Type() == 6 && this->right == nullptr) {
         return -(this->left->data);
     }
