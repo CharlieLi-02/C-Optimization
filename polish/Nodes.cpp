@@ -2,29 +2,40 @@
 #include <math.h>
 #include <iomanip>
 #include <sstream>
+#include <string>
 // Implement your AST subclasses' member functions here.
-std::string Node::postfix() const{
-    /*std::cout << this->left->left->data << std::endl;
-    std::cout << this->left->right->data << std::endl;
-    std::cout << this->left->notation << std::endl;
-    std::cout << this->right->left->left->data << std::endl;
-    std::cout << this->right->left->right->data << std::endl;
-    std::cout << this->right->left->notation << std::endl;
-    std::cout << this->right->right->data << std::endl;
-    std::cout << this->notation << std::endl;*/
-    if(this->Type() == 6){
-        double value = -(this->left->data);
+std::string Node::Traversal(Node* node) const{
+  // delete
+    if(node == nullptr){
+        return "erro";
+    }
+    if(node->Type() == 0){
+        double value = node->data;
         std::ostringstream stream;
         stream << value;
         return stream.str();
     }
-    if(this->Type() == 0){
-        return std::to_string(this->data);
+    if(node->Type() == 6){
+        std::string str = Traversal(node->left) + std::string(" ~");
+        return str;
     }
-    else {
-        std::string str = Traversal(this->left) + " " + Traversal(this->right) + " " + this->notation;
+    std::string str = Traversal(node->left) + " " + Traversal(node->right) + " " + node->notation;
     return str;
+}
+
+std::string Node::postfix() const{
+    if(this->Type() == 6){
+        std::string str = Traversal(this->left) + std::string(" ~");
+        return str;
     }
+    if(this->Type() == 0){
+        double value = this->data;
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
+    }
+    std::string str = Traversal(this->left) + " " + Traversal(this->right) + " " + this->notation;
+    return str;
 }
 
 struct stack {
@@ -68,9 +79,11 @@ struct stack {
 Node::~Node(){
     
 }
+
 std::string Node::prefix() const{
-    std::istringstream mystream(postfix());
-    stack s (static_cast<int>(postfix().size()));
+    std::string target = postfix();
+    std::istringstream mystream(target);
+    stack s (static_cast<int>(target.size()));
     std::string token;
         while(mystream >> token) {
             if (token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ) {
@@ -108,8 +121,6 @@ Node::Node(double value) {
 }
 
 double Node::Evaluate(Node* node) const{
-    //std::cout << "Test2: " << "Evaluate executed" << std::endl; // delete
-
     if(node == nullptr) {
         //throw std::EvaluatorException("Incorrect syntax tree!");
     }
@@ -132,12 +143,15 @@ double Node::Evaluate(Node* node) const{
 }
 
 double Node::value() const{
-        //std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
-    if (this->Type() == 6 && this->right == nullptr) {
+    //std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
+    if (this->Type() == 6 && this->left->Type() == 0) {
         return -(this->left->data);
     }
-    
+
     double v1 = Evaluate(this->left);
+    if (this->Type() == 6){
+        return -v1;
+    }
     double v2 = Evaluate(this->right);
     if (this->Type() == 1) {
         return v1 + v2;
@@ -154,40 +168,12 @@ double Node::value() const{
     if (this->Type() == 5){
         return fmod(v1,v2);
     }
-    if (this->Type() == 6){
-        return -v1;
-    }
+
     return -1;
 }
 
 int Node::Type() const{
     return this->type;
-}
-
-std::string Node::Traversal(Node* node) const{
-    std::string RPN;
-    if(node == nullptr){
-        return "";
-    }
-    if(node->Type() == 6){
-        double value = -(node->left->data);
-        std::ostringstream stream;
-        stream << value;
-        return stream.str();
-    }
-    if(node->Type() == 0){
-        std::ostringstream oss;
-        oss << std::setprecision(8) << std::noshowpoint << node->data;
-        std::string str = oss.str();
-        return str;
-    }
-    else {
-        std::string left = Traversal(node->left);
-        std::string right = Traversal(node->right);
-        std::string current = node->notation;
-        RPN = left + " " + right + " " + current;
-        return RPN;
-    }
 }
 
 

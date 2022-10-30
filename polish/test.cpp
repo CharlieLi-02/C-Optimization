@@ -12,14 +12,17 @@ while(std::getline(std::cin, line)) {
     ast = AST::parse(line);
 
     try {
+    
+    std::string result1 = ast->prefix();
+    std::cout << result1<< '\n';
+        
+    std::string result2 = ast->postfix();
+    std::cout << result2 << '\n';
+        
     double result3 = ast->value();
     std::cout << result3 << '\n';
 
-    std::string result1 = ast->prefix();
-    std::cout << result1<< '\n';
 
-    std::string result2 = ast->postfix();
-    std::cout << result2 << '\n';
 
     }
     
