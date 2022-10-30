@@ -66,39 +66,36 @@ AST* AST::parse(const std::string& expression) {
             else {
                 try {
                     size_t i = 0;
-                    size_t count = 0;
+                        size_t count = 0;
                         char arr[token.size()];
-                            bool valid = false;
+                        bool valid = false;
                             if(token.substr(0,1).compare("+") || token.substr(0,1).compare("-")){
                                     ++i;
-                                }
-                            if(i == 1){
-                                std::cout << "i is one" << std::endl;
                             }
                             for(; i < token.size(); i++){
                                 if(!isdigit(token[i])){
-                                    count ++;
+                                    ++count ;
                                     arr[count] = token[i];
                                     }
+                                }
+                            if (count == 0){
+                                valid = true;
                             }
-                                    if (count == 0){
-                                        valid = true;
-                                    }
-                                    if (count == 1){
-                                        if(arr[1] == '.'){
-                                            valid = true;
-                                        }
-                                    }
-                                    else if (count == 2){
-                                        if(arr[1] == 'e' && arr[2] == '-'){
-                                            valid = true;
-                                        }
-                                    }
-                                    else if (count == 3){
-                                        if(arr[1] == '.' && arr[2] == 'e' && (arr[3] == '+' || arr[3] == '-')){
-                                            valid = true;
-                                            }
-                                        }
+                            if (count == 1){
+                                if(arr[1] == '.'){
+                                    valid = true;
+                                }
+                            }
+                            else if (count == 2){
+                                if(arr[1] == 'e' && arr[2] == '-'){
+                                    valid = true;
+                                }
+                            }
+                            else if (count == 3){
+                                if(arr[1] == '.' && arr[2] == 'e' && (arr[3] == '+' || arr[3] == '-')){
+                                    valid = true;
+                                }
+                            }
                         
                         if(!valid){
                                 throw std::runtime_error("Invalid token: " + token);
@@ -107,13 +104,13 @@ AST* AST::parse(const std::string& expression) {
                             Node* current = new Node(value);
                             stack.push(current);
                             num_operand++;
+                    }
+                    catch(const std::invalid_argument& error) { //throw runtime_error
+                    throw std::runtime_error("Invalid token: " + token);
                 }
-                catch(const std::invalid_argument& error) { //throw runtime_error
-                throw std::runtime_error("Invalid token: " + token);
             }
         }
-            }
-            //std::cout << "Test: whether quit the main" << std::endl;
+            std::cout << "Test: whether quit the main" << std::endl;
     
             //convert stack into AST;
             if(num_operand == 0) {
@@ -122,7 +119,7 @@ AST* AST::parse(const std::string& expression) {
             
             if(num_operand > 1) {
                 throw std::runtime_error("Too many operands.");
-        
             }
+    
     return stack.pop();
 }
