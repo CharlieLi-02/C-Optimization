@@ -204,7 +204,7 @@ int Node::Type() const{
 }
 
 Node::~Node(){
-    std::cout << " " << this->type << std::endl;
+
 }
 
 // To format a double for output:
