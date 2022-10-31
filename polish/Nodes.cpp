@@ -76,6 +76,15 @@ struct stack {
     }
 };
 
+void Node::cleanup(Node* node) {
+    std::cout <<  "Destructor is called" << std::endl;
+    if(node != nullptr) {
+    cleanup(node->left);
+    cleanup(node->right);
+    delete node;
+    }
+}
+
 std::string Node::prefix() const{
     
     std::string target = postfix();
@@ -109,7 +118,7 @@ std::string Node::prefix() const{
             str = str + s.peek();
             s.pop();
         }
-    return str;
+        return str;
 }
 
 Node::Node(std::string str, int style) {
@@ -194,19 +203,8 @@ int Node::Type() const{
     return this->type;
 }
 
-void Node::Cleanup(Node* node){
-    if (node != nullptr)
-    {
-        Cleanup(node->left);
-        Cleanup(node->right);
-        delete node;
-    }
-}
-
 Node::~Node(){
-    delete left;
-    delete right;
-    //std::cout << "Destructor is called " << this->type << std::endl;
+    std::cout << " " << this->type << std::endl;
 }
 
 // To format a double for output:

@@ -21,9 +21,6 @@ while(std::getline(std::cin, line)) {
         
     double result3 = ast->value();
     std::cout << result3 << '\n';
-
-
-
     }
     
     catch(const std::runtime_error& error) {
