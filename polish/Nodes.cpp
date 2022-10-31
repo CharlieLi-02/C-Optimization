@@ -132,9 +132,9 @@ Node::Node(double value) {
 }
 
 double Node::Evaluate(Node* node) const{
-    if(node == nullptr) {
+    /*if(node == nullptr) {
         return -1;
-    }
+    }*/
     if(node->Type() == 0) {
         return node->data;
     }
@@ -165,14 +165,19 @@ double Node::Evaluate(Node* node) const{
 
 double Node::value() const{
     //std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
+    if (this->Type() == 0){
+        return this->data;
+    }
+
     if (this->Type() == 6 && this->left->Type() == 0) {
         return -(this->left->data);
     }
-
-    double v1 = Evaluate(this->left);
-    if (this->Type() == 6){
-        return -v1;
-    }
+    
+    if(this->left != nullptr){
+        double v1 = Evaluate(this->left);
+        if (this->Type() == 6){
+            return -v1;
+        }
     double v2 = Evaluate(this->right);
     if (this->Type() == 1) {
         return v1 + v2;
@@ -195,6 +200,7 @@ double Node::value() const{
         }
         return fmod(v1,v2);
     }
+    }
 
     return -1;
 }
@@ -204,7 +210,6 @@ int Node::Type() const{
 }
 
 Node::~Node(){
-
 }
 
 // To format a double for output:
