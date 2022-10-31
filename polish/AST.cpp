@@ -15,8 +15,8 @@ AST* AST::parse(const std::string& expression) {
             //std::cout << "Test1: " << token << std::endl; // delete
             //token is operator
             if(token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~"){
-                if(stack.size() < 2) {
-                    if (!(token == "~"  && stack.size() > 0)){
+                if(num_operand < 2) {
+                    if (!(token == "~"  && num_operand > 0)){
                         throw std::runtime_error("Not enough operands.");
                     }
                 }
@@ -97,15 +97,21 @@ AST* AST::parse(const std::string& expression) {
                                 }
                             }
                         
-                        if(!valid){
-                                throw std::runtime_error("Invalid token: " + token);
-                        }
+                            if(!valid){
+                                if(!stack.empty()) {
+                                    stack.~Stack();
+                                    throw std::runtime_error("Invalid token: " + token);
+                                }
+                            }
                             double value = std::stod(token);
                             Node* current = new Node(value);
                             stack.push(current);
                             num_operand++;
                     }
                     catch(const std::invalid_argument& error) { //throw runtime_error
+                        if(!stack.empty()) {
+                            stack.~Stack();
+                        }
                     throw std::runtime_error("Invalid token: " + token);
                 }
             }
