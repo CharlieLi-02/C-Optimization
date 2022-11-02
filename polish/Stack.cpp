@@ -14,6 +14,7 @@ Stack::~Stack() {
     for(int i = 0; i <= top; i++) {
         delete arr[i];
     }
+    delete []arr;
 }
  
 // Utility function to add an element `x` to the stack
