@@ -83,10 +83,15 @@ AST* AST::parse(const std::string& expression) {
         }
             //convert stack into AST;
             if(num_operand == 0) {
+                stack.~Stack();
                 throw std::runtime_error("No input.");
             }
             if(num_operand > 1) {
+                stack.~Stack();
                 throw std::runtime_error("Too many operands.");
             }
+    return stack.pop();
+}
+
     return stack.pop();
 }
