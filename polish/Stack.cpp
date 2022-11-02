@@ -11,7 +11,6 @@ Stack::Stack(int size)
  
 // Destructor to free memory allocated to the stack
 Stack::~Stack() {
-    std::cout << "Stack desctructor executed" << std::endl << std::endl;;
     for(int i = 0; i <= top; i++) {
         delete arr[i];
     }
