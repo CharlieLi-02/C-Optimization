@@ -204,11 +204,11 @@ int Node::Type() const{
 
 Node::~Node(){
         if(this->type == 0){
-          std::cout <<  "destructor is called on a number " << this->data << " " << this << std::endl;
+           std::cout <<  "destructor is called " << this << " on a number " << this->data << std::endl;
         }
         else if(this->type == 6){
            delete (this->left);
-           std::cout <<  "destructor is called on a ~ " << " " << this << std::endl;
+           std::cout <<  "destructor is called " << this << "on a ~ " << std::endl;
         }
         else {
            std::cout <<  "destructor is called " << this << std::endl;
