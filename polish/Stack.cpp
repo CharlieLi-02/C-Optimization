@@ -17,7 +17,6 @@ Stack::~Stack() {
             delete arr[i];
         }
     }
-    delete []arr;
 }
  
 // Utility function to add an element `x` to the stack
