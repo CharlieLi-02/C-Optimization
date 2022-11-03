@@ -206,7 +206,7 @@ Node::~Node(){
         if(this->type == 0){
           std::cout <<  "destructor is called on a number " << this->data << " " << this << std::endl;
         }
-        if(this->type == 6){
+        else if(this->type == 6){
            delete (this->left);
            std::cout <<  "destructor is called on a ~ " << " " << this << std::endl;
         }
