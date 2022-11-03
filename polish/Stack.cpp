@@ -12,7 +12,7 @@ Stack::Stack(int size)
 // Destructor to free memory allocated to the stack
 Stack::~Stack() {
     for(int i = 0; i <= top; i++) {
-        delete [] arr[i];
+        free(arr[i]);
     }
     delete []arr;
 }

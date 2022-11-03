@@ -76,15 +76,6 @@ struct stack {
     }
 };
 
-void Node::cleanup(Node* node) {
-    std::cout <<  "Destructor is called" << std::endl;
-    if(node != nullptr) {
-    cleanup(node->left);
-    cleanup(node->right);
-    delete node;
-    }
-}
-
 std::string Node::prefix() const{
     
     std::string target = postfix();
@@ -122,11 +113,13 @@ std::string Node::prefix() const{
 }
 
 Node::Node(std::string str, int style) {
+    std::cout << "constructor is called" << this << std::endl;
     notation = str;
     type = style;
 }
 
 Node::Node(double value) {
+    std::cout << "constructor is called" << this << std::endl;
     type = 0;
     data = value;
 }
@@ -210,6 +203,24 @@ int Node::Type() const{
 }
 
 Node::~Node(){
+    std::cout <<  "destructor is called " << this << std::endl;
+    /*if(this->left != nullptr){
+        delete this->left;
+    }
+    if(this->right != nullptr){
+        delete this->right;
+    }*/
+}
+
+
+void Node::cleanup(Node* node) {
+    std::cout <<  "destructor is called " << this << std::endl;
+    if (node == nullptr) {
+        return;
+    }
+    cleanup(node->left);
+    cleanup(node->right);
+    free(node);
 }
 
 // To format a double for output:
