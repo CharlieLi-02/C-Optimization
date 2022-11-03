@@ -113,13 +113,13 @@ std::string Node::prefix() const{
 }
 
 Node::Node(std::string str, int style) {
-    std::cout << "constructor is called " << this << std::endl;
+    //std::cout << "constructor is called " << this << std::endl;
     notation = str;
     type = style;
 }
 
 Node::Node(double value) {
-    std::cout << "constructor is called " << this << std::endl;
+    //std::cout << "constructor is called " << this << std::endl;
     type = 0;
     data = value;
 }
@@ -204,14 +204,14 @@ int Node::Type() const{
 
 Node::~Node(){
         if(this->type == 0){
-           std::cout <<  "destructor is called " << this << " on a number " << this->data << std::endl;
+           //std::cout <<  "destructor is called " << this << " on a number " << this->data << std::endl;
         }
         else if(this->type == 6){
            delete (this->left);
-           std::cout <<  "destructor is called " << this << "on a ~ " << std::endl;
+           //std::cout <<  "destructor is called " << this << "on a ~ " << std::endl;
         }
         else {
-           std::cout <<  "destructor is called " << this << std::endl;
+           //std::cout <<  "destructor is called " << this << std::endl;
            delete (this->left);
            delete (this->right);
         }
@@ -219,7 +219,7 @@ Node::~Node(){
 
 
 void Node::cleanup(Node* node) {
-    std::cout <<  "destructor is called " << this << std::endl;
+    //std::cout <<  "destructor is called " << this << std::endl;
     if (node == nullptr) {
         return;
     }
