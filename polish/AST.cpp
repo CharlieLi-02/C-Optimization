@@ -68,7 +68,7 @@ AST* AST::parse(const std::string& expression) {
             double value = 0;
             try {
                 std::string::size_type index;
-                double value = std::stod(token, &index);
+                value = std::stod(token, &index);
                 if(index != token.size()){
                     stack.~Stack();
                     throw std::runtime_error("Invalid token: " + token);
