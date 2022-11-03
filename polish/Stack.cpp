@@ -14,7 +14,7 @@ Stack::~Stack() {
     for(int i = 0; i <= top; i++) {
         //std::cout <<  "stack destructor is called " << arr[i] << std::endl;
         if(arr[i] != nullptr) {
-            delete [] arr[i];
+            delete arr[i];
         }
     }
     delete []arr;
