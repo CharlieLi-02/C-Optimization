@@ -12,7 +12,7 @@ Stack::Stack(int size)
 // Destructor to free memory allocated to the stack
 Stack::~Stack() {
     for(int i = 0; i <= top; i++) {
-        std::cout << arr[i] << std::endl;
+        std::cout <<  "stack destructor is called " << arr[i] << std::endl;
         free(arr[i]);
     }
     delete []arr;
@@ -27,6 +27,7 @@ void Stack::push(Node* node)
     }
  
     // Inserting node;
+    std::cout << node << " is added to the stack" << std::endl;
     arr[++top] = node;
 }
  

@@ -113,13 +113,13 @@ std::string Node::prefix() const{
 }
 
 Node::Node(std::string str, int style) {
-    std::cout << "constructor is called" << this << std::endl;
+    std::cout << "constructor is called " << this << std::endl;
     notation = str;
     type = style;
 }
 
 Node::Node(double value) {
-    std::cout << "constructor is called" << this << std::endl;
+    std::cout << "constructor is called " << this << std::endl;
     type = 0;
     data = value;
 }
@@ -203,18 +203,18 @@ int Node::Type() const{
 }
 
 Node::~Node(){
-    std::cout <<  "destructor is called " << this << std::endl;
-    if(this->type == 0){
-      std::cout <<  "destructor is called on a number " << this->data << std::endl;
-    }
-    if(this->type == 6){
-       delete this->left;
-       std::cout <<  "destructor is called on a ~ " << std::endl;
-    }
-    else {
-      delete this->left;
-      delete this->right;
-    }
+        std::cout <<  "destructor is called " << this << std::endl;
+        if(this->type == 0){
+          std::cout <<  "destructor is called on a number " << this->data << std::endl;
+        }
+        if(this->type == 6){
+           delete (this->left);
+           std::cout <<  "destructor is called on a ~ " << std::endl;
+        }
+        else {
+          delete (this->left);
+          delete (this->right);
+        }
 }
 
 
