@@ -6,6 +6,7 @@
 
 AST* AST::parse(const std::string& expression) {
     std::string str = expression;
+    std::cout << "the input is: " << str << std::endl;
     int count =  static_cast<int>(str.size());
     int num_operand = 0;
     Stack stack(count);
