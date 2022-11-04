@@ -38,78 +38,16 @@ std::string Node::postfix() const{
     return str;
 }
 
-struct stack {
-    std::string *arr;
-    int top;
-    int capacity;
-    stack(int size = 0){
-        arr = new std::string [size];
-        capacity = size;
-        top = -1;
-    }
-    ~stack(){ // destructor
-        delete[] arr;
-    }
-    void push(std::string str){
-        if (top == capacity - 1)
-        {
-            exit(EXIT_FAILURE);
-        }
-            arr[++top] = str;
-        }
-    std::string pop(){
-        if (top == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
-        return arr[top--];
-    }
-    std::string peek(){
-        if (top == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
-        return arr[top];
-    }
-    bool empty(){
-        return top == -1;
-    }
-};
-
 std::string Node::prefix() const{
-    
-    std::string target = postfix();
-    char current[target.size()];
-    for (size_t i = 0; i < target.size(); i++){
-        current[i] = target[i];
+    if(this->Type() == 0){
+        std::ostringstream stream;
+        stream << this->data;
+        return stream.str();
     }
-    std::string object(current);
-    std::istringstream mystream(object);
-    stack s (static_cast<int>(object.size()) );
-    std::string token;
-        while(mystream >> token) {
-            if (token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ) {
-                std::string op1 = s.peek();
-                s.pop();
-                std::string op2 = s.peek();
-                s.pop();
-                // concat the operands and operator
-                std::string temp = token + " " + op2 + " " + op1;
-                // Push string temp back to stack
-                s.push(temp);
-            }
-            // if symbol is an operand
-            else {
-                // push the operand to the stack
-                s.push(token);
-            }
-        }
-        std::string str = "";
-        while (!s.empty()) {
-            str = str + s.peek();
-            s.pop();
-        }
-        return str;
+    if(this->Type() == 6){
+        return (std::string("~ ") + (this->left)->prefix());
+    }
+        return (this->notation + " " + (this->left)->prefix() + " " + (this->right)->prefix());
 }
 
 Node::Node(std::string str, int style) {
