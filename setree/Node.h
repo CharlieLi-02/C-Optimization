@@ -12,9 +12,9 @@ struct Node{
     size_t count;
     Node* left;
     Node* right;
-    Node(std::string str = "");
     
-    void Delete(struct Node* node);
+    Node(std::string str = "");
+    ~Node();
     Node* Copy(struct Node* target);
     size_t Count(struct Node* node);
     Node* Insert(struct Node* node, std::string str);
@@ -25,7 +25,7 @@ struct Node{
     void Clear(Node* node); // used in clear()
     Node* nthLargest(Node* node, size_t n); //used in lookup()
     std::string Notation(Node* node);
-    void Print(struct Node* node);
+    void Test(Node* node);
 };
 
 #endif

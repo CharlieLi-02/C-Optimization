@@ -5,19 +5,14 @@ Node::Node(std::string str){
     left = nullptr;
     right = nullptr;
 }
-
-void Node::Delete(struct Node* node){
-    if(node != nullptr) {
-        if((node->left == nullptr) && (node->right == nullptr)) {
-            delete node;
-        }
-        else {
-            Delete(node->left);
-            Delete(node->right);
-        }
+Node::~Node(){
+    if(this->left != nullptr) {
+        delete (this->left);
+    }
+    if(this->right != nullptr) {
+        delete (this->right);
     }
 }
-
 Node* Node::Copy(struct Node* target){
     if (target)
     {
@@ -29,7 +24,7 @@ Node* Node::Copy(struct Node* target){
     return nullptr;
 }
 size_t Node::Count(Node* node){
-    if (node == nullptr) {
+    if (!node) {
         return 0;
     }
     else {
@@ -37,39 +32,17 @@ size_t Node::Count(Node* node){
     }
 }
 
-void Node::Print(struct Node* node){
-    //std::cout << "Print executed!" << std::endl;
-    if(node == nullptr){
-        std::cout << "-";
-        return;
-    }
-    
-    /*if(node->left != nullptr && node->right != nullptr){
-        std::cout << node->data;
-    }*/
-    
-    if (node->left != nullptr || node->right != nullptr) {
-        //std::cout << "Print left executed!" << std::endl;
-        std::cout << "(";
-        Print(node->left);
-        std::cout << " ";
-    }
-    
-    //std::cout << "Print Middele executed!" << std::endl;
-    std::cout << node->data;
-    
-    if (node->left != nullptr || node->right != nullptr) {
-        //std::cout << "Print right executed!" << std::endl;
-        std::cout << " ";
-        Print(node->right);
-        std::cout << ")";
-    }
-}
-
-Node* Node::Insert(struct Node* node, std::string str) {
+Node* Node::Insert(struct Node* node, std::string str)
+{
     /* If the tree is empty, add a new node */
+    if (Check(node, str) != nullptr){
+        std::cout << "check is not null for  " << str << std::endl;
+        return nullptr;
+    }
+    
+    else {
         if (node == nullptr){
-            Node* temp = new Node(str);
+            Node *temp = new Node(str);
             node = temp;
             return node;
             //delete temp;
@@ -86,6 +59,7 @@ Node* Node::Insert(struct Node* node, std::string str) {
         }
         /* only return nullptr when one already exists*/
         return node;
+    }
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
@@ -238,11 +212,11 @@ Node* Node::nthLargest(Node* node, size_t n){
 }*/
 
 std::string Node::Notation(Node* node){
-    if (node == nullptr){
-        return "";
-    }
+    /*if (node == nullptr){
+        return "nothing here";
+    }*/
     
-    //std::cout << node->data << std::endl;
+    std::cout << node->data << std::endl;
     
     if (node->left == nullptr && node->right == nullptr){
         return node->data;
@@ -252,10 +226,10 @@ std::string Node::Notation(Node* node){
     if (node->left != nullptr){
         str_left = Notation(node->left);
     }
-    else {
+    else { 
         str_left = "-";
     }
-    //std::cout << str_left << std::endl;
+    std::cout << str_left << std::endl;
     
     std::string str_right = "-";
     if(node->right != nullptr){
@@ -264,9 +238,8 @@ std::string Node::Notation(Node* node){
     else {
         str_right = "-";
     }
-    //std::cout << str_right << std::endl;
+    std::cout << str_right << std::endl;
 
     std::string notation = "(" + str_left + " " + node->data + " " + str_right + ")";
-    //std::cout << notation << std::endl;
     return notation;
 }

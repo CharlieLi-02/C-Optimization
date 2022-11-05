@@ -1,12 +1,12 @@
 #include "Set.h"
 
 Set::Set(){
-    mRoot = nullptr;
+    mRoot = new Node();
 }
 
 Set::Set(const Set& other){
     Node* temp = (this->mRoot)->Copy(other.mRoot);
-    mRoot = temp;
+    this->mRoot = temp;
 }
 
 Set::Set(Set&& other){
@@ -15,14 +15,12 @@ Set::Set(Set&& other){
 }
 
 Set::~Set(){
-    mRoot->Delete(mRoot);
+    delete mRoot;
 }
 
 size_t Set::clear(){
-    size_t count = mRoot->Count(mRoot);
-    mRoot->Delete(mRoot);
-    mRoot = nullptr;
-    return count;
+    mRoot->Clear(mRoot);
+    return mRoot->Count(mRoot);
 }
 
 bool Set::contains(const std::string& value) const{
@@ -33,40 +31,42 @@ bool Set::contains(const std::string& value) const{
 }
 
 size_t Set::count() const{
-    return mRoot->Count(mRoot);
+    return (mRoot->Count(mRoot) - 1);
 }
 
 void Set::debug(){
-    std::cout << mRoot->Notation(mRoot);
+    std::cout << mRoot->Notation(mRoot) << std::endl;
 }
 
 size_t Set::insert(const std::string& value){
+    if(mRoot == nullptr){
+        mRoot = new Node(value);
+        return 1;
+    }
     if(mRoot->Check(mRoot, value) != nullptr) {
         return 0;
     }
     else {
-        mRoot = mRoot->Insert(mRoot, value);
+        mRoot->Insert(mRoot, value);
     }
     return 1;
 }
 
 const std::string& Set::lookup(size_t n) const{
-    size_t location = mRoot->Count(mRoot) - n;
+    if(n > this->count()){
+        throw std::out_of_range("Out of Range");
+    }
+    size_t location = this->count() - n;
     return (mRoot->nthLargest(mRoot, location))->data;
 }
 
 void Set::print() const{
-    if(mRoot == nullptr){
-        std::cout << "-";
-    }
-    else {
-        mRoot->Print(mRoot);
-    }
-    std::cout << std::endl;
+    mRoot->Traversal(mRoot);
 }
 
 size_t Set::remove(const std::string& value){
-    if(mRoot->Remove(mRoot, value) != nullptr){
+    if(mRoot->Check(mRoot, value) != nullptr) { //already exist
+        mRoot->Remove(mRoot, value);
         return 1;
     }
     return 0;
