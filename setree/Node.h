@@ -12,7 +12,6 @@ struct Node{
     size_t count;
     Node* left;
     Node* right;
-    
     Node(std::string str = "");
     ~Node();
     Node* Copy(struct Node* target);
@@ -22,10 +21,9 @@ struct Node{
     Node* Check(struct Node* node, std::string str); // used in contains()
     void Traversal(Node* node); //used in debug()
     void Traversal_Reverse(Node* node); //used in debug()
-    void Clear(Node* node); // used in clear()
     Node* nthLargest(Node* node, size_t n); //used in lookup()
     std::string Notation(Node* node);
-    void Test(Node* node);
+    void Print(struct Node* node);
 };
 
 #endif

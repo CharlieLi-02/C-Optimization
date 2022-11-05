@@ -6,49 +6,36 @@
 // This file won't be graded - do whatever you want.
 
 int main() {
-    Set tree;
-    std::cout <<  tree.insert("A") << std::endl;
-    std::cout <<  tree.insert("D") << std::endl;
-    std::cout <<  tree.insert("B") << std::endl;
-    std::cout <<  tree.insert("B") << std::endl;
-    std::cout <<  tree.insert("E") << std::endl;
-    std::cout <<  tree.insert("F") << std::endl;
-    std::cout <<  tree.insert("C") << std::endl;
-    std::cout <<  tree.insert("G") << std::endl;
-    std::cout <<  tree.insert("H") << std::endl;
-    std::cout <<  tree.insert("I") << std::endl;
-    std::cout <<  tree.insert("A") << std::endl;
-    std::cout <<  tree.insert("J") << std::endl;
-    std::cout <<  tree.insert("K") << std::endl;
-
-    std::cout << "attempt to execute print function: " << std::endl;
-    tree.print();
-    std::cout << std::endl << std::endl;
+    Set tree1;
+    tree1.insert("d");
+    tree1.insert("b");
+    tree1.insert("a");
+    tree1.insert("c");
+    tree1.insert("e");
+    tree1.insert("f");
+    tree1.insert("f");
     
     std::cout << "attempt to execute count function: " << std::endl;
-    std::cout <<  tree.count() << std::endl << std::endl;
+    std::cout <<  tree1.count() << std::endl << std::endl;
+
     
-    std::cout << "attempt to execute lookup function: " << std::endl;
-    std::cout << tree.lookup(0);
-    std::cout << std::endl << std::endl;
-    
-    std::cout << "attempt to execute remove function: " << std::endl;
-    std::cout <<  "removed value: "  << std::endl << tree.remove("Z") << std::endl;
-    
-    tree.print();
-    std::cout << std::endl << std::endl;
-    Set tree1;
-    std::cout <<  tree1.insert("a") << std::endl;
-    std::cout <<  tree1.insert("b") << std::endl;
-    std::cout <<  tree1.insert("c") << std::endl;
-    std::cout <<  tree1.insert("d") << std::endl;
-    std::cout <<  tree1.insert("e") << std::endl;
-    std::cout <<  tree1.insert("f") << std::endl;
+    std::cout << "attempt to execute print function: " << std::endl;
     tree1.print();
     std::cout << std::endl << std::endl;
+    
     std::cout << "attempt to execute notation function: " << std::endl;
     std::cout <<  "results: "  << std::endl;
     tree1.debug();
+    std::cout << std::endl << std::endl;
+    
+    std::cout << "attempt to execute clear function" << std::endl;
+    tree1.clear();
+
+    std::cout << "attempt to execute count function after clear: " << std::endl;
+    std::cout <<  tree1.count() << std::endl << std::endl;
+    
+    std::cout << "attempt to execute print function after Clear" << std::endl;
+    tree1.print();
     std::cout << std::endl << std::endl;
     
     /*std::cout << std::endl;
