@@ -92,7 +92,7 @@ Node* Node::Insert(struct Node* node, std::string str) {
 Node* Node::Remove(struct Node* node, std::string str) {
     if (node == nullptr)
         return node;
-  
+    
     if (str < node->data)
         node->left = Remove(node->left, str);
   
@@ -107,6 +107,7 @@ Node* Node::Remove(struct Node* node, std::string str) {
     else {
         // node has no child
         if (node->left == nullptr && node->right==nullptr) {
+            free(node);
             return nullptr;
         }
         // node with only one child or no child
