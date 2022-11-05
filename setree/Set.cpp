@@ -80,6 +80,6 @@ size_t Set::remove(const std::string& value){
     }
     else {
         mRoot->Remove(mRoot, value);
-     }
+    }
     return 1;
 }
