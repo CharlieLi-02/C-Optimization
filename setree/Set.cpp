@@ -76,7 +76,7 @@ size_t Set::remove(const std::string& value){
         return 0;
     }
     else if(count() == 1) {
-        mRoot = nullptr;
+        free(mRoot);
     }
     else {
         mRoot->Remove(mRoot, value);
