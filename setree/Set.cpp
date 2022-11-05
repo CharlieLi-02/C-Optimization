@@ -55,6 +55,9 @@ size_t Set::insert(const std::string& value){
 
 const std::string& Set::lookup(size_t n) const{
     size_t location = mRoot->Count(mRoot) - n;
+    if(location <= 0){
+        throw std::out_of_range("Out of Range");
+    }
     return (mRoot->nthLargest(mRoot, location))->data;
 }
 

@@ -35,6 +35,7 @@ Node* Node::Copy(struct Node* target){
     }
     return nullptr;
 }
+
 size_t Node::Count(Node* node){
     if (node == nullptr) {
         return 0;
@@ -50,11 +51,7 @@ void Node::Print(struct Node* node){
         std::cout << "-";
         return;
     }
-    
-    /*if(node->left != nullptr && node->right != nullptr){
-        std::cout << node->data;
-    }*/
-    
+        
     if (node->left != nullptr || node->right != nullptr) {
         //std::cout << "Print left executed!" << std::endl;
         std::cout << "(";
@@ -82,8 +79,6 @@ Node* Node::Insert(struct Node* node, std::string str) {
         }
         
         /* If the tree has this value, return nullptr */
-        
-        
         if (str < node->data) {
             node->left = Insert(node->left, str);
         }
@@ -209,38 +204,11 @@ Node* Node::nthLargest(Node* node, size_t n){
     return target;
 }
 
-/*std::string Node::Notation(Node* node){
-    if(node == nullptr){
-        std::cout << "" << std::endl;
-        return "";
-    }
-    std::cout << node->data << std::endl;
-    
-    if(node->left == nullptr && node->right == nullptr){
-        std::cout << node->data << std::endl;
-        return node->data;
-    }
-    
-    if(node->left == nullptr && node->right == nullptr){
-
-        return node->data;
-    }
-    
-    else
-    {
-        std::string str = "(" + Notation(node->left) + " " + node->data + " " + Notation(node->right) + ")";
-        std::cout << str << std::endl;
-        return str;
-    }
-}*/
-
 std::string Node::Notation(Node* node){
     if (node == nullptr){
         return "";
     }
-    
-    //std::cout << node->data << std::endl;
-    
+
     if (node->left == nullptr && node->right == nullptr){
         return node->data;
     }
@@ -252,7 +220,6 @@ std::string Node::Notation(Node* node){
     else {
         str_left = "-";
     }
-    //std::cout << str_left << std::endl;
     
     std::string str_right = "-";
     if(node->right != nullptr){
@@ -261,9 +228,7 @@ std::string Node::Notation(Node* node){
     else {
         str_right = "-";
     }
-    //std::cout << str_right << std::endl;
 
     std::string notation = "(" + str_left + " " + node->data + " " + str_right + ")";
-    //std::cout << notation << std::endl;
     return notation;
 }

@@ -23,6 +23,9 @@ int main() {
     tree1.print();
     std::cout << std::endl << std::endl;
     
+    std::cout << "attempt to execute lookup function: " << std::endl;
+    std::cout << tree1.lookup(6) << std::endl << std::endl;
+    
     std::cout << "attempt to execute notation function: " << std::endl;
     std::cout <<  "results: "  << std::endl;
     tree1.debug();
