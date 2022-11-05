@@ -55,11 +55,11 @@ size_t Set::insert(const std::string& value){
 
 const std::string& Set::lookup(size_t n) const{
     size_t location = mRoot->Count(mRoot) - n;
-    if(location <= 0 || location > mRoot->Count(mRoot)){
-        throw std::out_of_range("Out of Range");
+        if(location <= 0 && location > mRoot->Count(mRoot)){
+            throw std::out_of_range("Out of Range");
+        }
+        return (mRoot->nthLargest(mRoot, location))->data;
     }
-    return (mRoot->nthLargest(mRoot, location))->data;
-}
 
 void Set::print() const{
     if(mRoot == nullptr){
@@ -72,7 +72,10 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-    if(mRoot->Remove(mRoot, value) != nullptr){
+    if(contains(value) != true) {
+        return 0;
+    }
+    if(mRoot->Remove(mRoot, value) != nullptr) {
         return 1;
     }
     return 0;

@@ -90,40 +90,46 @@ Node* Node::Insert(struct Node* node, std::string str) {
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
-    if (node == nullptr) {
-        return node; //return nullptr when node = Null;
-    }
-    if (str < node->data){
+    if (node == nullptr)
+        return node;
+  
+    if (str < node->data)
         node->left = Remove(node->left, str);
-    }
-    else if (str > node->data) {
+  
+    // If the key to be deleted is
+    // greater than the root's
+    // key, then it lies in right subtree
+    else if (str > node->data)
         node->right = Remove(node->right, str);
-    }
-    // if value is same as str, then this is the node to be deleted
+  
+    // if key is same as root's key, then This is the node
+    // to be deleted
     else {
-        // Case1: node has no child
-        if (node->left== nullptr && node->right== nullptr)
+        // node has no child
+        if (node->left == nullptr && node->right==nullptr) {
             return nullptr;
-        // Case2: node with only one child or no child
+        }
+        // node with only one child or no child
         else if (node->left == nullptr) {
             Node* temp = node->right;
             free(node);
             return temp;
         }
-        else if (node->right == NULL) {
+        else if (node->right == nullptr) {
             Node* temp = node->left;
             free(node);
             return temp;
         }
-        // Case3: node with two children
+  
+        // node with two children: Get the inorder successor
         // (smallest in the right subtree)
-        else{
-            Node* temp = nthLargest(node, 1);
-            // Copy the inorder successor's content to this node
-            node->data = temp->data;
-            // Delete the inorder successor
-            node = Remove(node, temp->data);
-        }
+        Node* temp = nthLargest(node, 1);
+        std::cout << temp << std::endl;
+        // Copy the inorder successor's content to this node
+        node->data = temp->data;
+  
+        // Delete the inorder successor
+        node->right = Remove(node->right, temp->data);
     }
     return node;
 }
