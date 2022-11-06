@@ -29,6 +29,9 @@ size_t Set::clear(){
 }
 
 bool Set::contains(const std::string& value) const{
+    if(mRoot == nullptr){
+        return false;
+    }
     if(mRoot->Check(mRoot, value) != nullptr){
         return true;
     }
@@ -75,11 +78,8 @@ size_t Set::remove(const std::string& value){
     if(contains(value) != true) {
         return 0;
     }
-    else if(count() == 1) {
-        mRoot = nullptr;
+    if(mRoot->Remove(mRoot, value) != nullptr) {
+        return 1;
     }
-    else {
-        mRoot->Remove(mRoot, value);
-    }
-    return 1;
+    return 0;
 }
