@@ -16,14 +16,14 @@ Set::Set(Set&& other){
 
 Set::~Set(){
     if(mRoot != nullptr){
-        delete mRoot;
+        mRoot->Delete();
     }
 }
 
 size_t Set::clear(){
     //std::cout << "clear executed on: " << this << std::endl;
     size_t count = mRoot->Count(mRoot);
-    delete mRoot;
+    mRoot->Delete();
     mRoot = nullptr;
     return count;
 }

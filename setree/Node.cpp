@@ -7,21 +7,24 @@ Node::Node(std::string str){
     right = nullptr;
 }
 
-
 Node::~Node(){
+    
+}
+
+void Node::Delete(){
     //std::cout <<  "destructor is called on: " << this << std::endl;
     if(this->left != nullptr && this->left != nullptr){
         //std::cout <<  "condition1 is called: " << std::endl;
-        delete (this->left);
-        delete (this->right);
+        this->left->Delete();
+        this->right->Delete();
     }
     else if(this->left != nullptr){
         //std::cout <<  "condition2 is called: " << std::endl;
-        delete (this->left);
+        this->left->Delete();
     }
     else if(this->right != nullptr){
         //std::cout <<  "condition3 is called: " << std::endl;
-        delete (this->right);
+        this->right->Delete();
     }
 }
 
@@ -106,26 +109,29 @@ Node* Node::Remove(struct Node* node, std::string str) {
     else {
         // node has no child
         if (node->left == nullptr && node->right==nullptr) {
+            delete node;
             return nullptr;
         }
         // node with only one child or no child
         else if (node->left == nullptr) {
             Node* temp = node->right;
-            free(node);
+            delete node;
             return temp;
         }
         else if (node->right == nullptr) {
             Node* temp = node->left;
-            free(node);
+            delete node;
             return temp;
         }
   
+        // node with two children: Get the inorder successor
+        // (smallest in the right subtree)
         Node* temp = nthLargest(node->left, 1);
         // Copy the inorder successor's content to this node
         node->data = temp->data;
   
         // Delete the inorder successor
-        node->left = Remove(node->left, temp->data);
+        node->right = Remove(node->right, temp->data);
     }
     return node;
 }

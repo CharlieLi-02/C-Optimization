@@ -39,6 +39,13 @@ int main() {
     std::cout << "attempt to execute print function after remove: " << std::endl;
     tree1.print();
     std::cout << std::endl << std::endl;
+    
+    tree1.clear();
+    std::cout << "attempt to execute clear function" << std::endl;
+    
+    std::cout << "attempt to execute print function after clear: " << std::endl;
+    tree1.print();
+    std::cout << std::endl << std::endl;
     /*std::cout << std::endl;
     std::cout <<  tree.remove("A") << std::endl;
     std::cout <<  tree.remove("B") << std::endl;
