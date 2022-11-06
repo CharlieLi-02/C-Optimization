@@ -122,13 +122,13 @@ Node* Node::Remove(struct Node* node, std::string str) {
   
         // node with two children: Get the inorder successor
         // (smallest in the right subtree)
-        Node* temp = nthLargest(node, 1);
+        Node* temp = nthLargest(node->left, 1);
         std::cout << temp << std::endl;
         // Copy the inorder successor's content to this node
         node->data = temp->data;
   
         // Delete the inorder successor
-        node->right = Remove(node->right, temp->data);
+        node->left = Remove(node->left, temp->data);
     }
     return node;
 }
