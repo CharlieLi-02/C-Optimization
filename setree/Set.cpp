@@ -16,7 +16,7 @@ Set::Set(Set&& other){
 
 Set::~Set(){
     if(mRoot != nullptr){
-        delete mRoot;
+        mRoot->Delete();
     }
 }
 
@@ -78,8 +78,26 @@ size_t Set::remove(const std::string& value){
     if(contains(value) != true) {
         return 0;
     }
-    if(mRoot->Remove(mRoot, value) != nullptr) {
+    
+    if(count() == 1) {
+        delete mRoot;
+        mRoot = nullptr;
         return 1;
     }
-    return 0;
+    if(mRoot->data == value){
+        if(mRoot->left == nullptr){
+            Node* temp = mRoot->right;
+            delete mRoot;
+            mRoot = temp;
+        }
+        else if (mRoot->right == nullptr){
+            Node* temp = mRoot->left;
+            delete mRoot;
+            mRoot = temp;
+        }
+    }
+    else {
+        mRoot->Remove(mRoot, value);
+    }
+    return 1;
 }
