@@ -73,6 +73,8 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
+    mRoot->Print(mRoot);
+    std::cout << std::endl;
     if(mRoot->data == value && count() == 1){
         delete mRoot;
         mRoot = nullptr;

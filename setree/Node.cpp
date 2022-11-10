@@ -90,8 +90,6 @@ Node* Node::Insert(struct Node* node, std::string str) {
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
-    Print(node);
-    std::cout << std::endl;
     if (node == nullptr)
         return node;
     if (str < node->data)
