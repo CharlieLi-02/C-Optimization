@@ -14,7 +14,6 @@ struct Node{
     Node* right;
     Node(std::string str = "");
     ~Node();
-    void Delete();
     Node* Copy(struct Node* target);
     size_t Count(struct Node* node);
     Node* Insert(struct Node* node, std::string str);

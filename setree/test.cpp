@@ -36,11 +36,15 @@ int main() {
     tree1.print();
     std::cout << std::endl << std::endl;
     
+    tree1.remove("c");
+    tree1.print();
+    std::cout << std::endl << std::endl;
+    
     tree1.remove("a");
     tree1.print();
     std::cout << std::endl << std::endl;
     
-    tree1.remove("b");
+    tree1.remove("f");
     tree1.print();
     std::cout << std::endl << std::endl;
     
@@ -48,46 +52,30 @@ int main() {
     tree1.print();
     std::cout << std::endl << std::endl;
     
-    tree1.insert("a");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    /*tree1.insert("f");
-    tree1.print();
-    std::cout << std::endl << std::endl;*/
-    
-    tree1.remove("f");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.insert("b");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.insert("d");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("c");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("d");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
     tree1.remove("b");
     tree1.print();
     std::cout << std::endl << std::endl;
+    /*std::cout << std::endl;
+    std::cout <<  tree.remove("A") << std::endl;
+    std::cout <<  tree.remove("B") << std::endl;
+    std::cout <<  tree.remove("C") << std::endl;
+    std::cout <<  tree.remove("D") << std::endl;
+    std::cout <<  tree.remove("E") << std::endl;
+    std::cout <<  tree.remove("F") << std::endl;
+    std::cout <<  tree.remove("G") << std::endl;
+    std::cout <<  tree.remove("H") << std::endl;
+    std::cout <<  tree.remove("I") << std::endl;
+    std::cout <<  tree.remove("J") << std::endl;
+    std::cout <<  tree.remove("K") << std::endl;
+    std::cout <<  tree.remove("K") << std::endl << std::endl;
     
-    tree1.remove("a");
-    tree1.print();
+    std::cout << "print final result: " << std::endl;
+    tree.print();
     std::cout << std::endl << std::endl;
     
-    std::cout << "attempt to execute clear function: " << std::endl;
-    tree1.clear();
-    tree1.print();
-    std::cout << std::endl << std::endl;    
+    std::cout << "attempt to execute count function: " << std::endl;
+    std::cout <<  tree.count() << std::endl << std::endl;*/
+    
     return 0;
 }
 
