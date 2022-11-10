@@ -106,17 +106,18 @@ Node* Node::Remove(struct Node* node, std::string str) {
     else {
         // node has no child
         if (node->left == nullptr && node->right==nullptr) {
+            operator delete(node);
             return nullptr;
         }
         // node with only one child or no child
         else if (node->left == nullptr) {
             Node* temp = node->right;
-            free(node);
+            operator delete(node);
             return temp;
         }
         else if (node->right == nullptr) {
             Node* temp = node->left;
-            free(node);
+            operator delete(node);
             return temp;
         }
   
