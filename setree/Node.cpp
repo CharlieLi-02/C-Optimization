@@ -7,21 +7,27 @@ Node::Node(std::string str){
     right = nullptr;
 }
 
-
 Node::~Node(){
     //std::cout <<  "destructor is called on: " << this << std::endl;
-    if(this->left != nullptr && this->left != nullptr){
+}
+
+void Node::Delete(){
+    //std::cout <<  "Delete() is called on: " << this << std::endl;
+    if(this->left == nullptr && this->right == nullptr){
+        delete this;
+    }
+    else if(this->left != nullptr && this->right != nullptr){
         //std::cout <<  "condition1 is called: " << std::endl;
-        delete (this->left);
-        delete (this->right);
+        this->left->Delete();
+        this->right->Delete();
     }
     else if(this->left != nullptr){
         //std::cout <<  "condition2 is called: " << std::endl;
-        delete (this->left);
+        this->left->Delete();
     }
     else if(this->right != nullptr){
         //std::cout <<  "condition3 is called: " << std::endl;
-        delete (this->right);
+        this->right->Delete();
     }
 }
 
@@ -111,12 +117,12 @@ Node* Node::Remove(struct Node* node, std::string str) {
         // node with only one child or no child
         else if (node->left == nullptr) {
             Node* temp = node->right;
-            free(node);
+            delete node;
             return temp;
         }
         else if (node->right == nullptr) {
             Node* temp = node->left;
-            free(node);
+            delete node;
             return temp;
         }
   
