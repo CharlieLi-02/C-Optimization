@@ -75,7 +75,9 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-    std::cout << "removed " + value << " from " << print();
+    std::cout << "removed " << value << " from ";
+    print();
+    std::cout << std::endl;
     if(contains(value) != true) {
         return 0;
     }
