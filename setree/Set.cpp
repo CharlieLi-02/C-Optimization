@@ -60,7 +60,7 @@ const std::string& Set::lookup(size_t n) const{
             throw std::out_of_range("Out of Range");
         }
         return (mRoot->nthLargest(mRoot, location))->data;
-    }
+}
 
 void Set::print() const{
     if(mRoot == nullptr){
@@ -73,28 +73,15 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-
-    if(contains(value) != true) {
-        return 0;
-    }
-    if(mRoot->data == value && count() == 1) {
+    if(mRoot->data == value && count() == 1){
         delete mRoot;
         mRoot = nullptr;
         return 1;
     }
-    if(mRoot->data == value){
-        if(mRoot->left == nullptr){
-            Node* temp = mRoot->right;
-            delete mRoot;
-            mRoot = temp;
-        }
-        else if (mRoot->right == nullptr){
-            Node* temp = mRoot->left;
-            delete mRoot;
-            mRoot = temp;
-        }
+    else if(contains(value) != true) {
+        return 0;
     }
-    else {
+    else{
         mRoot->Remove(mRoot, value);
     }
     return 1;
