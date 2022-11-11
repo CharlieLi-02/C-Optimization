@@ -13,30 +13,12 @@ int main() {
     tree1.insert("c");
     tree1.insert("e");
     tree1.insert("f");
-    tree1.insert("f");
+    tree1.insert("f");    
     
-    std::cout << "attempt to execute count function: " << std::endl;
-    std::cout <<  tree1.count() << std::endl << std::endl;
-
-    
-    std::cout << "attempt to execute print function: " << std::endl;
     tree1.print();
     std::cout << std::endl << std::endl;
-    
-    std::cout << "attempt to execute lookup function: " << std::endl;
-    std::cout << tree1.lookup(0) << std::endl << std::endl;
-    
-    std::cout << "attempt to execute notation function: " << std::endl;
-    std::cout <<  "results: "  << std::endl;
-    tree1.debug();
-    std::cout << std::endl << std::endl;
-    
     
     tree1.remove("d");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("a");
     tree1.print();
     std::cout << std::endl << std::endl;
     
@@ -48,15 +30,7 @@ int main() {
     tree1.print();
     std::cout << std::endl << std::endl;
     
-    tree1.insert("a");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    /*tree1.insert("f");
-    tree1.print();
-    std::cout << std::endl << std::endl;*/
-    
-    tree1.remove("f");
+    tree1.remove("c");
     tree1.print();
     std::cout << std::endl << std::endl;
     
@@ -64,19 +38,7 @@ int main() {
     tree1.print();
     std::cout << std::endl << std::endl;
     
-    tree1.insert("d");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("c");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("d");
-    tree1.print();
-    std::cout << std::endl << std::endl;
-    
-    tree1.remove("b");
+    tree1.remove("f");
     tree1.print();
     std::cout << std::endl << std::endl;
     

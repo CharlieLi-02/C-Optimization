@@ -1,33 +1,21 @@
 #include "Node.h"
 
 Node::Node(std::string str){
-    //std::cout <<  "constructor is called on: " << this << std::endl;
     data = str;
     left = nullptr;
     right = nullptr;
 }
 
 Node::~Node(){
-    //std::cout <<  "destructor is called on: " << this << std::endl;
-}
-
-void Node::Delete(){
-    //std::cout <<  "Delete() is called on: " << this << std::endl;
-    if(this->left == nullptr && this->right == nullptr){
-        delete this;
-    }
-    else if(this->left != nullptr && this->right != nullptr){
-        //std::cout <<  "condition1 is called: " << std::endl;
-        this->left->Delete();
-        this->right->Delete();
+    if(this->left != nullptr && this->left != nullptr){
+        delete (this->left);
+        delete (this->right);
     }
     else if(this->left != nullptr){
-        //std::cout <<  "condition2 is called: " << std::endl;
-        this->left->Delete();
+        delete (this->left);
     }
     else if(this->right != nullptr){
-        //std::cout <<  "condition3 is called: " << std::endl;
-        this->right->Delete();
+        delete (this->right);
     }
 }
 
@@ -43,7 +31,7 @@ Node* Node::Copy(struct Node* target){
 }
 
 size_t Node::Count(Node* node){
-    if (node == nullptr) {
+    if (!node) {
         return 0;
     }
     else {
@@ -52,24 +40,17 @@ size_t Node::Count(Node* node){
 }
 
 void Node::Print(struct Node* node){
-    //std::cout << "Print executed!" << std::endl;
     if(node == nullptr){
         std::cout << "-";
         return;
     }
-        
     if (node->left != nullptr || node->right != nullptr) {
-        //std::cout << "Print left executed!" << std::endl;
         std::cout << "(";
         Print(node->left);
         std::cout << " ";
     }
-    
-    //std::cout << "Print Middele executed!" << std::endl;
     std::cout << node->data;
-    
     if (node->left != nullptr || node->right != nullptr) {
-        //std::cout << "Print right executed!" << std::endl;
         std::cout << " ";
         Print(node->right);
         std::cout << ")";
@@ -77,15 +58,11 @@ void Node::Print(struct Node* node){
 }
 
 Node* Node::Insert(struct Node* node, std::string str) {
-    /* If the tree is empty, add a new node */
         if (node == nullptr){
             node = new Node(str);
             return node;
-            //delete temp;
         }
-        
-        /* If the tree has this value, return nullptr */
-        if (str < node->data) {
+        else if (str < node->data) {
             node->left = Insert(node->left, str);
         }
         else {
@@ -96,42 +73,40 @@ Node* Node::Insert(struct Node* node, std::string str) {
 }
 
 Node* Node::Remove(struct Node* node, std::string str) {
-    if (node == nullptr)
+    if (node == nullptr) {
         return node;
-    if (str < node->data)
+    }
+    else if (str < node->data) {
         node->left = Remove(node->left, str);
-  
-    // If the key to be deleted is
-    // greater than the root's
-    // key, then it lies in right subtree
-    else if (str > node->data)
+    }
+    else if (str > node->data) {
         node->right = Remove(node->right, str);
-  
-    // if key is same as root's key, then This is the node
-    // to be deleted
+    }
     else {
         // node has no child
         if (node->left == nullptr && node->right==nullptr) {
+            operator delete (node);
             return nullptr;
         }
-        // node with only one child or no child
+        // node with only one child
         else if (node->left == nullptr) {
             Node* temp = node->right;
-            delete node;
+            operator delete (node);
             return temp;
         }
         else if (node->right == nullptr) {
             Node* temp = node->left;
-            delete node;
+            operator delete (node);
             return temp;
         }
-  
+        // node with two child
+        else {
         Node* temp = nthLargest(node->left, 1);
         // Copy the inorder successor's content to this node
         node->data = temp->data;
-  
         // Delete the inorder successor
         node->left = Remove(node->left, temp->data);
+        }
     }
     return node;
 }
@@ -152,27 +127,6 @@ Node* Node::Check(struct Node* node, std::string str){
         }
     }
     return nullptr;
-}
-
-void Node::Traversal(Node* node){
-    if(node == nullptr){
-        return;
-    }
-    else
-    {
-        Traversal(node->left);
-        std::cout << node->data << " ";
-        Traversal(node->right);
-    }
-}
-
-void Node::Traversal_Reverse(Node* node){
-    if (node)
-    {
-        Traversal_Reverse(node->right);
-        std::cout << node->data << " ";
-        Traversal_Reverse(node->left);
-    }
 }
 
 Node* Node::nthLargest(Node* node, size_t n){

@@ -15,13 +15,13 @@ Set::Set(Set&& other){
 }
 
 Set::~Set(){
-    if(mRoot != nullptr){
-        mRoot->Delete();
-    }
+    delete mRoot;
 }
 
 size_t Set::clear(){
-    //std::cout << "clear executed on: " << this << std::endl;
+    if(mRoot == nullptr) {
+        return 0;
+    }
     size_t count = mRoot->Count(mRoot);
     delete mRoot;
     mRoot = nullptr;
@@ -39,15 +39,17 @@ bool Set::contains(const std::string& value) const{
 }
 
 size_t Set::count() const{
+    if(mRoot == nullptr){
+        return 0;
+    }
     return mRoot->Count(mRoot);
 }
 
 void Set::debug(){
-    std::cout << mRoot->Notation(mRoot);
 }
 
 size_t Set::insert(const std::string& value){
-    if(mRoot->Check(mRoot, value) != nullptr) {
+    if(contains(value)) {
         return 0;
     }
     else {
@@ -58,11 +60,11 @@ size_t Set::insert(const std::string& value){
 
 const std::string& Set::lookup(size_t n) const{
     size_t location = mRoot->Count(mRoot) - n;
-        if(location <= 0 || location > mRoot->Count(mRoot)){
-            throw std::out_of_range("Out of Range");
-        }
-        return (mRoot->nthLargest(mRoot, location))->data;
+    if(location <= 0 || location > mRoot->Count(mRoot)){
+        throw std::out_of_range("Out of Range");
     }
+    return (mRoot->nthLargest(mRoot, location))->data;
+}
 
 void Set::print() const{
     if(mRoot == nullptr){
@@ -75,32 +77,11 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-    std::cout << "removed " << value << " from ";
-    print();
-    std::cout << std::endl;
     if(contains(value) != true) {
         return 0;
     }
-    
-    if(count() == 1) {
-        delete mRoot;
-        mRoot = nullptr;
-        return 1;
-    }
-    if(mRoot->data == value){
-        if(mRoot->left == nullptr){
-            Node* temp = mRoot->right;
-            delete mRoot;
-            mRoot = temp;
-        }
-        else if (mRoot->right == nullptr){
-            Node* temp = mRoot->left;
-            delete mRoot;
-            mRoot = temp;
-        }
-    }
     else {
-        mRoot->Remove(mRoot, value);
+        mRoot = mRoot->Remove(mRoot, value);
     }
     return 1;
 }
