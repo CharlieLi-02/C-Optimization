@@ -39,7 +39,7 @@ Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, floa
 	for (auto iter : mWords)
 	{
 		float fScore = CaculateWordScore(points,iter);
-		if (CompareFloat(fScore, cutoff))
+		if (fScore > cutoff)
 		{
 			if (heap.count() == heap.capacity())
 			{
