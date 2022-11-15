@@ -106,6 +106,7 @@ float CaculateWordScore(const std::vector<Point>& points, const std ::string& st
 bool CompareFloat(float fValue1, float fValue2)
 {
     if (float(fValue1 - fValue2) > EPSINON) {
+	    std::cout << std::to_string(fValue1) << "is larger than " << fValue2 << std::endl;
     	return true;
     }
     return false;
