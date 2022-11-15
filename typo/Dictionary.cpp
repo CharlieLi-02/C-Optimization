@@ -13,7 +13,7 @@ float CaculateWordScore(const std::vector<Point>& points, const std::string& str
 
 std::string GetWordsByPoint(const std::vector<Point>& points);
 
-int CompareFloat(float fValue1,float fValue2);
+bool CompareFloat(float fValue1,float fValue2); //return true if first float is larger, else return false.
 
 Dictionary::Dictionary(std::istream& stream)
 {
@@ -103,7 +103,10 @@ float CaculateWordScore(const std::vector<Point>& points, const std ::string& st
     float fScore = fSum / float(points.size());
     return fScore;
 }
-int CompareFloat(float fValue1, float fValue2)
+bool CompareFloat(float fValue1, float fValue2)
 {
-    return (std::abs(float(fValue1 - fValue2)) >= 0.00001f) ? 1 : 0;
+    if (float(fValue1 - fValue2) > EPSINON) {
+    	return true;
+    }
+    return false;
 }
