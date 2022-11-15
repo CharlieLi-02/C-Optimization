@@ -39,26 +39,27 @@ Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, floa
 	std::string strCurWord = GetWordsByPoint(points);
 	for (auto iter : mWords)
 	{
-		float fScore = CaculateWordScore(points,iter);
-        std::cout << "words score is " << fScore;
-		if (fScore > cutoff)
-		{
-			if (heap.count() == heap.capacity())
-			{
-				if (CompareFloat(fScore, heap.top().score))
-				{
-					heap.pushpop(iter, fScore);
-				}
-			}
-			else
-			{
-				heap.push(iter, fScore);
-			}
-		}
+        if(iter.length() == points.size()){
+            float fScore = CaculateWordScore(points,iter);
+            std::cout << "words score is " << fScore;
+            if (fScore > cutoff)
+            {
+                if (heap.count() == heap.capacity())
+                {
+                    if (CompareFloat(fScore, heap.top().score))
+                    {
+                        heap.pushpop(iter, fScore);
+                    }
+                }
+                else
+                {
+                    heap.push(iter, fScore);
+                }
+            }
+        }
 	}
 	return heap;
 }
-
 std::string GetWordsByPoint(const std::vector<Point>& points)
 {
 	std::string strWord;
