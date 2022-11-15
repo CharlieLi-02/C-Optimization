@@ -3,6 +3,7 @@
 #include <cfloat>
 #include <cmath>
 #include <sstream>
+#include <ctype.h>
 
 #define LINEMAX 256
 
