@@ -13,16 +13,12 @@ struct Node{
     Node* left;
     Node* right;
     Node(std::string str = "");
-    
-    void Delete(struct Node* node);
+    ~Node();
     Node* Copy(struct Node* target);
     size_t Count(struct Node* node);
     Node* Insert(struct Node* node, std::string str);
     Node* Remove(struct Node* node, std::string str); //
     Node* Check(struct Node* node, std::string str); // used in contains()
-    void Traversal(Node* node); //used in debug()
-    void Traversal_Reverse(Node* node); //used in debug()
-    void Clear(Node* node); // used in clear()
     Node* nthLargest(Node* node, size_t n); //used in lookup()
     std::string Notation(Node* node);
     void Print(struct Node* node);

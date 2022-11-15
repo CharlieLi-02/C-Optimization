@@ -15,17 +15,23 @@ Set::Set(Set&& other){
 }
 
 Set::~Set(){
-    mRoot->Delete(mRoot);
+    delete mRoot;
 }
 
 size_t Set::clear(){
+    if(mRoot == nullptr) {
+        return 0;
+    }
     size_t count = mRoot->Count(mRoot);
-    mRoot->Delete(mRoot);
+    delete mRoot;
     mRoot = nullptr;
     return count;
 }
 
 bool Set::contains(const std::string& value) const{
+    if(mRoot == nullptr){
+        return false;
+    }
     if(mRoot->Check(mRoot, value) != nullptr){
         return true;
     }
@@ -33,15 +39,17 @@ bool Set::contains(const std::string& value) const{
 }
 
 size_t Set::count() const{
+    if(mRoot == nullptr){
+        return 0;
+    }
     return mRoot->Count(mRoot);
 }
 
 void Set::debug(){
-    std::cout << mRoot->Notation(mRoot);
 }
 
 size_t Set::insert(const std::string& value){
-    if(mRoot->Check(mRoot, value) != nullptr) {
+    if(contains(value)) {
         return 0;
     }
     else {
@@ -52,6 +60,9 @@ size_t Set::insert(const std::string& value){
 
 const std::string& Set::lookup(size_t n) const{
     size_t location = mRoot->Count(mRoot) - n;
+    if(location <= 0 || location > mRoot->Count(mRoot)){
+        throw std::out_of_range("Out of Range");
+    }
     return (mRoot->nthLargest(mRoot, location))->data;
 }
 
@@ -66,8 +77,11 @@ void Set::print() const{
 }
 
 size_t Set::remove(const std::string& value){
-    if(mRoot->Remove(mRoot, value) != nullptr){
-        return 1;
+    if(contains(value) != true) {
+        return 0;
     }
-    return 0;
+    else {
+        mRoot = mRoot->Remove(mRoot, value);
+    }
+    return 1;
 }

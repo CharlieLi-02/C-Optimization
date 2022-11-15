@@ -2,108 +2,70 @@
 #include <math.h>
 #include <iomanip>
 #include <sstream>
+#include <string>
 // Implement your AST subclasses' member functions here.
-std::string Node::postfix() const{
-    /*std::cout << this->left->left->data << std::endl;
-    std::cout << this->left->right->data << std::endl;
-    std::cout << this->left->notation << std::endl;
-    std::cout << this->right->left->left->data << std::endl;
-    std::cout << this->right->left->right->data << std::endl;
-    std::cout << this->right->left->notation << std::endl;
-    std::cout << this->right->right->data << std::endl;
-    std::cout << this->notation << std::endl;*/
-    if(this->Type() == 0){
-        return std::to_string(this->data);
+std::string Node::Traversal(Node* node) const{
+  // delete
+    if(node == nullptr){
+        return "erro";
     }
-    else {
-        std::string str = Traversal(this->left) + " " + Traversal(this->right) + " " + this->notation;
+    if(node->Type() == 0){
+        double value = node->data;
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
+    }
+    if(node->Type() == 6){
+        std::string str = Traversal(node->left) + std::string(" ~");
+        return str;
+    }
+    std::string str = Traversal(node->left) + " " + Traversal(node->right) + " " + node->notation;
     return str;
-    }
 }
 
-struct stack {
-    std::string *arr;
-    int top;
-    int capacity;
-    stack(int size = 0){
-        arr = new std::string [size];
-        capacity = size;
-        top = -1;
+std::string Node::postfix() const{
+    if(this->Type() == 6){
+        std::string str = Traversal(this->left) + std::string(" ~");
+        return str;
     }
-    ~stack(){ // destructor
-        delete[] arr;
+    if(this->Type() == 0){
+        double value = this->data;
+        std::ostringstream stream;
+        stream << value;
+        return stream.str();
     }
-    void push(std::string str){
-        if (top == capacity - 1)
-        {
-            exit(EXIT_FAILURE);
-        }
-            arr[++top] = str;
-        }
-    std::string pop(){
-        if (top == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
-        return arr[top--];
-    }
-    std::string peek(){
-        if (top == -1)
-        {
-            exit(EXIT_FAILURE);
-        }
-        return arr[top];
-    }
-    bool empty(){
-        return top == -1;
-    }
-};
+    std::string str = Traversal(this->left) + " " + Traversal(this->right) + " " + this->notation;
+    return str;
+}
 
 std::string Node::prefix() const{
-    std::istringstream mystream(postfix());
-    stack s (static_cast<int>(postfix().size()));
-    std::string token;
-        while(mystream >> token) {
-            if (token == "+" || token == "-" || token == "*" || token == "/" || token == "%" || token == "~" || token == "/" ) {
-                std::string op1 = s.peek();
-                s.pop();
-                std::string op2 = s.peek();
-                s.pop();
-                // concat the operands and operator
-                std::string temp = token + " " + op2 + " " + op1;
-                // Push string temp back to stack
-                s.push(temp);
-            }
-            // if symbol is an operand
-            else {
-                // push the operand to the stack
-                s.push(token);
-            }
-        }
-        std::string str = "";
-        while (!s.empty()) {
-            str = str + s.peek();
-            s.pop();
-        }
-        return str;
+    if(this->Type() == 0){
+        std::ostringstream stream;
+        stream << this->data;
+        return stream.str();
+    }
+    if(this->Type() == 6){
+        return (std::string("~ ") + (this->left)->prefix());
+    }
+        return (this->notation + " " + (this->left)->prefix() + " " + (this->right)->prefix());
 }
 
 Node::Node(std::string str, int style) {
+    //std::cout << "constructor is called " << this << std::endl;
     notation = str;
     type = style;
 }
 
 Node::Node(double value) {
+    //std::cout << "constructor is called " << this << std::endl;
     type = 0;
     data = value;
 }
 
 double Node::Evaluate(Node* node) const{
-    //std::cout << "Test2: " << "Evaluate executed" << std::endl; // delete
-
-    if(node == nullptr) {
-        //throw std::EvaluatorException("Incorrect syntax tree!");
-    }
+    /*if(node == nullptr) {
+        return -1;
+    }*/
     if(node->Type() == 0) {
         return node->data;
     }
@@ -116,90 +78,94 @@ double Node::Evaluate(Node* node) const{
         if(node->Type() == 1) { return v1 + v2;}
         if(node->Type() == 2) { return v1 - v2;}
         if(node->Type() == 3)  { return v1 * v2;}
-        if(node->Type() == 4)  { return v1 / v2;}
-        if(node->Type() == 5) { return fmod(v1,v2);}
+        if(node->Type() == 4)  {
+            if(v2 == 0) {
+                throw std::runtime_error("Division by zero.");
+            }
+            return v1 / v2;
+        }
+        if(node->Type() == 5) {
+            if(v2 == 0) {
+                throw std::runtime_error("Division by zero.");
+            }
+            return fmod(v1,v2);
+        }
     }
     return -1;
 }
 
 double Node::value() const{
-        //std::cout << "Test3: " << "Type: " << this->type << std::endl; // delete
+    //std::cout << "Test3: " << "Type: " << this->data << this->Type() << " " << this->right << std::endl; // delete
+    if (this->Type() == 0){
+        return this->data;
+    }
+
+    if (this->Type() == 6 && this->left->Type() == 0) {
+        return -(this->left->data);
+    }
+    
+    if(this->left != nullptr){
         double v1 = Evaluate(this->left);
-        double v2 = Evaluate(this->right);
-        if (this->Type() == 1) {
-            return v1 + v2;
+        if (this->Type() == 6){
+            return -v1;
         }
-        if (this->Type() == 2) {
-            return v1 - v2;
+    double v2 = Evaluate(this->right);
+    if (this->Type() == 1) {
+        return v1 + v2;
+    }
+    if (this->Type() == 2) {
+        return v1 - v2;
+    }
+    if (this->Type() == 3){
+        return v1 * v2;
+    }
+    if (this->Type() == 4)  {
+        if(v2 == 0) {
+            throw std::runtime_error("Division by zero.");
         }
-        if (this->Type() == 3){
-            return v1 * v2;
+        return v1 / v2;
+    }
+    if (this->Type() == 5){
+        if(v2 == 0) {
+            throw std::runtime_error("Division by zero.");
         }
-        if (this->Type() == 4)  {
-            return v1 / v2;
-        }
-        if (this->Type() == 5){
-            return fmod(v1,v2);
-        }
+        return fmod(v1,v2);
+    }
+    }
+
     return -1;
 }
 
 int Node::Type() const{
-    return type;
+    return this->type;
 }
 
-std::string Node::Traversal(Node* node) const{
-    std::string RPN;
-    if(node->Type() == 0){
-        std::ostringstream oss;
-        oss << std::setprecision(8) << std::noshowpoint << node->data;
-        std::string str = oss.str();
-        return str;
+Node::~Node(){
+        if(this->type == 0){
+           //std::cout <<  "destructor is called " << this << " on a number " << this->data << std::endl;
+        }
+        else if(this->type == 6){
+           delete (this->left);
+           //std::cout <<  "destructor is called " << this << "on a ~ " << std::endl;
+        }
+        else {
+           //std::cout <<  "destructor is called " << this << std::endl;
+           delete (this->left);
+           delete (this->right);
+        }
+}
+
+
+void Node::cleanup(Node* node) {
+    //std::cout <<  "destructor is called " << this << std::endl;
+    if (node == nullptr) {
+        return;
     }
-    else {
-        std::string left = Traversal(node->left);
-        std::string right = Traversal(node->right);
-        std::string current = node->notation;
-        RPN = left + " " + right + " " + current;
-        return RPN;
-    }
+    cleanup(node->left);
+    cleanup(node->right);
+    free(node);
 }
 
-
-/*
-Number::Number(double value){
-    data = value;
-}
-
-Addition::Addition(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Subtraction::Subtraction(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Multiply::Multiply(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Division::Division(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Remainder::Remainder(Node* node1, Node* node2){
-    left = node1;
-    right = node2;
-}
-
-Negation::Negation(Node* node1, Node* node2) {
-    left = node1;
-    right = node2;
-}*/
 // To format a double for output:
 //   std::ostringstream stream;
 //   stream << value;
