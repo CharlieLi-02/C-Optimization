@@ -29,14 +29,14 @@ Dictionary::Dictionary(std::istream& stream)
 
 Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, float cutoff) const
 {
-    std::cout << "cutoff score is " << cutoff;
+    //std::cout << "cutoff score is " << cutoff;
 	Heap heap(maxcount);
 	if (mWords.size()== 0 || points.size()==0)
 	{
 		return heap;
 	}
 
-	std::string strCurWord = GetWordsByPoint(points);
+	//std::string strCurWord = GetWordsByPoint(points);
 	for (auto iter : mWords)
 	{
         if(iter.length() == points.size()){
