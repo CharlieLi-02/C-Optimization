@@ -29,9 +29,7 @@ Dictionary::Dictionary(std::istream& stream)
 
 Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, float cutoff) const
 {
-    std::ostringstream cc;
-    cc << cutoff;
-    std::string c(cc.str());
+    std::string c = std::to_string(cutoff);
     std::cout << "cutoff score is " << c << std::endl;
     
     Heap heap(maxcount);
@@ -46,11 +44,9 @@ Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, floa
         if(iter.length() == points.size()){
             float fScore = CaculateWordScore(points,iter);
             
-            std::ostringstream ff;
-            ff << fScore;
-            std::string f(ff.str());
+    	    std::string f = std::to_string(fScore);
             std::cout << "words score for " << iter << " is " << f << std::endl;
-		    if (CompareFloat(fScore, cutoff))
+	    if (CompareFloat(fScore, cutoff))
             {
                 if (heap.count() == heap.capacity())
                 {
