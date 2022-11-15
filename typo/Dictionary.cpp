@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cfloat>
 #include <cmath>
-
+#include <sstream>
 
 #define LINEMAX 256
 
@@ -29,7 +29,11 @@ Dictionary::Dictionary(std::istream& stream)
 
 Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, float cutoff) const
 {
-    //std::cout << "cutoff score is " << cutoff << std::endl;
+    std::ostringstream cc;
+    cc << cutoff;
+    std::string c(cc.str());
+    std::cout << "cutoff score is " << c << std::endl;
+    
     Heap heap(maxcount);
     if (mWords.size()== 0 || points.size()==0)
     {
@@ -41,7 +45,11 @@ Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, floa
     {
         if(iter.length() == points.size()){
             float fScore = CaculateWordScore(points,iter);
-            //std::cout << "words score for " << iter << " is " << fScore << std::endl;
+            
+            std::ostringstream ff;
+            ff << fScore;
+            std::string f(ss.str());
+            std::cout << "words score for " << iter << " is " << f << std::endl;
             if (fScore > cutoff + EPSINON)
             {
                 if (heap.count() == heap.capacity())
