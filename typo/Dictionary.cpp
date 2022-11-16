@@ -118,7 +118,7 @@ bool CompareFloat(float fValue1, float fValue2)
            
 bool LowerCase(std::string str) //return true if all lowercase
 {
-    for(int i = 0; i < str.size(); i++){
+    for(size_t i = 0; i < str.size(); i++){
         if(islower(str[i]) == 0){
             return false;
         }
