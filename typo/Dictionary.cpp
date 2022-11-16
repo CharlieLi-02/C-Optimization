@@ -3,7 +3,8 @@
 #include <cfloat>
 #include <cmath>
 #include <sstream>
-#include <ctype.h>
+#include <cctype>
+#include <cstring>
 
 #define LINEMAX 256
 
@@ -13,6 +14,8 @@ const float EPSINON = 0.00001f;
 float CaculateWordScore(const std::vector<Point>& points, const std::string& strWord);
 
 std::string GetWordsByPoint(const std::vector<Point>& points);
+
+bool LowerCase(std::string str); //return ture if the str is entirely lowercase
 
 bool CompareFloat(float fValue1,float fValue2); //return true if first float is larger, else return false.
 
@@ -42,23 +45,24 @@ Heap Dictionary::correct(const std::vector<Point>& points, size_t maxcount, floa
     std::string strCurWord = GetWordsByPoint(points);
     for (auto iter : mWords)
     {
-        if((iter.length() == points.size()) && islower(iter)){
-            float fScore = CaculateWordScore(points,iter);
-            
-    	    std::string f = std::to_string(fScore);
-            //std::cout << "words score for " << iter << " is " << f << std::endl;
-	    if (CompareFloat(fScore, cutoff))
-            {
-                if (heap.count() == heap.capacity())
+        if(iter.length() == points.size()) {
+            if(LowerCase(iter)){
+                float fScore = CaculateWordScore(points,iter);
+                std::string f = std::to_string(fScore);
+                //std::cout << "words score for " << iter << " is " << f << std::endl;
+                if (CompareFloat(fScore, cutoff))
                 {
-                    if (CompareFloat(fScore, heap.top().score))
+                    if (heap.count() == heap.capacity())
                     {
-                        heap.pushpop(iter, fScore);
+                        if (CompareFloat(fScore, heap.top().score))
+                        {
+                            heap.pushpop(iter, fScore);
+                        }
                     }
-                }
-                else
-                {
-                    heap.push(iter, fScore);
+                    else
+                    {
+                        heap.push(iter, fScore);
+                    }
                 }
             }
         }
@@ -107,7 +111,18 @@ float CaculateWordScore(const std::vector<Point>& points, const std ::string& st
 bool CompareFloat(float fValue1, float fValue2)
 {
     if (float(fValue1 - fValue2) > EPSINON) {
-    	return true;
+        return true;
     }
     return false;
 }
+           
+bool LowerCase(std::string str) //return true if all lowercase
+{
+    for(int i = 0; i < str.size(); i++){
+        if(islower(str[i]) == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
