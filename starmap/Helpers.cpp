@@ -1,6 +1,7 @@
 #include "Helpers.h"
 #include <cmath>
 #include <stdexcept>
+#include <cstddef>
 
 // Space to implement helper class member functions.
 
@@ -27,19 +28,19 @@ static void swap(Heap::Entry& x, Heap::Entry& y)
 	y = temp;
 }
 
-//¼ÆËã¸¸½ÚµãµÄË÷Òı
+//è®¡ç®—çˆ¶èŠ‚ç‚¹çš„ç´¢å¼•
 static size_t parent(size_t i)
 {
 	return (i - 1) / 2;
 }
 
-//¼ÆËã×óº¢×ÓµÄË÷Òı
+//è®¡ç®—å·¦å­©å­çš„ç´¢å¼•
 static size_t left(size_t i)
 {
 	return (2 * i + 1);
 }
 
-//¼ÆËãÓÒº¢×ÓµÄË÷Òı
+//è®¡ç®—å³å­©å­çš„ç´¢å¼•
 static size_t right(size_t i)
 {
 	return (2 * i + 2);
@@ -48,7 +49,7 @@ static size_t right(size_t i)
 
 static void MaxHeapify(size_t i, Heap::Entry* data, size_t heapSize)
 {
-	/*µİ¹é×î´ó¶Ñ»¯*/
+	/*é€’å½’æœ€å¤§å †åŒ–*/
 	size_t l = left(i);
 	size_t r = right(i);
 
@@ -58,7 +59,7 @@ static void MaxHeapify(size_t i, Heap::Entry* data, size_t heapSize)
 	if (r < heapSize && data[r].distance > data[biggest].distance)
 		biggest = r;
 
-	//µ±Ç°Ë÷ÒıºÍsmallest²»Ò»ÖÂÊ±£¬½øĞĞ½»»»¼°µİ¹é
+	//å½“å‰ç´¢å¼•å’Œsmallestä¸ä¸€è‡´æ—¶ï¼Œè¿›è¡Œäº¤æ¢åŠé€’å½’
 	if (biggest != i)
 	{
 		swap(data[i], data[biggest]);
@@ -79,7 +80,7 @@ Heap::Heap(const Heap& other)
 	mCapacity = other.mCapacity;
 	mData = new Entry[mCapacity];
 
-	//Êı¾İÉî¿½±´
+	//æ•°æ®æ·±æ‹·è´
 	for (size_t i = 0; i < other.mCount; ++i)
 	{
 		mData[i] = other.mData[i];
@@ -116,7 +117,7 @@ size_t Heap::count() const
 
 const Heap::Entry& Heap::lookup(size_t index) const
 {
-	//Èç¹û²»ÔÚ¶ÑµÄsizeÄÚ Å×³öÒì³£
+	//å¦‚æœä¸åœ¨å †çš„sizeå†… æŠ›å‡ºå¼‚å¸¸
 	if (index >= mCount)
 	{
 		throw std::out_of_range("invalid index");
@@ -126,13 +127,13 @@ const Heap::Entry& Heap::lookup(size_t index) const
 
 Heap::Entry Heap::pop()
 {
-	//Îª0µÄÊ±ºò Å×³öÒì³£
+	//ä¸º0çš„æ—¶å€™ æŠ›å‡ºå¼‚å¸¸
 	if (mCount == 0)
 	{
 		throw std::underflow_error("This heap is empty");
 	}
 
-	//Îª1µÄÊ±ºò Ö±½Ó·µ»ØÏÂ±êÎª0µÄ£¬²¢ÇÒ½«mCountµ÷Õû
+	//ä¸º1çš„æ—¶å€™ ç›´æ¥è¿”å›ä¸‹æ ‡ä¸º0çš„ï¼Œå¹¶ä¸”å°†mCountè°ƒæ•´
 	if (mCount == 1)
 	{
 		mCount--;
@@ -147,7 +148,7 @@ Heap::Entry Heap::pop()
 
 Heap::Entry Heap::pushpop(const Star& star, float distance)
 {
-	//Îª0µÄÊ±ºò Å×³öÒì³£
+	//ä¸º0çš„æ—¶å€™ æŠ›å‡ºå¼‚å¸¸
 	if (mCount == 0 )
 	{
 		throw std::underflow_error("This heap is empty");
@@ -157,7 +158,7 @@ Heap::Entry Heap::pushpop(const Star& star, float distance)
 		return mData[0];
 	}
 	mSetId.insert(star.id);
-	//Îª1µÄÊ±ºò Ö±½ÓÌæ»»¼´¿É
+	//ä¸º1çš„æ—¶å€™ ç›´æ¥æ›¿æ¢å³å¯
 	if (mCount == 1)
 	{
 		auto e = mData[0];
@@ -185,7 +186,7 @@ void Heap::push(const Star& star, float distance)
 	mCount++;
 	mData[i] = Entry{ star, distance };
 
-	//×ÔÏÂ¶øÉÏµÄ½øĞĞ½»»»Êı¾İ
+	//è‡ªä¸‹è€Œä¸Šçš„è¿›è¡Œäº¤æ¢æ•°æ®
 	while (i != 0 && mData[parent(i)].distance < mData[i].distance)
 	{
 		swap(mData[i], mData[parent(i)]);
