@@ -1,7 +1,6 @@
 #include "Helpers.h"
 #include <cmath>
 #include <stdexcept>
-#include <cstddef>
 
 // Space to implement helper class member functions.
 
