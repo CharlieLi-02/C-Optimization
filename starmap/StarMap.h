@@ -5,19 +5,20 @@
 #include "Helpers.h"
 #include <istream>
 #include <vector>
+#include <cstddef>
 
 class StarMap {
 public:
-    // ¹¹Ôìº¯Êı
+    // æ„é€ å‡½æ•°
     static StarMap* create(std::istream& stream);
 
 private:
 	
-	//ÊäÈëĞÇĞÇµÄ×ø±ê
+	//è¾“å…¥æ˜Ÿæ˜Ÿçš„åæ ‡
     std::vector<Star> m_vecStars;
-	//¸ù¾İXÖµÅÅĞòµÄÊı¾İ
+	//æ ¹æ®Xå€¼æ’åºçš„æ•°æ®
     std::vector<Star> m_vecX;
-	//¸ù¾İYÖµÅÅĞòµÄÊı¾İ
+	//æ ¹æ®Yå€¼æ’åºçš„æ•°æ®
     std::vector<Star> m_vecY;
 
 public:
@@ -28,14 +29,14 @@ public:
     // Required Member Function
     std::vector<Star> find(size_t n, float x, float y, float z);
 
-    //µİ¹é½áÊø´¦Àí£¬¼¯ºÏÊıÁ¿Ğ¡ÓÚ3µÄÊ±ºò´¦Àí
+    //é€’å½’ç»“æŸå¤„ç†ï¼Œé›†åˆæ•°é‡å°äº3çš„æ—¶å€™å¤„ç†
     float closest(const Star& star, Heap& heap);
 
-	//µİ¹é²éÕÒ¾àÀë×î½üµÄ×ø±ê
+	//é€’å½’æŸ¥æ‰¾è·ç¦»æœ€è¿‘çš„åæ ‡
     float divideandConquer(const Star& star, const std::vector<Star>& vecX, const std::vector<Star>& vecY,
         const int size, Heap& heap);
 
-	//Âú×ãÌõ¼şµÄÊı¾İ³¢ÊÔ²åÈë¶ÑÖĞ
+	//æ»¡è¶³æ¡ä»¶çš„æ•°æ®å°è¯•æ’å…¥å †ä¸­
     void insertRes(const Star& star, float dist, Heap& heap);
 
 };
