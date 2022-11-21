@@ -3,6 +3,7 @@
 
 #include "Star.h"
 #include <set>
+#include <cstddef>
 
 bool CompareX(const Star&, const Star&);
 bool CompareY(const Star&, const Star&);
@@ -20,7 +21,7 @@ private:
     size_t mCapacity;
     size_t mCount;
 	
-	//½«Ğ´Èë¶ÑÖĞµÄÊı¾İID¼ÇÂ¼£¬ÏÂ´Î²»ÔÙĞ´Èë
+	//å°†å†™å…¥å †ä¸­çš„æ•°æ®IDè®°å½•ï¼Œä¸‹æ¬¡ä¸å†å†™å…¥
 	std::set<int> mSetId;
 public:
     Heap(size_t capacity);
