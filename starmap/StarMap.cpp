@@ -69,7 +69,7 @@ float StarMap::closest(const Star& star, Heap& heap)
 {
     float closestDist = INFINITY; // Give a very big number to find minimum distances.
 
-    for (int x = 0; x < m_vecStars.size(); x++) {
+    for (size_t x = 0; x < m_vecStars.size(); x++) {
         auto dist = Calculate(m_vecStars[x], star);
         insertRes(m_vecStars[x], dist, heap);
         if (dist < closestDist)
@@ -89,11 +89,11 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
     const int intermediate = size/ 2;
     Star midPoint = m_vecX[intermediate];
 
-	//YÖá×ó±ßµÄÊı¾İ¼¯ºÏ
+	//Yè½´å·¦è¾¹çš„æ•°æ®é›†åˆ
     std::vector<Star> vecLeftPart;
     vecLeftPart.resize(intermediate + 1) ;
 
-	//YÖáÓÒ±ßµÄÊı¾İ¼¯ºÏ
+	//Yè½´å³è¾¹çš„æ•°æ®é›†åˆ
     std::vector<Star> vecRightPart;
     vecRightPart.resize(size - intermediate - 1);
  
@@ -117,18 +117,18 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
         }  
     }
 
-	//µİ¹é»ñÈ¡YÖá×ó±ßÊı¾İºÍstar×î½üµÄ¾àÀë
+	//é€’å½’è·å–Yè½´å·¦è¾¹æ•°æ®å’Œstaræœ€è¿‘çš„è·ç¦»
     float lengthl = divideandConquer(star, m_vecX, vecLeftPart, intermediate, heap);
     auto vecTempX = std::vector<Star>(m_vecX.begin() + intermediate, m_vecX.end());
 
-	//µİ¹é»ñÈ¡YÖáÓÒ±ßÊı¾İºÍstar×î½üµÄ¾àÀë
+	//é€’å½’è·å–Yè½´å³è¾¹æ•°æ®å’Œstaræœ€è¿‘çš„è·ç¦»
     float lengthr = divideandConquer(star, vecTempX, vecRightPart, size - intermediate, heap);
 
     float smallest = std::min(lengthl, lengthr);
 
-	//²éÕÒXÖáÉÏÖĞÎ»µã¾àÀësmallest¾àÀë×î¶ÌµÄµã
+	//æŸ¥æ‰¾Xè½´ä¸Šä¸­ä½ç‚¹è·ç¦»smallestè·ç¦»æœ€çŸ­çš„ç‚¹
     vector<Star> vecMidlane;
-    int midlength = 0;
+    //int midlength = 0;
     for (int a = 0; a < size; a++)
     {
         if (abs(m_vecY[a].x - midPoint.x) < smallest)
@@ -137,8 +137,8 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
         }
     }
 
-	//±éÀúYÖáÉÏÖĞÎ»µã¾àÀësmallest¾àÀë×î¶ÌµÄµã
-    for (int i = 0; i < vecMidlane.size() && ((star.y - vecMidlane[i].y) < smallest); ++i)
+	//éå†Yè½´ä¸Šä¸­ä½ç‚¹è·ç¦»smallestè·ç¦»æœ€çŸ­çš„ç‚¹
+    for (size_t i = 0; i < vecMidlane.size() && ((star.y - vecMidlane[i].y) < smallest); ++i)
     {
         auto distance = Calculate(vecMidlane[i], star);
         if (distance < smallest)
@@ -150,7 +150,7 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
 
     return smallest;
 }
-//³¢ÊÔ½«Êı¾İĞ´Èë×îĞ¡¶ÑÖĞ
+//å°è¯•å°†æ•°æ®å†™å…¥æœ€å°å †ä¸­
 void StarMap::insertRes(const Star& star, float dist, Heap& heap)
 {
     if (heap.capacity() == heap.count())
