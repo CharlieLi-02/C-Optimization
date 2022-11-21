@@ -3,7 +3,6 @@
 
 #include "Star.h"
 #include <set>
-#include <cstddef>
 
 bool CompareX(const Star&, const Star&);
 bool CompareY(const Star&, const Star&);
@@ -21,6 +20,7 @@ private:
     size_t mCapacity;
     size_t mCount;
 	
+	//将写入堆中的数据ID记录，下次不再写入
 	std::set<int> mSetId;
 public:
     Heap(size_t capacity);

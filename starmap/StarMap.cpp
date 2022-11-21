@@ -25,15 +25,9 @@ StarMap::StarMap(std::istream& stream)
     while (!(stream.eof())) 
     {
         ptr->id = nID++;
-        std::string value1;
-        std::string value2;
-        std::string value3;
-        stream >> value1;
-        stream >> value2;
-        stream >> value3;
-        ptr->x = std::stof(value1);
-        ptr->y = std::stof(value1);
-        ptr->x = std::stof(value1);
+        stream >> ptr->x;
+        stream >> ptr->y;
+        stream >> ptr->z;
         m_vecStars.emplace_back(*ptr);
     }
 
@@ -75,7 +69,7 @@ float StarMap::closest(const Star& star, Heap& heap)
 {
     float closestDist = INFINITY; // Give a very big number to find minimum distances.
 
-    for (size_t x = 0; x < m_vecStars.size(); x++) {
+    for (int x = 0; x < m_vecStars.size(); x++) {
         auto dist = Calculate(m_vecStars[x], star);
         insertRes(m_vecStars[x], dist, heap);
         if (dist < closestDist)
@@ -87,23 +81,25 @@ float StarMap::closest(const Star& star, Heap& heap)
 }
 
 // 
-float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX, const std::vector<Star>& vecY, const size_t size, Heap& heap)
+float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX, const std::vector<Star>& vecY, const int size, Heap& heap)
 {
     if (size <= 3)
         return closest(star, heap);
 
-    const size_t intermediate = size/ 2;
+    const int intermediate = size/ 2;
     Star midPoint = m_vecX[intermediate];
 
+	//Y轴左边的数据集合
     std::vector<Star> vecLeftPart;
     vecLeftPart.resize(intermediate + 1) ;
 
+	//Y轴右边的数据集合
     std::vector<Star> vecRightPart;
     vecRightPart.resize(size - intermediate - 1);
  
-    size_t left = 0, right = 0;
+    int left = 0, right = 0;
 
-    for (size_t i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         if (m_vecY[i].x <= midPoint.x)
         {
@@ -121,16 +117,19 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
         }  
     }
 
+	//递归获取Y轴左边数据和star最近的距离
     float lengthl = divideandConquer(star, m_vecX, vecLeftPart, intermediate, heap);
     auto vecTempX = std::vector<Star>(m_vecX.begin() + intermediate, m_vecX.end());
 
+	//递归获取Y轴右边数据和star最近的距离
     float lengthr = divideandConquer(star, vecTempX, vecRightPart, size - intermediate, heap);
 
     float smallest = std::min(lengthl, lengthr);
 
+	//查找X轴上中位点距离smallest距离最短的点
     vector<Star> vecMidlane;
-    //size_t midlength = 0;
-    for (size_t a = 0; a < size; a++)
+    int midlength = 0;
+    for (int a = 0; a < size; a++)
     {
         if (abs(m_vecY[a].x - midPoint.x) < smallest)
         {
@@ -138,7 +137,8 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
         }
     }
 
-    for (size_t i = 0; i < vecMidlane.size() && ((star.y - vecMidlane[i].y) < smallest); ++i)
+	//遍历Y轴上中位点距离smallest距离最短的点
+    for (int i = 0; i < vecMidlane.size() && ((star.y - vecMidlane[i].y) < smallest); ++i)
     {
         auto distance = Calculate(vecMidlane[i], star);
         if (distance < smallest)
@@ -150,7 +150,7 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
 
     return smallest;
 }
-
+//尝试将数据写入最小堆中
 void StarMap::insertRes(const Star& star, float dist, Heap& heap)
 {
     if (heap.capacity() == heap.count())
