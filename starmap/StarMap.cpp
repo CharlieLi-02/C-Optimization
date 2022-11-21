@@ -95,7 +95,7 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
     std::vector<Star> vecRightPart;
     vecRightPart.resize(size - intermediate - 1);
  
-    int left = 0, right = 0;
+    size_t left = 0, right = 0;
 
     for (size_t i = 0; i < size; i++)
     {
@@ -123,7 +123,7 @@ float StarMap::divideandConquer(const Star& star, const std::vector<Star>& vecX,
     float smallest = std::min(lengthl, lengthr);
 
     vector<Star> vecMidlane;
-    size_t midlength = 0;
+    //size_t midlength = 0;
     for (size_t a = 0; a < size; a++)
     {
         if (abs(m_vecY[a].x - midPoint.x) < smallest)
