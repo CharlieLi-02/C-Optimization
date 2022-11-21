@@ -21,7 +21,6 @@ private:
     size_t mCapacity;
     size_t mCount;
 	
-	//将写入堆中的数据ID记录，下次不再写入
 	std::set<int> mSetId;
 public:
     Heap(size_t capacity);

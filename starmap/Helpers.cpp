@@ -16,7 +16,7 @@ bool CompareY(const Star& fst, const Star& snd)
 
 float Calculate(const Star& fst, const Star& snd)
 {
-	return sqrt(std::pow(fst.x - snd.x, 2) + pow(fst.y - snd.y, 2) + pow(fst.z - snd.z, 2));
+	return sqrt( (fst.x - snd.x)*(fst.x - snd.x) + (fst.y - snd.y)*(fst.y - snd.y) + (fst.z - snd.z)*(fst.z - snd.z));
 }
 
 
@@ -27,19 +27,16 @@ static void swap(Heap::Entry& x, Heap::Entry& y)
 	y = temp;
 }
 
-//计算父节点的索引
 static size_t parent(size_t i)
 {
 	return (i - 1) / 2;
 }
 
-//计算左孩子的索引
 static size_t left(size_t i)
 {
 	return (2 * i + 1);
 }
 
-//计算右孩子的索引
 static size_t right(size_t i)
 {
 	return (2 * i + 2);
@@ -48,7 +45,6 @@ static size_t right(size_t i)
 
 static void MaxHeapify(size_t i, Heap::Entry* data, size_t heapSize)
 {
-	/*递归最大堆化*/
 	size_t l = left(i);
 	size_t r = right(i);
 
@@ -58,7 +54,6 @@ static void MaxHeapify(size_t i, Heap::Entry* data, size_t heapSize)
 	if (r < heapSize && data[r].distance > data[biggest].distance)
 		biggest = r;
 
-	//当前索引和smallest不一致时，进行交换及递归
 	if (biggest != i)
 	{
 		swap(data[i], data[biggest]);
@@ -79,7 +74,6 @@ Heap::Heap(const Heap& other)
 	mCapacity = other.mCapacity;
 	mData = new Entry[mCapacity];
 
-	//数据深拷贝
 	for (size_t i = 0; i < other.mCount; ++i)
 	{
 		mData[i] = other.mData[i];
@@ -116,7 +110,6 @@ size_t Heap::count() const
 
 const Heap::Entry& Heap::lookup(size_t index) const
 {
-	//如果不在堆的size内 抛出异常
 	if (index >= mCount)
 	{
 		throw std::out_of_range("invalid index");
@@ -126,13 +119,11 @@ const Heap::Entry& Heap::lookup(size_t index) const
 
 Heap::Entry Heap::pop()
 {
-	//为0的时候 抛出异常
 	if (mCount == 0)
 	{
 		throw std::underflow_error("This heap is empty");
 	}
 
-	//为1的时候 直接返回下标为0的，并且将mCount调整
 	if (mCount == 1)
 	{
 		mCount--;
@@ -147,7 +138,6 @@ Heap::Entry Heap::pop()
 
 Heap::Entry Heap::pushpop(const Star& star, float distance)
 {
-	//为0的时候 抛出异常
 	if (mCount == 0 )
 	{
 		throw std::underflow_error("This heap is empty");
@@ -157,7 +147,6 @@ Heap::Entry Heap::pushpop(const Star& star, float distance)
 		return mData[0];
 	}
 	mSetId.insert(star.id);
-	//为1的时候 直接替换即可
 	if (mCount == 1)
 	{
 		auto e = mData[0];
@@ -169,6 +158,7 @@ Heap::Entry Heap::pushpop(const Star& star, float distance)
 	MaxHeapify(0, mData, mCount);
 	return e;
 }
+
 void Heap::push(const Star& star, float distance)
 {
 	if (mCount == mCapacity)
@@ -185,7 +175,6 @@ void Heap::push(const Star& star, float distance)
 	mCount++;
 	mData[i] = Entry{ star, distance };
 
-	//自下而上的进行交换数据
 	while (i != 0 && mData[parent(i)].distance < mData[i].distance)
 	{
 		swap(mData[i], mData[parent(i)]);
