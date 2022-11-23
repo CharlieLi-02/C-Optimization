@@ -164,7 +164,9 @@ void updateVecWithStar(vector<StarNode>& vec, const unsigned int& id, const size
 	StarNode cur;
 	cur.dis = dis;
 	cur.id = id;
+	if(maxCount < 5){
 	std::cout << "Star with index " << id << " has distance" << dis << std::endl;
+	}
 
 	for (auto iter : vec)
 	{
