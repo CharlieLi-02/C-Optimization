@@ -417,6 +417,7 @@ StarMap::~StarMap()
 
 std::vector<Star> StarMap::find(size_t n, float xCor, float yCor, float zCor)
 {
+	Star pointStar;
 	pointStar.x = xCor;
 	pointStar.y = yCor;
 	pointStar.z = zCor;
