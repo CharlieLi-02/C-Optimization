@@ -162,19 +162,11 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 
 void updateVecWithStar(vector<TreeNode*>& vec, TreeNode* target, const size_t& maxCount, float& maxDis)
 {
-	if (target == nullptr) {
+	if(vec.size() < 2){
+    		vec.push_back(target);
 		return;
 	}
-    if(vec.size() > 0){
-        for (auto iter : vec)
-        {
-            if (iter->star.id == target->star.id)
-            {
-                return;
-            }
-        }
-    }
-    vec.push_back(target);
+	vec.push_back(target);
 	sort(vec.begin(), vec.end(), [](TreeNode* a, TreeNode* b) {return a->dis < b->dis; });
 	if (vec.size() > maxCount)
 	{
