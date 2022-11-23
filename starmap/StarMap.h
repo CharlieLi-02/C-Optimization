@@ -12,7 +12,6 @@ public:
     static StarMap* create(std::istream& stream);
 
 private:
-	
     std::vector<Star> m_vecStars;
 
 	TreeNode* m_root;
