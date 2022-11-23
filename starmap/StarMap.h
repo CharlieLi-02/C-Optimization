@@ -5,15 +5,16 @@
 #include "Helpers.h"
 #include <istream>
 #include <vector>
+#include <cstddef>
 
 class StarMap {
 public:
-    // ¹¹Ôìº¯Êı
+    // æ„é€ å‡½æ•°
     static StarMap* create(std::istream& stream);
 
 private:
 	
-	//ÊäÈëĞÇĞÇµÄ×ø±ê
+	//è¾“å…¥æ˜Ÿæ˜Ÿçš„åæ ‡
     std::vector<Star> m_vecStars;
 
 	TreeNode* m_root;
