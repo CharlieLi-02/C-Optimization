@@ -165,13 +165,15 @@ void updateVecWithStar(vector<TreeNode*>& vec, TreeNode* target, const size_t& m
 	if (target == nullptr) {
 		return;
 	}
-	for (auto iter : vec)
-	{
-		if (iter->star.id == target->star.id)
-		{
-			return;
-		}
-	}
+    if(vec.size() > 0){
+        for (auto iter : vec)
+        {
+            if (iter->star.id == target->star.id)
+            {
+                return;
+            }
+        }
+    }
     vec.push_back(target);
 	sort(vec.begin(), vec.end(), [](TreeNode* a, TreeNode* b) {return a->dis < b->dis; });
 	if (vec.size() > maxCount)
