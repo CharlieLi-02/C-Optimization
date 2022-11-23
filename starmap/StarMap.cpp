@@ -29,7 +29,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 
 	double tmp1, tmp2;
 	tmp1 = tmp2 = 0;
-	for (auto i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].x * vecStars[i].x;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].x;
@@ -37,7 +37,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	double v1 = tmp1 - tmp2 * tmp2;  // compute variance on the x dimension
 
 	tmp1 = tmp2 = 0;
-	for (auto i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].y * vecStars[i].y;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].y;
@@ -45,7 +45,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	double v2 = tmp1 - tmp2 * tmp2;  // compute variance on the y dimension
 
 	tmp1 = tmp2 = 0;
-	for (auto i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].z * vecStars[i].z;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].z;
