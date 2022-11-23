@@ -257,7 +257,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		unsigned int s = pBack->dim;
 		if (s == 1)
 		{
-			if (fabs(pBack->star.x - target.x) < curMaxDis_square)
+			if ((pBack->star.x - target.x)*(pBack->star.x - target.x) < curMaxDis_square)
 			{
 				pSearch = pBack;
 
@@ -282,7 +282,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else if (s == 2)
 		{
-			if (fabs(pBack->star.y - target.y) < curMaxDis_square)
+			if ((pBack->star.y - target.y)*(pBack->star.y - target.y) < curMaxDis_square)
 			{
 				pSearch = pBack;
 
@@ -306,7 +306,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else
 		{
-			if (fabs(pBack->star.z - target.z) < curMaxDis_square)
+			if ((pBack->star.z - target.z)*(pBack->star.z - target.z) < curMaxDis_square)
 			{
 				pSearch = pBack;
 
