@@ -12,9 +12,9 @@ using std::string;
 using std::cout;
 using std::endl;
 
-#define MAXDIS 10.0 //×ø±ê·¶Î§ÊÇ[-1,1]£¬Òò´Ë×î´ó¾àÀë²»»á³¬¹ı3
+#define MAXDIS 10.0 //åæ ‡èŒƒå›´æ˜¯[-1,1]ï¼Œå› æ­¤æœ€å¤§è·ç¦»ä¸ä¼šè¶…è¿‡3
 
-//¼ÆËãÁ½µã¼ä¾àÀë
+//è®¡ç®—ä¸¤ç‚¹é—´è·ç¦»
 double Distance(Star a, Star b)
 {
 	double tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
@@ -23,13 +23,13 @@ double Distance(Star a, Star b)
 void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 {
 	/*
-	1. ¼ÆËãÃ¿¸öÎ¬¶È(x,y,z)µÄ·½²î,´Ó¾ßÓĞ×î´ó·½²îµÄÎ¬¶È¿ªÊ¼ÇĞ·Ö£¬Èçx·½Ïò£»
-	2. ¼ÆËãx·½ÏòµÄ²ÎÊıµÃÖĞÖµ£¬×÷ÎªÆğÊ¼½Úµã£»
+	1. è®¡ç®—æ¯ä¸ªç»´åº¦(x,y,z)çš„æ–¹å·®,ä»å…·æœ‰æœ€å¤§æ–¹å·®çš„ç»´åº¦å¼€å§‹åˆ‡åˆ†ï¼Œå¦‚xæ–¹å‘ï¼›
+	2. è®¡ç®—xæ–¹å‘çš„å‚æ•°å¾—ä¸­å€¼ï¼Œä½œä¸ºèµ·å§‹èŠ‚ç‚¹ï¼›
 	*/
 
 	double tmp1, tmp2;
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (auto i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].x * vecStars[i].x;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].x;
@@ -37,7 +37,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	double v1 = tmp1 - tmp2 * tmp2;  // compute variance on the x dimension
 
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (auto i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].y * vecStars[i].y;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].y;
@@ -45,7 +45,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	double v2 = tmp1 - tmp2 * tmp2;  // compute variance on the y dimension
 
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (auto i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].z * vecStars[i].z;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].z;
@@ -71,7 +71,7 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 		dim = Z;
 		sort(vecStars.begin(), vecStars.end(), [](Star a, Star b) { return a.z < b.z; });
 	}
-	// set the split point value:ÖĞÖµ
+	// set the split point value:ä¸­å€¼
 	dimChoose.x = vecStars[vecStars.size() / 2].x;
 	dimChoose.y = vecStars[vecStars.size() / 2].y;
 	dimChoose.z = vecStars[vecStars.size() / 2].z;
@@ -91,14 +91,14 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 
 	if (split == DIM::X)
 	{
-		//ÆğÊ¼ÇĞ·Ö·½ÏòÎªx·½Ïò
+		//èµ·å§‹åˆ‡åˆ†æ–¹å‘ä¸ºxæ–¹å‘
 		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
-			//Ğ¡ÓÚµÈÓÚ½Úµãstar.xµÄÊôÓÚ×ó¿Õ¼ä
+			//å°äºç­‰äºèŠ‚ç‚¹star.xçš„å±äºå·¦ç©ºé—´
 			if (!equal(star, vecStars[i]) && vecStars[i].x <= star.x)
 			{
 				leftStar.push_back(vecStars[i]);
-			}  //´óÓÚ½Úµãstar.xµÄÊôÓÚÓÒ¿Õ¼ä
+			}  //å¤§äºèŠ‚ç‚¹star.xçš„å±äºå³ç©ºé—´
 			else if (!equal(star, vecStars[i]) && vecStars[i].x > star.x)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -107,15 +107,15 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else if (split == DIM::Y)
 	{
-		//ÆğÊ¼ÇĞ·Ö·½ÏòÎªy·½Ïò
+		//èµ·å§‹åˆ‡åˆ†æ–¹å‘ä¸ºyæ–¹å‘
 		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
-			//Ğ¡ÓÚµÈÓÚ½Úµãstar.yµÄÊôÓÚ×ó¿Õ¼ä
+			//å°äºç­‰äºèŠ‚ç‚¹star.yçš„å±äºå·¦ç©ºé—´
 			if (!equal(star, vecStars[i]) && vecStars[i].y <= star.y)
 			{
 				leftStar.push_back(vecStars[i]);
 
-			}  //´óÓÚ½Úµãstar.yµÄÊôÓÚÓÒ¿Õ¼ä
+			}  //å¤§äºèŠ‚ç‚¹star.yçš„å±äºå³ç©ºé—´
 			else if (!equal(star, vecStars[i]) && vecStars[i].y > star.y)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -126,12 +126,12 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	{
 		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
-			//Ğ¡ÓÚµÈÓÚ½Úµãstar.zµÄÊôÓÚ×ó¿Õ¼ä
+			//å°äºç­‰äºèŠ‚ç‚¹star.zçš„å±äºå·¦ç©ºé—´
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
 			{
 				leftStar.push_back(vecStars[i]);
 
-			}  //´óÓÚ½Úµãstar.zµÄÊôÓÚÓÒ¿Õ¼ä
+			}  //å¤§äºèŠ‚ç‚¹star.zçš„å±äºå³ç©ºé—´
 			else if (!equal(star, vecStars[i]) && vecStars[i].z > star.z)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -141,7 +141,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	return true;
 }
 
-//µİ¹é´´½¨kdtree
+//é€’å½’åˆ›å»ºkdtree
 TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 {
 	// call function ChooseSplit to choose the split dimension and split point
@@ -153,9 +153,9 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	{
 		DIM  split;
 		Star curStar;
-		ChooseSplit(vecStar, split, curStar);   //·µ»ØÆğÊ¼ÇĞ·Ö·½ÏòºÍÆğÊ¼½Úµã
-		std::vector<Star> rightStar;  //´æ´¢Î»ÓÚÓÒ×Ó¿Õ¼äµÄµã
-		std::vector<Star> leftStar;   //´æ´¢Î»ÓÚ×ó×Ó¿Õ¼äµÄµã
+		ChooseSplit(vecStar, split, curStar);   //è¿”å›èµ·å§‹åˆ‡åˆ†æ–¹å‘å’Œèµ·å§‹èŠ‚ç‚¹
+		std::vector<Star> rightStar;  //å­˜å‚¨ä½äºå³å­ç©ºé—´çš„ç‚¹
+		std::vector<Star> leftStar;   //å­˜å‚¨ä½äºå·¦å­ç©ºé—´çš„ç‚¹
 		splitPointsToDiffSpace(vecStar, rightStar, leftStar, split, curStar);
 
 		T = new TreeNode;
@@ -164,19 +164,19 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 		T->star.z = curStar.z;
 		T->star.id = curStar.id;
 		T->dim = split;
-		T->left = build_kdtree(leftStar, T->left);    //µİ¹é
-		T->right = build_kdtree(rightStar, T->right);  //µİ¹é
+		T->left = build_kdtree(leftStar, T->left);    //é€’å½’
+		T->right = build_kdtree(rightStar, T->right);  //é€’å½’
 	}
 	return T;
 }
 void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
 {
-	//ÉıĞòÅÅÁĞÊı¾İ ×î´óÖµÎª×îºóÒ»¸ö£¬³¬¹ıÈİÁ¿Ê±É¾³ı£¬Ä£Äâ×î´ó¶ÑÊ¹ÓÃ·½Ê½
+	//å‡åºæ’åˆ—æ•°æ® æœ€å¤§å€¼ä¸ºæœ€åä¸€ä¸ªï¼Œè¶…è¿‡å®¹é‡æ—¶åˆ é™¤ï¼Œæ¨¡æ‹Ÿæœ€å¤§å †ä½¿ç”¨æ–¹å¼
 	StarNode cur;
 	cur.dis = dis;
 	cur.id = id;
 
-	//È¥³ıÖØ¸´Êı¾İ
+	//å»é™¤é‡å¤æ•°æ®
 	for (auto iter : vec)
 	{
 		if (iter.id == id)
@@ -186,20 +186,20 @@ void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& 
 	}
 	vec.push_back(cur);
 	sort(vec.begin(), vec.end(), [](StarNode a, StarNode b) { return a.dis < b.dis; });
-	if (vec.size() > maxCount)
+	if (static_cast<int>(vec.size()) > maxCount)
 	{
 		vec.pop_back();
 	}
 	maxDis = vec.at(vec.size()-1).dis;
 }
 
-//ËÑË÷×îÁÚ½üµã
+//æœç´¢æœ€é‚»è¿‘ç‚¹
 vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& count)
 {
 	vector<StarNode> result;
 
-	// 1. Èç¹ûm_rootÊÇ¿ÕµÄ£¬ÔòÉèdistÎªÎŞÇî´ó·µ»Ø
-	// 2. ÏòÏÂËÑË÷Ö±µ½Ò¶×Ó½áµã
+	// 1. å¦‚æœm_rootæ˜¯ç©ºçš„ï¼Œåˆ™è®¾distä¸ºæ— ç©·å¤§è¿”å›
+	// 2. å‘ä¸‹æœç´¢ç›´åˆ°å¶å­ç»“ç‚¹
 	stack<TreeNode*> search_path;
 	TreeNode*        pSearch = root;
 	Star			 nearest;
@@ -207,12 +207,12 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	double			 curMaxDis;
 	while (pSearch != nullptr)
 	{
-		// pSearch¼ÓÈëµ½search_pathÖĞ;
+		// pSearchåŠ å…¥åˆ°search_pathä¸­;
 		search_path.push(pSearch);
 
 		if (pSearch->dim == DIM::X)
 		{
-			if (target.x <= pSearch->star.x) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.x <= pSearch->star.x) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
@@ -223,7 +223,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else if (pSearch->dim == DIM::Y)
 		{
-			if (target.y <= pSearch->star.y) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.y <= pSearch->star.y) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
@@ -234,7 +234,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else
 		{
-			if (target.z <= pSearch->star.z) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.z <= pSearch->star.z) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
@@ -247,7 +247,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	}
 	updateVecWithStar(result, 0, count, 10, curMaxDis);
 
-	//È¡³ösearch_path×îºóÒ»¸ö¸³¸ønearest
+	//å–å‡ºsearch_pathæœ€åä¸€ä¸ªèµ‹ç»™nearest
 	nearest.x = search_path.top()->star.x;
 	nearest.y = search_path.top()->star.y;
 	nearest.z = search_path.top()->star.z;
@@ -258,22 +258,22 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 
 	updateVecWithStar(result, nearest.id, count, dist, curMaxDis);
 
-	// 3. »ØËİËÑË÷Â·¾¶¡£¹Ø¼üµã:ÍùÇ°»ØËİÊ±£¬ÎªÁË¿ìËÙÕÒµ½»ØËİµ½½ÚµãµÄ¸¸½Úµã£¬¿ÉÒÔÓÃÕ»±£´æ×ß¹ıµÄÂ·¾¶¡£
+	// 3. å›æº¯æœç´¢è·¯å¾„ã€‚å…³é”®ç‚¹:å¾€å‰å›æº¯æ—¶ï¼Œä¸ºäº†å¿«é€Ÿæ‰¾åˆ°å›æº¯åˆ°èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹ï¼Œå¯ä»¥ç”¨æ ˆä¿å­˜èµ°è¿‡çš„è·¯å¾„ã€‚
 	TreeNode* pBack;
 	while (!search_path.empty())
 	{
-		//È¡³ösearch_path×îºóÒ»¸ö½áµã¸³¸øpBack
+		//å–å‡ºsearch_pathæœ€åä¸€ä¸ªç»“ç‚¹èµ‹ç»™pBack
 		pBack = search_path.top();
 		search_path.pop();
 
 		dist = Distance(pBack->star, target);
 		updateVecWithStar(result, pBack->star.id, count, dist, curMaxDis);
 
-		//µ½¸¸½ÚµãµÄ×Ó¿Õ¼äÖĞËÑË÷
+		//åˆ°çˆ¶èŠ‚ç‚¹çš„å­ç©ºé—´ä¸­æœç´¢
 		unsigned int s = pBack->dim;
 		if (s == 1)
 		{
-			/* Èç¹ûÒÔtargetÎªÖĞĞÄµÄÔ²£¨Çò»ò³¬Çò£©£¬°ë¾¶ÎªdistµÄÔ²Óë·Ö¸î³¬Æ½ÃæÏà½»£¬ÄÇÃ´¾ÍÒªÌøµ½ÁíÒ»±ßµÄ×Ó¿Õ¼äÈ¥½øĞĞµİ¹éËÑË÷¡£Ñ­»·¾ÍÊÇ²»¶Ï±éÀú²åÈë×Ó½Úµã */
+			/* å¦‚æœä»¥targetä¸ºä¸­å¿ƒçš„åœ†ï¼ˆçƒæˆ–è¶…çƒï¼‰ï¼ŒåŠå¾„ä¸ºdistçš„åœ†ä¸åˆ†å‰²è¶…å¹³é¢ç›¸äº¤ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å¦ä¸€è¾¹çš„å­ç©ºé—´å»è¿›è¡Œé€’å½’æœç´¢ã€‚å¾ªç¯å°±æ˜¯ä¸æ–­éå†æ’å…¥å­èŠ‚ç‚¹ */
 			if (fabs(pBack->star.x - target.x) < curMaxDis)
 			{
 				pSearch = pBack;
@@ -281,13 +281,13 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 				while (pSearch != nullptr)
 				{
 
-					if (target.x <= pSearch->star.x) /*Èç¹ûtargetÎ»ÓÚpBackµÄ×ó×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½ÓÒ×Ó¿Õ¼äÈ¥ËÑË÷*/
+					if (target.x <= pSearch->star.x) /*å¦‚æœtargetä½äºpBackçš„å·¦å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å³å­ç©ºé—´å»æœç´¢*/
 					{
 						pSearch = pSearch->right;
 					}
 					else
 					{
-						pSearch = pSearch->left; /* Èç¹ûtargetÎ»ÓÚpBackµÄÓÒ×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½×ó×Ó¿Õ¼äÈ¥ËÑË÷*/
+						pSearch = pSearch->left; /* å¦‚æœtargetä½äºpBackçš„å³å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å·¦å­ç©ºé—´å»æœç´¢*/
 					}
 
 					if (pSearch != nullptr)
@@ -299,7 +299,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else if (s == 2)
 		{
-			/* Èç¹ûÒÔtargetÎªÖĞĞÄµÄÔ²£¨Çò»ò³¬Çò£©£¬°ë¾¶ÎªdistµÄÔ²Óë·Ö¸î³¬Æ½ÃæÏà½»£¬ÄÇÃ´¾ÍÒªÌøµ½ÁíÒ»±ßµÄ×Ó¿Õ¼äÈ¥µİ¹éËÑË÷¡£Ñ­»·¾ÍÊÇ²»¶Ï±éÀú²åÈë×Ó½Úµã */
+			/* å¦‚æœä»¥targetä¸ºä¸­å¿ƒçš„åœ†ï¼ˆçƒæˆ–è¶…çƒï¼‰ï¼ŒåŠå¾„ä¸ºdistçš„åœ†ä¸åˆ†å‰²è¶…å¹³é¢ç›¸äº¤ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å¦ä¸€è¾¹çš„å­ç©ºé—´å»é€’å½’æœç´¢ã€‚å¾ªç¯å°±æ˜¯ä¸æ–­éå†æ’å…¥å­èŠ‚ç‚¹ */
 			if (fabs(pBack->star.y - target.y) < curMaxDis)
 			{
 				pSearch = pBack;
@@ -307,13 +307,13 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 				while (pSearch != nullptr)
 				{
 
-					if (target.x <= pSearch->star.x) /*Èç¹ûtargetÎ»ÓÚpBackµÄ×ó×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½ÓÒ×Ó¿Õ¼äÈ¥ËÑË÷*/
+					if (target.x <= pSearch->star.x) /*å¦‚æœtargetä½äºpBackçš„å·¦å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å³å­ç©ºé—´å»æœç´¢*/
 					{
 						pSearch = pSearch->right;
 					}
 					else
 					{
-						pSearch = pSearch->left; /* Èç¹ûtargetÎ»ÓÚpBackµÄÓÒ×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½×ó×Ó¿Õ¼äÈ¥ËÑË÷ */
+						pSearch = pSearch->left; /* å¦‚æœtargetä½äºpBackçš„å³å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å·¦å­ç©ºé—´å»æœç´¢ */
 					}
 					if (pSearch != nullptr)
 					{
@@ -324,20 +324,20 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else
 		{
-			/* Èç¹ûÒÔtargetÎªÖĞĞÄµÄÔ²£¨Çò»ò³¬Çò£©£¬°ë¾¶ÎªdistµÄÔ²Óë·Ö¸î³¬Æ½ÃæÏà½»£¬ÄÇÃ´¾ÍÒªÌøµ½ÁíÒ»±ßµÄ×Ó¿Õ¼äÈ¥µİ¹éËÑË÷¡£Ñ­»·¾ÍÊÇ²»¶Ï±éÀú²åÈë×Ó½Úµã */
+			/* å¦‚æœä»¥targetä¸ºä¸­å¿ƒçš„åœ†ï¼ˆçƒæˆ–è¶…çƒï¼‰ï¼ŒåŠå¾„ä¸ºdistçš„åœ†ä¸åˆ†å‰²è¶…å¹³é¢ç›¸äº¤ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å¦ä¸€è¾¹çš„å­ç©ºé—´å»é€’å½’æœç´¢ã€‚å¾ªç¯å°±æ˜¯ä¸æ–­éå†æ’å…¥å­èŠ‚ç‚¹ */
 			if (fabs(pBack->star.z - target.z) < curMaxDis)
 			{
 				pSearch = pBack;
 
 				while (pSearch != nullptr)
 				{
-					if (target.z <= pSearch->star.z) /*Èç¹ûtargetÎ»ÓÚpBackµÄ×ó×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½ÓÒ×Ó¿Õ¼äÈ¥ËÑË÷*/
+					if (target.z <= pSearch->star.z) /*å¦‚æœtargetä½äºpBackçš„å·¦å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å³å­ç©ºé—´å»æœç´¢*/
 					{
 						pSearch = pSearch->right;
 					}
 					else
 					{
-						pSearch = pSearch->left; /* Èç¹ûtargetÎ»ÓÚpBackµÄÓÒ×Ó¿Õ¼ä£¬ÄÇÃ´¾ÍÒªÌøµ½×ó×Ó¿Õ¼äÈ¥ËÑË÷*/
+						pSearch = pSearch->left; /* å¦‚æœtargetä½äºpBackçš„å³å­ç©ºé—´ï¼Œé‚£ä¹ˆå°±è¦è·³åˆ°å·¦å­ç©ºé—´å»æœç´¢*/
 					}
 					if (pSearch != nullptr)
 					{
@@ -348,7 +348,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 	}
 
-	//·µ»Ø×ø±ê¶ÔÓ¦µÄid
+	//è¿”å›åæ ‡å¯¹åº”çš„id
 	vector<unsigned int> vec;
 	for (auto iter : result)
 	{
@@ -369,10 +369,10 @@ void DeleteTree(TreeNode* root)
 		while (!q.empty())
 		{
 			TreeNode* f = q.front();
-			if (f->left != NULL) q.push(f->left);//Èç¹û×ÓÅ®²»Îª¿Õ¾Í¼ÓÈë×ÓÅ®£¬Ò»»á¶ùÉ¾³ı
+			if (f->left != NULL) q.push(f->left);//å¦‚æœå­å¥³ä¸ä¸ºç©ºå°±åŠ å…¥å­å¥³ï¼Œä¸€ä¼šå„¿åˆ é™¤
 			if (f->right != NULL) q.push(f->right);
-			delete f;//É¾³ıµ±Ç°½Úµã
-			q.pop();//°ÑÃ»ÓÃµÄÖ¸Õëµ¯³ö
+			delete f;//åˆ é™¤å½“å‰èŠ‚ç‚¹
+			q.pop();//æŠŠæ²¡ç”¨çš„æŒ‡é’ˆå¼¹å‡º
 		}
 		root = NULL;
 	}
