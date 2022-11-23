@@ -184,7 +184,6 @@ vector<Star> searchNearest(TreeNode* root, Star target, const size_t& count)
 	stack<TreeNode*> search_path;
 	TreeNode*        pSearch = root;
 	StarNode		 nearest;
-	float            dist_square;
     float			 curMaxDis_square;
 	while (pSearch != nullptr)
 	{
