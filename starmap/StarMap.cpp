@@ -239,6 +239,7 @@ vector<Star> searchNearest(TreeNode* root, Star target, const size_t& count)
         current.star = pBack->star;
         current.dis = Distance_Square(current.star, target);
         search_path.pop();
+        std::cout << "the star with index" << current.star.id << " distance is" << current.dis;
 		updateVecWithStar(result, current, count, curMaxDis_square);
 
 		unsigned int s = pBack->dim;
