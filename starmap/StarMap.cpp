@@ -164,6 +164,7 @@ void updateVecWithStar(vector<StarNode>& vec, const unsigned int& id, const size
 	StarNode cur;
 	cur.dis = dis;
 	cur.id = id;
+	std::cout << "Star with index " << id << " has distance" << dis << std::endl;
 
 	for (auto iter : vec)
 	{
@@ -192,12 +193,12 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
     float			 curMaxDis_square;
 	while (pSearch != nullptr)
 	{
-		// pSearch¼ÓÈëµ½search_pathÖĞ;
+		// pSearchåŠ å…¥åˆ°search_pathä¸­;
 		search_path.push(pSearch);
 
 		if (pSearch->dim == DIM::X)
 		{
-			if (target.x <= pSearch->star.x) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.x <= pSearch->star.x) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
@@ -208,7 +209,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else if (pSearch->dim == DIM::Y)
 		{
-			if (target.y <= pSearch->star.y) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.y <= pSearch->star.y) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
@@ -219,7 +220,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 		else
 		{
-			if (target.z <= pSearch->star.z) /* Èç¹ûĞ¡ÓÚ¾Í½øÈë×ó×ÓÊ÷ */
+			if (target.z <= pSearch->star.z) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
 			{
 				pSearch = pSearch->left;
 			}
