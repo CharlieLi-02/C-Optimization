@@ -372,15 +372,9 @@ StarMap::StarMap(std::istream& stream)
     while (!(stream.eof())) 
     {
         ptr->id = nID++;
-        string tokenx;
-        string tokeny;
-        string tokenz;
-        stream >> tokenx;
-        ptr->x = std::stof(tokenx);
-        stream >> tokeny;
-        ptr->y = std::stof(tokeny);;
-        stream >> tokenz;
-        ptr->z = std::stof(tokenz);;
+        stream >> ptr->x;
+        stream >> ptr->y;
+        stream >> ptr->z;
 		m_vecStars.emplace_back(*ptr);
     }
 
