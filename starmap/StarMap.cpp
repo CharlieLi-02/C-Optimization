@@ -169,7 +169,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	return T;
 }
-void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<Star>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
 {
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
 	StarNode cur;
@@ -196,7 +196,7 @@ void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_
 //搜索最邻近点
 vector<Star> searchNearest(TreeNode* root, Star target,const size_t& count)
 {
-	vector<StarNode> result;
+	vector<Star> result;
 
 	// 1. 如果m_root是空的，则设dist为无穷大返回
 	// 2. 向下搜索直到叶子结点
@@ -349,15 +349,7 @@ vector<Star> searchNearest(TreeNode* root, Star target,const size_t& count)
 	}
 
 	//返回坐标对应的id
-	vector<Star> vec;
-	for (auto iter : result)
-	{
-		if (iter.id != 0)
-		{
-			vec.push_back(iter);
-		}
-	}
-	return vec;
+	return result;
 }
 
 void DeleteTree(TreeNode* root)
