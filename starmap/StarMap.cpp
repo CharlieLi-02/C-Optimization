@@ -15,9 +15,9 @@ using std::endl;
 #define MAXDIS 10.0 //坐标范围是[-1,1]，因此最大距离不会超过3
 
 //计算两点间距离
-double Distance(Star a, Star b)
+float Distance(Star a, Star b)
 {
-	double tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
+	float tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
 	return sqrt(tmp);
 }
 void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
@@ -27,32 +27,32 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	2. 计算x方向的参数得中值，作为起始节点；
 	*/
 
-	double tmp1, tmp2;
+	float tmp1, tmp2;
 	tmp1 = tmp2 = 0;
 	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].x * vecStars[i].x;
-		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].x;
+		tmp1 += 1.0 / (float)vecStars.size() * vecStars[i].x * vecStars[i].x;
+		tmp2 += 1.0 / (float)vecStars.size() * vecStars[i].x;
 	}
-	double v1 = tmp1 - tmp2 * tmp2;  // compute variance on the x dimension
+	float v1 = tmp1 - tmp2 * tmp2;  // compute variance on the x dimension
 
 	tmp1 = tmp2 = 0;
 	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].y * vecStars[i].y;
-		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].y;
+		tmp1 += 1.0 / (float)vecStars.size() * vecStars[i].y * vecStars[i].y;
+		tmp2 += 1.0 / (float)vecStars.size() * vecStars[i].y;
 	}
-	double v2 = tmp1 - tmp2 * tmp2;  // compute variance on the y dimension
+	float v2 = tmp1 - tmp2 * tmp2;  // compute variance on the y dimension
 
 	tmp1 = tmp2 = 0;
 	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].z * vecStars[i].z;
-		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].z;
+		tmp1 += 1.0 / (float)vecStars.size() * vecStars[i].z * vecStars[i].z;
+		tmp2 += 1.0 / (float)vecStars.size() * vecStars[i].z;
 	}
-	double v3 = tmp1 - tmp2 * tmp2;
+	float v3 = tmp1 - tmp2 * tmp2;
 
-	double max_variance;
+	float max_variance;
 	max_variance = v1 > v2 ? v1 : v2;
 	max_variance = max_variance > v3 ? max_variance : v3;
 
@@ -92,7 +92,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	if (split == DIM::X)
 	{
 		//起始切分方向为x方向
-		for (unsigned int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.x的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].x <= star.x)
@@ -108,7 +108,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	else if (split == DIM::Y)
 	{
 		//起始切分方向为y方向
-		for (unsigned int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.y的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].y <= star.y)
@@ -124,7 +124,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else
 	{
-		for (unsigned int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.z的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
@@ -169,7 +169,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	return T;
 }
-void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
 {
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
 	StarNode cur;
@@ -186,7 +186,7 @@ void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& 
 	}
 	vec.push_back(cur);
 	sort(vec.begin(), vec.end(), [](StarNode a, StarNode b) { return a.dis < b.dis; });
-	if (static_cast<int>(vec.size()) > maxCount)
+	if (vec.size() > maxCount)
 	{
 		vec.pop_back();
 	}
@@ -203,8 +203,8 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	stack<TreeNode*> search_path;
 	TreeNode*        pSearch = root;
 	Star			 nearest;
-	double           dist;
-	double			 curMaxDis;
+	float           dist;
+	float			 curMaxDis;
 	while (pSearch != nullptr)
 	{
 		// pSearch加入到search_path中;
