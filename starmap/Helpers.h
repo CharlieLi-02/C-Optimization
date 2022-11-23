@@ -16,7 +16,12 @@ struct TreeNode
 	unsigned int      dim = 0;
 	struct TreeNode*  left = nullptr;
 	struct TreeNode*  right = nullptr;
-    float dis = 0.0;
+};
+
+struct StarNode
+{
+	unsigned int id = 0;
+	float dis = 0.0;
 };
 
 #endif
