@@ -10,6 +10,8 @@ struct Star {
     float x = 0;
     float y = 0;
     float z = 0;
+	Star() {};
+	Star(float x, float y, float z):x(x),y(y),z(z){}
 };
 
 #endif
