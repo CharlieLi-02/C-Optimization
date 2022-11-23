@@ -3,7 +3,6 @@
 
 #include "Star.h"
 
-//Œ¨∂»√∂æŸ÷µ
 enum DIM : unsigned int
 {
 	X = 0x1,
@@ -11,7 +10,6 @@ enum DIM : unsigned int
 	Z = 0x3
 };
 
-//k-d tree 
 struct TreeNode
 {
 	struct Star       star;
@@ -22,8 +20,8 @@ struct TreeNode
 
 struct StarNode
 {
-	unsigned int id = 0;
-	double dis = 0.0;
+    Star star;
+	float dis = 0.0;
 };
 
 #endif
