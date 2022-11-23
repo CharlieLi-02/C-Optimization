@@ -415,9 +415,11 @@ StarMap::~StarMap()
 	}
 }
 
-std::vector<Star> StarMap::find(size_t n, float x, float y, float z)
+std::vector<Star> StarMap::find(size_t n, float xCor, float yCor, float zCor)
 {
-	Star pointStar(x, y, z);
+	pointStar.x = xCor;
+	pointStar.y = yCor;
+	pointStar.z = zCor;
 	vector<Star> ret;
 	vector<unsigned int> vec = searchNearest(m_root, pointStar, n);
 	for (auto iter : vec)
