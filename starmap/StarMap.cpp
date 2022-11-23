@@ -321,7 +321,7 @@ vector<Star> searchNearest(TreeNode* root, Star target, const size_t& count)
 	{
 		if (iter.star.id != 0)
 		{
-            std::cout << "the star with index" << iter.star.id << " distance is" << iter.dis;
+            std::cout << "the star with index " << iter.star.id << " distance is " << iter.dis << std::endl;
             iter.dis = sqrt(iter.dis);
 			vec.push_back(iter.star);
 		}
