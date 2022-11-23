@@ -160,170 +160,151 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	return T;
 }
 
-void updateVecWithStar(vector<StarNode>& vec, StarNode& target, const size_t& maxCount, float& maxDis)
+void updateVecWithStar(vector<TreeNode*>& vec, TreeNode* target, const size_t& maxCount, float& maxDis)
 {
 	for (auto iter : vec)
 	{
-		if (iter.star.id == target.star.id)
+		if (iter->star.id == target->star.id)
 		{
 			return;
 		}
 	}
-	vec.push_back(target);
-	sort(vec.begin(), vec.end(), [](StarNode a, StarNode b) {return a.dis < b.dis; });
+    vec.push_back(target);
+	sort(vec.begin(), vec.end(), [](TreeNode* a, TreeNode* b) {return a->dis < b->dis; });
 	if (vec.size() > maxCount)
 	{
 		vec.pop_back();
 	}
-	maxDis = vec.at(vec.size()-1).dis;
+	maxDis = vec.at(vec.size()-1)->dis;
+}
+
+vector<TreeNode*> searchPath(TreeNode* root, Star target){
+    vector<TreeNode*> search_path;
+    TreeNode*        pSearch = root;
+    while (pSearch != nullptr)
+    {
+        search_path.push_back(pSearch);
+
+        if (pSearch->dim == DIM::X)
+        {
+            if (target.x <= pSearch->star.x)
+            {
+                pSearch = pSearch->left;
+            }
+            else
+            {
+                pSearch = pSearch->right;
+            }
+        }
+        else if (pSearch->dim == DIM::Y)
+        {
+            if (target.y <= pSearch->star.y)
+            {
+                pSearch = pSearch->left;
+            }
+            else
+            {
+                pSearch = pSearch->right;
+            }
+        }
+        else
+        {
+            if (target.z <= pSearch->star.z)
+            {
+                pSearch = pSearch->left;
+            }
+            else
+            {
+                pSearch = pSearch->right;
+            }
+        }
+    }
+    return search_path;
+}
+
+void searchBranch(TreeNode* pSearch, vector<TreeNode*>& vec, Star target, const size_t& count, float& curMaxDis_square){
+    if(pSearch == nullptr) {
+        return;
+    }
+    
+    updateVecWithStar(vec, pSearch, count, curMaxDis_square);
+    unsigned int s = pSearch->dim;
+    if (s == 1)
+    {
+        if ((pSearch->star.x - target.x)*(pSearch->star.x - target.x) < curMaxDis_square)
+        {
+            while (pSearch != nullptr)
+            {
+                if (pSearch->left != nullptr)
+                {
+                    searchBranch(pSearch->left, vec, target, count, curMaxDis_square);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
+                }
+            }
+        }
+    }
+    else if (s == 2)
+    {
+        if ((pSearch->star.y - target.y)*(pSearch->star.y - target.y) < curMaxDis_square)
+        {
+            while (pSearch != nullptr)
+            {
+                if (pSearch->left != nullptr)
+                {
+                    searchBranch(pSearch->left, vec, target, count, curMaxDis_square);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
+                }
+            }
+        }
+    }
+    else if (s == 3)
+    {
+        if ((pSearch->star.z - target.z)*(pSearch->star.z - target.z) < curMaxDis_square)
+        {
+            while (pSearch != nullptr)
+            {
+                if (pSearch->left != nullptr)
+                {
+                    searchBranch(pSearch->left, vec, target, count, curMaxDis_square);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
+                }
+            }
+        }
+    }
+    else {
+        std::cout << "dimension error" << std::endl;
+    }
 }
 
 vector<Star> searchNearest(TreeNode* root, Star target, const size_t& count)
 {
-	vector<StarNode> result;
-	stack<TreeNode*> search_path;
-	TreeNode*        pSearch = root;
-	StarNode		 nearest;
-    float			 curMaxDis_square;
-	while (pSearch != nullptr)
-	{
-		search_path.push(pSearch);
-
-		if (pSearch->dim == DIM::X)
-		{
-			if (target.x <= pSearch->star.x)
-			{
-				pSearch = pSearch->left;
-			}
-			else
-			{
-				pSearch = pSearch->right;
-			}
-		}
-		else if (pSearch->dim == DIM::Y)
-		{
-			if (target.y <= pSearch->star.y)
-			{
-				pSearch = pSearch->left;
-			}
-			else
-			{
-				pSearch = pSearch->right;
-			}
-		}
-		else
-		{
-			if (target.z <= pSearch->star.z)
-			{
-				pSearch = pSearch->left;
-			}
-			else
-			{
-				pSearch = pSearch->right;
-			}
-		}
-    }
-
-    nearest.star = search_path.top()->star;
-    nearest.dis = Distance_Square(nearest.star, target);
-    search_path.pop();
-
-	updateVecWithStar(result, nearest, count, curMaxDis_square);
-
-	TreeNode* pBack;
+    vector<TreeNode*> search_path = searchPath(root, target);
+    float             curMaxDis_square;
+	vector<TreeNode*> result;
+    curMaxDis_square = Distance_Square(search_path.back()->star, target);
     
-	while (!search_path.empty() )
-	{
-		pBack = search_path.top();
-        StarNode current;
-        current.star = pBack->star;
-        current.dis = Distance_Square(current.star, target);
-        search_path.pop();
-		updateVecWithStar(result, current, count, curMaxDis_square);
-
-		unsigned int s = pBack->dim;
-		if (s == 1)
-		{
-			if ((pBack->star.x - target.x)*(pBack->star.x - target.x) < curMaxDis_square)
-			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-
-					if (target.x <= pSearch->star.x)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
-				}
-			}
-		}
-		else if (s == 2)
-		{
-			if ((pBack->star.y - target.y)*(pBack->star.y - target.y) < curMaxDis_square)
-			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-
-					if (target.x <= pSearch->star.x)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
-				}
-			}
-		}
-		else
-		{
-			if ((pBack->star.z - target.z)*(pBack->star.z - target.z) < curMaxDis_square)
-			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-					if (target.z <= pSearch->star.z)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
-				}
-			}
-		}
-	}
+    while(result.size() <= count) {
+        searchBranch(search_path.back(), result, target, count, curMaxDis_square);
+        search_path.pop_back();
+    }
 
 	vector<Star> vec;
 	for (auto iter : result)
 	{
-		if (iter.star.id != 0)
+		if (iter->star.id != 0)
 		{
-            std::cout << "the star with index " << iter.star.id << " distance is " << iter.dis << std::endl;
-            iter.dis = sqrt(iter.dis);
-			vec.push_back(iter.star);
+            std::cout << "the star with index " << iter->star.id << " distance is " << iter->dis << std::endl;
+            iter->dis = sqrt(iter->dis);
+			vec.push_back(iter->star);
 		}
 	}
 	return vec;
