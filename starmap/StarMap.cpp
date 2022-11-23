@@ -124,7 +124,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else
 	{
-		for (size_t int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.z的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
@@ -169,7 +169,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	return T;
 }
-void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
 {
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
 	StarNode cur;
@@ -194,7 +194,7 @@ void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& 
 }
 
 //搜索最邻近点
-vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& count)
+vector<Star> searchNearest(TreeNode* root, Star target,const size_t& count)
 {
 	vector<StarNode> result;
 
@@ -354,7 +354,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	{
 		if (iter.id != 0)
 		{
-			vec.push_back(Star);
+			vec.push_back(iter);
 		}
 	}
 	return vec;
@@ -421,6 +421,6 @@ std::vector<Star> StarMap::find(size_t n, float xCor, float yCor, float zCor)
 	pointStar.x = xCor;
 	pointStar.y = yCor;
 	pointStar.z = zCor;
-	vector<Star> ret searchNearest(m_root, pointStar, n);
+	vector<Star> ret = searchNearest(m_root, pointStar, n);
 	return ret;
 }
