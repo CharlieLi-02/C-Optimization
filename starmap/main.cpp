@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
 
         std::cout << "xyz> ";
     }
-
     delete map;
     return 0;
 }
