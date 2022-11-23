@@ -108,7 +108,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	else if (split == DIM::Y)
 	{
 		//起始切分方向为y方向
-		for (size_t int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.y的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].y <= star.y)
@@ -124,7 +124,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else
 	{
-		for (size_t int i = 0; i < vecStars.size(); ++i)
+		for (size_t i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.z的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
@@ -169,7 +169,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	return T;
 }
-void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_t & maxCount,double dis, double& maxDis)
 {
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
 	StarNode cur;
