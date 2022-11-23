@@ -228,8 +228,6 @@ void searchBranch(TreeNode* pSearch, vector<TreeNode*>& vec, Star target, const 
     unsigned int s = pSearch->dim;
     if (s == 1)
     {
-        if ((pSearch->star.x - target.x)*(pSearch->star.x - target.x) < curMaxDis_square)
-        {
             while (pSearch != nullptr)
             {
                 if (pSearch->left != nullptr)
@@ -241,12 +239,9 @@ void searchBranch(TreeNode* pSearch, vector<TreeNode*>& vec, Star target, const 
                     searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
                 }
             }
-        }
     }
     else if (s == 2)
     {
-        if ((pSearch->star.y - target.y)*(pSearch->star.y - target.y) < curMaxDis_square)
-        {
             while (pSearch != nullptr)
             {
                 if (pSearch->left != nullptr)
@@ -258,12 +253,9 @@ void searchBranch(TreeNode* pSearch, vector<TreeNode*>& vec, Star target, const 
                     searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
                 }
             }
-        }
     }
     else if (s == 3)
     {
-        if ((pSearch->star.z - target.z)*(pSearch->star.z - target.z) < curMaxDis_square)
-        {
             while (pSearch != nullptr)
             {
                 if (pSearch->left != nullptr)
@@ -275,7 +267,6 @@ void searchBranch(TreeNode* pSearch, vector<TreeNode*>& vec, Star target, const 
                     searchBranch(pSearch->right, vec, target, count, curMaxDis_square);
                 }
             }
-        }
     }
     else {
         std::cout << "dimension error" << std::endl;
