@@ -108,7 +108,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	else if (split == DIM::Y)
 	{
 		//起始切分方向为y方向
-		for (size_t i = 0; i < vecStars.size(); ++i)
+		for (size_t int i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.y的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].y <= star.y)
@@ -124,7 +124,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else
 	{
-		for (size_t i = 0; i < vecStars.size(); ++i)
+		for (size_t int i = 0; i < vecStars.size(); ++i)
 		{
 			//小于等于节点star.z的属于左空间
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
@@ -169,7 +169,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	return T;
 }
-void updateVecWithStar(vector<Star>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
 {
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
 	StarNode cur;
@@ -194,9 +194,9 @@ void updateVecWithStar(vector<Star>& vec,const unsigned int& id, const size_t& m
 }
 
 //搜索最邻近点
-vector<Star> searchNearest(TreeNode* root, Star target,const size_t& count)
+vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& count)
 {
-	vector<Star> result;
+	vector<StarNode> result;
 
 	// 1. 如果m_root是空的，则设dist为无穷大返回
 	// 2. 向下搜索直到叶子结点
@@ -349,7 +349,15 @@ vector<Star> searchNearest(TreeNode* root, Star target,const size_t& count)
 	}
 
 	//返回坐标对应的id
-	return result;
+	vector<unsigned int> vec;
+	for (auto iter : result)
+	{
+		if (iter.id != 0)
+		{
+			vec.push_back(iter.id);
+		}
+	}
+	return vec;
 }
 
 void DeleteTree(TreeNode* root)
@@ -413,6 +421,11 @@ std::vector<Star> StarMap::find(size_t n, float xCor, float yCor, float zCor)
 	pointStar.x = xCor;
 	pointStar.y = yCor;
 	pointStar.z = zCor;
-	vector<Star> ret = searchNearest(m_root, pointStar, n);
+	vector<Star> ret;
+	vector<unsigned int> vec = searchNearest(m_root, pointStar, n);
+	for (auto iter : vec)
+	{
+		ret.push_back(m_vecStars[iter-1]);
+	}
 	return ret;
 }
