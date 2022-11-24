@@ -14,7 +14,7 @@ using std::endl;
 
 #define MAXDIS 10.0 //
 
-float Distance_Square(Star a, Star b)
+float Distance(Star a, Star b)
 {
 	float tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
 	return tmp;
@@ -191,8 +191,8 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	stack<TreeNode*> search_path;
 	TreeNode*        pSearch = root;
 	Star			 nearest;
-	float            dist_square;
-    float			 curMaxDis_square;
+	float            dist;
+    float			 curMaxDis;
 	while (pSearch != nullptr)
 	{
 		// pSearch加入到search_path中;
@@ -233,7 +233,7 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		}
 
 	}
-	updateVecWithStar(result, 0, count, 10, curMaxDis_square);
+	updateVecWithStar(result, 0, count, 10, curMaxDis);
 
 	nearest.x = search_path.top()->star.x;
 	nearest.y = search_path.top()->star.y;
@@ -241,9 +241,9 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 	nearest.id = search_path.top()->star.id;
 	search_path.pop();
 
-	dist_square = Distance_Square(nearest, target);
+	dist = Distance(nearest, target);
 
-	updateVecWithStar(result, nearest.id, count, dist_square, curMaxDis_square);
+	updateVecWithStar(result, nearest.id, count, dist, curMaxDis);
 
 	TreeNode* pBack;
 	while (!search_path.empty())
@@ -251,79 +251,49 @@ vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& cou
 		pBack = search_path.top();
 		search_path.pop();
 
-		dist_square = Distance_Square(pBack->star, target);
-		updateVecWithStar(result, pBack->star.id, count, dist_square, curMaxDis_square);
+		dist = Distance(pBack->star, target);
+		updateVecWithStar(result, pBack->star.id, count, dist, curMaxDis);
 
 		unsigned int s = pBack->dim;
 		if (s == 1)
 		{
-			if ((pBack->star.x - target.x)*(pBack->star.x - target.x) < curMaxDis_square)
+			if ((pBack->star.x - target.x) < curMaxDis)
 			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-
-					if (target.x <= pSearch->star.x)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
-				}
+                if (pSearch->left != nullptr)
+                {
+                    search_path.push(pSearch->left);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    search_path.push(pSearch->right);
+                }
 			}
 		}
 		else if (s == 2)
 		{
-			if ((pBack->star.y - target.y)*(pBack->star.y - target.y) < curMaxDis_square)
+			if ((pBack->star.y - target.y) < curMaxDis)
 			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-
-					if (target.x <= pSearch->star.x)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
-				}
+                if (pSearch->left != nullptr)
+                {
+                    search_path.push(pSearch->left);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    search_path.push(pSearch->right);
+                }
 			}
 		}
 		else
 		{
-			if ((pBack->star.z - target.z)*(pBack->star.z - target.z) < curMaxDis_square)
+			if ((pBack->star.z - target.z) < curMaxDis)
 			{
-				pSearch = pBack;
-
-				while (pSearch != nullptr)
-				{
-					if (target.z <= pSearch->star.z)
-					{
-						pSearch = pSearch->right;
-					}
-					else
-					{
-						pSearch = pSearch->left;
-					}
-					if (pSearch != nullptr)
-					{
-						search_path.push(pSearch);
-					}
+                if (pSearch->left != nullptr)
+                {
+                    search_path.push(pSearch->left);
+                }
+                if (pSearch->right != nullptr)
+                {
+                    search_path.push(pSearch->right);
 				}
 			}
 		}
