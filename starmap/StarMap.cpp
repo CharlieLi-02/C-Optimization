@@ -27,22 +27,22 @@ void ChooseDim(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 
 	double tmp1, tmp2;
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].x;
 	}
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += (tmp2 - vecStars[i].x)*(tmp2 - vecStars[i].x) / (double)vecStars.size();
 	}
 	double v1 = tmp1;
 
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].y;
 	}
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += (tmp2 - vecStars[i].y)*(tmp2 - vecStars[i].y) / (double)vecStars.size();
 	}
@@ -50,11 +50,11 @@ void ChooseDim(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 	double v2 = tmp1;  // compute variance on the y dimension
 
 	tmp1 = tmp2 = 0;
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].z;
 	}
-	for (int i = 0; i < vecStars.size(); ++i)
+	for (size_t i = 0; i < vecStars.size(); ++i)
 	{
 		tmp1 += (tmp2 - vecStars[i].z)*(tmp2 - vecStars[i].z) / (double)vecStars.size();
 	}
@@ -181,7 +181,7 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 }
 
-void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const size_t& maxCount,double dis, double& maxDis)
 {
 //	cout << "id:" << id << " dis:" << dis << " maxdis:" << maxDis << " vec size:" << vec.size()<<" maxcount:"<<maxCount << endl;
 	//升序排列数据 最大值为最后一个，超过容量时删除，模拟最大堆使用方式
