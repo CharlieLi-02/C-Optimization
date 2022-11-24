@@ -23,21 +23,19 @@ std::ostream& operator << (std::ostream& stream, const Star& star) {
 
 
 int main(int argc, char** argv) {
-    /*if(argc != 2) {
+    if(argc != 2) {
         std::cout << "USAGE: " << argv[0] << " [data-file]\n";
         std::exit(1);
-    }*/
+    }
 
     // Edit this bit!
-    size_t count = 10;
+    size_t count = 3;
     StarMap* map;
 
     try {
-        //std::ifstream file(argv[1]);
-        std::string  userInfo = "0 1 0"; // Input string
-        std::istringstream inSS(userInfo);
-        map = StarMap::create(inSS);
-        //file.close();
+        std::ifstream file(argv[1]);
+        map = StarMap::create(file);
+        file.close();
     }
     catch(const std::exception& e) {
         std::cout << "Error reading file: " << e.what() << '\n';

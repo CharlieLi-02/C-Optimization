@@ -12,42 +12,56 @@ using std::string;
 using std::cout;
 using std::endl;
 
-#define MAXDIS 10.0 //
-
-float Distance(Star a, Star b)
+//¼ÆËãÁ½µã¼ä¾àÀë
+double Distance(Star a, Star b)
 {
-	float tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
-	return tmp;
+	double tmp = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z);
+	return sqrt(tmp);
 }
-
-void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
+void ChooseDim(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 {
-    float tmp1, tmp2;
+	/*
+	1. ¼ÆËãÃ¿¸öÎ¬¶È(x,y,z)µÄ·½²î,´Ó¾ßÓĞ×î´ó·½²îµÄÎ¬¶È¿ªÊ¼ÇĞ·Ö£¬Èçx·½Ïò£»
+	2. ¼ÆËãx·½ÏòµÄ²ÎÊıµÃÖĞÖµ£¬×÷ÎªÆğÊ¼½Úµã£»
+	*/
+
+	double tmp1, tmp2;
 	tmp1 = tmp2 = 0;
-	for (size_t i = 0; i < vecStars.size(); ++i)
+	for (int i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (float)vecStars.size() * vecStars[i].x * vecStars[i].x;
-		tmp2 += 1.0 / (float)vecStars.size() * vecStars[i].x;
+		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].x;
 	}
-    float v1 = tmp1 - tmp2 * tmp2;  // compute variance on the x dimension
+	for (int i = 0; i < vecStars.size(); ++i)
+	{
+		tmp1 += (tmp2 - vecStars[i].x)*(tmp2 - vecStars[i].x) / (double)vecStars.size();
+	}
+	double v1 = tmp1;
 
 	tmp1 = tmp2 = 0;
-	for (size_t i = 0; i < vecStars.size(); ++i)
+	for (int i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (float)vecStars.size() * vecStars[i].y * vecStars[i].y;
-		tmp2 += 1.0 / (float)vecStars.size() * vecStars[i].y;
+		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].y;
 	}
-    float v2 = tmp1 - tmp2 * tmp2;  // compute variance on the y dimension
+	for (int i = 0; i < vecStars.size(); ++i)
+	{
+		tmp1 += (tmp2 - vecStars[i].y)*(tmp2 - vecStars[i].y) / (double)vecStars.size();
+	}
+
+	double v2 = tmp1;  // compute variance on the y dimension
 
 	tmp1 = tmp2 = 0;
-	for (size_t i = 0; i < vecStars.size(); ++i)
+	for (int i = 0; i < vecStars.size(); ++i)
 	{
-		tmp1 += 1.0 / (double)vecStars.size() * vecStars[i].z * vecStars[i].z;
 		tmp2 += 1.0 / (double)vecStars.size() * vecStars[i].z;
 	}
-    float v3 = tmp1 - tmp2 * tmp2;
+	for (int i = 0; i < vecStars.size(); ++i)
+	{
+		tmp1 += (tmp2 - vecStars[i].z)*(tmp2 - vecStars[i].z) / (double)vecStars.size();
+	}
 
-	float max_variance;
+	double v3 = tmp1;
+
+	double max_variance;
 	max_variance = v1 > v2 ? v1 : v2;
 	max_variance = max_variance > v3 ? max_variance : v3;
 
@@ -66,18 +80,18 @@ void ChooseSplit(std::vector<Star>& vecStars, DIM& dim, Star& dimChoose)
 		dim = Z;
 		sort(vecStars.begin(), vecStars.end(), [](Star a, Star b) { return a.z < b.z; });
 	}
-	// set the split point value:
+//	cout << "v1" << v1 << " v2" << v2 << " v3" << v3 << endl;
+
+	// set the split point value:ÖĞÖµ
 	dimChoose.x = vecStars[vecStars.size() / 2].x;
 	dimChoose.y = vecStars[vecStars.size() / 2].y;
 	dimChoose.z = vecStars[vecStars.size() / 2].z;
 	dimChoose.id = vecStars[vecStars.size() / 2].id;
 }
-
 bool equal(const Star& a, const Star& b)
 {
 	return (a.id == b.id);
 }
-
 bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>& rightStar,
 	std::vector<Star>& leftStar, DIM const split, Star const& star)
 {
@@ -88,12 +102,14 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 
 	if (split == DIM::X)
 	{
+		//ÆğÊ¼ÇĞ·Ö·½ÏòÎªx·½Ïò
 		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
+			//Ğ¡ÓÚµÈÓÚ½Úµãstar.xµÄÊôÓÚ×ó¿Õ¼ä
 			if (!equal(star, vecStars[i]) && vecStars[i].x <= star.x)
 			{
 				leftStar.push_back(vecStars[i]);
-			}
+			}  //´óÓÚ½Úµãstar.xµÄÊôÓÚÓÒ¿Õ¼ä
 			else if (!equal(star, vecStars[i]) && vecStars[i].x > star.x)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -102,13 +118,15 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else if (split == DIM::Y)
 	{
-		for (size_t i = 0; i < vecStars.size(); ++i)
+		//ÆğÊ¼ÇĞ·Ö·½ÏòÎªy·½Ïò
+		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
+			//Ğ¡ÓÚµÈÓÚ½Úµãstar.yµÄÊôÓÚ×ó¿Õ¼ä
 			if (!equal(star, vecStars[i]) && vecStars[i].y <= star.y)
 			{
 				leftStar.push_back(vecStars[i]);
 
-			}
+			}  //´óÓÚ½Úµãstar.yµÄÊôÓÚÓÒ¿Õ¼ä
 			else if (!equal(star, vecStars[i]) && vecStars[i].y > star.y)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -117,12 +135,14 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	}
 	else
 	{
-		for (size_t i = 0; i < vecStars.size(); ++i)
+		for (unsigned int i = 0; i < vecStars.size(); ++i)
 		{
+			//Ğ¡ÓÚµÈÓÚ½Úµãstar.zµÄÊôÓÚ×ó¿Õ¼ä
 			if (!equal(star, vecStars[i]) && vecStars[i].z <= star.z)
 			{
 				leftStar.push_back(vecStars[i]);
-            }
+
+			}  //´óÓÚ½Úµãstar.zµÄÊôÓÚÓÒ¿Õ¼ä
 			else if (!equal(star, vecStars[i]) && vecStars[i].z > star.z)
 			{
 				rightStar.push_back(vecStars[i]);
@@ -132,6 +152,7 @@ bool splitPointsToDiffSpace(std::vector<Star> const& vecStars, std::vector<Star>
 	return true;
 }
 
+//µİ¹é´´½¨kdtree
 TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 {
 	// call function ChooseSplit to choose the split dimension and split point
@@ -141,33 +162,35 @@ TreeNode* build_kdtree(std::vector<Star> vecStar, TreeNode* T)
 	}
 	else
 	{
-		DIM  split;
+		DIM  dim;
 		Star curStar;
-		ChooseSplit(vecStar, split, curStar);
-		std::vector<Star> rightStar;
-		std::vector<Star> leftStar;
-		splitPointsToDiffSpace(vecStar, rightStar, leftStar, split, curStar);
+		ChooseDim(vecStar, dim, curStar);   //·µ»ØÆğÊ¼ÇĞ·Ö·½ÏòºÍÆğÊ¼½Úµã
+		std::vector<Star> rightStar;  //´æ´¢Î»ÓÚÓÒ×Ó¿Õ¼äµÄµã
+		std::vector<Star> leftStar;   //´æ´¢Î»ÓÚ×ó×Ó¿Õ¼äµÄµã
+		splitPointsToDiffSpace(vecStar, rightStar, leftStar, dim, curStar);
 
 		T = new TreeNode;
 		T->star.x = curStar.x;
 		T->star.y = curStar.y;
 		T->star.z = curStar.z;
 		T->star.id = curStar.id;
-		T->dim = split;
-		T->left = build_kdtree(leftStar, T->left);
-		T->right = build_kdtree(rightStar, T->right);
+		T->dim = dim;
+		T->left = build_kdtree(leftStar, T->left);    //µİ¹é
+		T->right = build_kdtree(rightStar, T->right);  //µİ¹é
+		return T;
 	}
-	return T;
 }
-void updateVecWithStar(vector<StarNode>& vec, const unsigned int& id, const size_t& maxCount, float dis, float& maxDis)
+
+void updateVecWithStar(vector<StarNode>& vec,const unsigned int& id, const int& maxCount,double dis, double& maxDis)
 {
+//	cout << "id:" << id << " dis:" << dis << " maxdis:" << maxDis << " vec size:" << vec.size()<<" maxcount:"<<maxCount << endl;
+	//ÉıĞòÅÅÁĞÊı¾İ ×î´óÖµÎª×îºóÒ»¸ö£¬³¬¹ıÈİÁ¿Ê±É¾³ı£¬Ä£Äâ×î´ó¶ÑÊ¹ÓÃ·½Ê½
 	StarNode cur;
 	cur.dis = dis;
 	cur.id = id;
-	if(maxCount < 5){
-	std::cout << "Star with index " << id << " has distance" << dis << std::endl;
-	}
+	
 
+	//È¥³ıÖØ¸´Êı¾İ
 	for (auto iter : vec)
 	{
 		if (iter.id == id)
@@ -176,139 +199,113 @@ void updateVecWithStar(vector<StarNode>& vec, const unsigned int& id, const size
 		}
 	}
 	vec.push_back(cur);
+
 	sort(vec.begin(), vec.end(), [](StarNode a, StarNode b) { return a.dis < b.dis; });
 	if (vec.size() > maxCount)
 	{
 		vec.pop_back();
 	}
 	maxDis = vec.at(vec.size()-1).dis;
+
 }
 
-vector<unsigned int> searchNearest(TreeNode* root, Star target,const size_t& count)
+//ËÑË÷×îÁÚ½üµã
+void searchNearest(TreeNode* root, Star target, const size_t& count, vector<StarNode>& vec)
 {
-	vector<StarNode> result;
-
-	stack<TreeNode*> search_path;
-	TreeNode*        pSearch = root;
-	Star			 nearest;
-	float            dist;
-    float			 curMaxDis;
-	while (pSearch != nullptr)
+	if (root == nullptr)
 	{
-		// pSearchåŠ å…¥åˆ°search_pathä¸­;
-		search_path.push(pSearch);
+		return;
+	}
 
-		if (pSearch->dim == DIM::X)
+	double dist = Distance(root->star, target);
+	double curMaxDis;
+	updateVecWithStar(vec, root->star.id, count, dist, curMaxDis);  //²åÈë×ø±êµã£¬²¢»ñÈ¡×î´ó¶ÑµÄtop
+
+	unsigned int dim = root->dim;
+	if (dim == X)
+	{
+		//1.µ±Ç°µãrootÔÚ×ó×ÓÊ÷£¬Ôò±éÀú×ó×ÓÊ÷
+		bool left = false;
+		if (target.x < root->star.x)
 		{
-			if (target.x <= pSearch->star.x) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
-			{
-				pSearch = pSearch->left;
-			}
-			else
-			{
-				pSearch = pSearch->right;
-			}
-		}
-		else if (pSearch->dim == DIM::Y)
-		{
-			if (target.y <= pSearch->star.y) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
-			{
-				pSearch = pSearch->left;
-			}
-			else
-			{
-				pSearch = pSearch->right;
-			}
+			searchNearest(root->left,target,count,vec);
+			left = true;
 		}
 		else
 		{
-			if (target.z <= pSearch->star.z) /* å¦‚æœå°äºå°±è¿›å…¥å·¦å­æ ‘ */
+			searchNearest(root->right, target, count, vec);
+		}
+
+		//2.Èç¹û×î´ó¶Ñ¶ÓÁĞÎ´Âú£¬Ôò½«ÁíÒ»ÁíÍâÒ»¸ö×ÓÊ÷Ò²±éÀú;
+		//3.ÒÔµ±Ç°µã»­ÇòÌå£¬Èç¹ûÆä¾àÀëĞ¡ÓÚµ±Ç°»º´æ¾àÀëµÄ×î´óÖµ£¬ÇÒµ±Ç°µãÔÚ×ó×ÓÊ÷£¬Ôò±éÀúÓÒ×ÓÊ÷
+		if (vec.size() < count || fabs(target.x - root->star.x) < curMaxDis)
+		{
+			if (left)
 			{
-				pSearch = pSearch->left;
+				searchNearest(root->right, target, count, vec);
 			}
 			else
 			{
-				pSearch = pSearch->right;
+				searchNearest(root->left, target, count, vec);
 			}
 		}
-
 	}
-	updateVecWithStar(result, 0, count, 10, curMaxDis);
-
-	nearest.x = search_path.top()->star.x;
-	nearest.y = search_path.top()->star.y;
-	nearest.z = search_path.top()->star.z;
-	nearest.id = search_path.top()->star.id;
-	search_path.pop();
-
-	dist = Distance(nearest, target);
-
-	updateVecWithStar(result, nearest.id, count, dist, curMaxDis);
-
-	TreeNode* pBack;
-	while (!search_path.empty())
+	else if (dim == Y)
 	{
-		pBack = search_path.top();
-		search_path.pop();
-
-		dist = Distance(pBack->star, target);
-		updateVecWithStar(result, pBack->star.id, count, dist, curMaxDis);
-
-		unsigned int s = pBack->dim;
-		if (s == 1)
+		//1.µ±Ç°µãrootÔÚ×ó×ÓÊ÷£¬Ôò±éÀú×ó×ÓÊ÷
+		bool left = false;
+		if (target.y < root->star.y)
 		{
-			if ((pBack->star.x - target.x) < curMaxDis)
-			{
-                if (pSearch->left != nullptr)
-                {
-                    search_path.push(pSearch->left);
-                }
-                if (pSearch->right != nullptr)
-                {
-                    search_path.push(pSearch->right);
-                }
-			}
-		}
-		else if (s == 2)
-		{
-			if ((pBack->star.y - target.y) < curMaxDis)
-			{
-                if (pSearch->left != nullptr)
-                {
-                    search_path.push(pSearch->left);
-                }
-                if (pSearch->right != nullptr)
-                {
-                    search_path.push(pSearch->right);
-                }
-			}
+			searchNearest(root->left, target, count, vec);
+			left = true;
 		}
 		else
 		{
-			if ((pBack->star.z - target.z) < curMaxDis)
+			searchNearest(root->right, target, count, vec);
+		}
+
+		//2.Èç¹û×î´ó¶Ñ¶ÓÁĞÎ´Âú£¬Ôò½«ÁíÒ»ÁíÍâÒ»¸ö×ÓÊ÷Ò²±éÀú;
+		//3.ÒÔµ±Ç°µã»­ÇòÌå£¬Èç¹ûÆä¾àÀëĞ¡ÓÚµ±Ç°»º´æ¾àÀëµÄ×î´óÖµ£¬ÇÒµ±Ç°µãÔÚ×ó×ÓÊ÷£¬Ôò±éÀúÓÒ×ÓÊ÷
+		if (vec.size() < count || fabs(target.y - root->star.y) < curMaxDis)
+		{
+			if (left)
 			{
-                if (pSearch->left != nullptr)
-                {
-                    search_path.push(pSearch->left);
-                }
-                if (pSearch->right != nullptr)
-                {
-                    search_path.push(pSearch->right);
-				}
+				searchNearest(root->right, target, count, vec);
+			}
+			else
+			{
+				searchNearest(root->left, target, count, vec);
 			}
 		}
 	}
-
-	vector<unsigned int> vec;
-	for (auto iter : result)
+	else if (dim == Z)
 	{
-		if (iter.id != 0)
+		//1.µ±Ç°µãrootÔÚ×ó×ÓÊ÷£¬Ôò±éÀú×ó×ÓÊ÷
+		bool left = false;
+		if (target.z < root->star.z)
 		{
-            iter.dis = sqrt(iter.dis);
-			vec.push_back(iter.id);
+			searchNearest(root->left, target, count, vec);
+			left = true;
+		}
+		else
+		{
+			searchNearest(root->right, target, count, vec);
+		}
+
+		//2.Èç¹û×î´ó¶Ñ¶ÓÁĞÎ´Âú£¬Ôò½«ÁíÒ»ÁíÍâÒ»¸ö×ÓÊ÷Ò²±éÀú;
+		//3.ÒÔµ±Ç°µã»­ÇòÌå£¬Èç¹ûÆä¾àÀëĞ¡ÓÚµ±Ç°»º´æ¾àÀëµÄ×î´óÖµ£¬ÇÒµ±Ç°µãÔÚ×ó×ÓÊ÷£¬Ôò±éÀúÓÒ×ÓÊ÷
+		if (vec.size() < count || fabs(target.z - root->star.z) < curMaxDis)
+		{
+			if (left)
+			{
+				searchNearest(root->right, target, count, vec);
+			}
+			else
+			{
+				searchNearest(root->left, target, count, vec);
+			}
 		}
 	}
-	return vec;
 }
 
 void DeleteTree(TreeNode* root)
@@ -320,10 +317,10 @@ void DeleteTree(TreeNode* root)
 		while (!q.empty())
 		{
 			TreeNode* f = q.front();
-			if (f->left != NULL) q.push(f->left);
+			if (f->left != NULL) q.push(f->left);//Èç¹û×ÓÅ®²»Îª¿Õ¾Í¼ÓÈë×ÓÅ®£¬Ò»»á¶ùÉ¾³ı
 			if (f->right != NULL) q.push(f->right);
-			delete f;
-			q.pop();
+			delete f;//É¾³ıµ±Ç°½Úµã
+			q.pop();//°ÑÃ»ÓÃµÄÖ¸Õëµ¯³ö
 		}
 		root = NULL;
 	}
@@ -345,12 +342,14 @@ StarMap::StarMap(std::istream& stream)
     while (!(stream.eof())) 
     {
         ptr->id = nID++;
-        stream >> ptr->x;
-        stream >> ptr->y;
-        stream >> ptr->z;
+		stream >> strTemp;
+		ptr->x = stof(strTemp);
+        stream >> strTemp;
+		ptr->y = stof(strTemp);
+        stream >> strTemp;
+		ptr->z = stof(strTemp);
 		m_vecStars.emplace_back(*ptr);
     }
-
 	m_vecStars.pop_back(); // To get rid of the blank lines at the end of the text files.
     delete ptr;
 
@@ -366,17 +365,16 @@ StarMap::~StarMap()
 	}
 }
 
-std::vector<Star> StarMap::find(size_t n, float xCor, float yCor, float zCor)
+std::vector<Star> StarMap::find(size_t n, float x, float y, float z)
 {
-    Star pointStar;
-    pointStar.x = xCor;
-    pointStar.y = yCor;
-    pointStar.z = zCor;
+	Star pointStar(x, y, z);
 	vector<Star> ret;
-	vector<unsigned int> vec = searchNearest(m_root, pointStar, n);
+	vector<StarNode> vec;
+	searchNearest(m_root, pointStar, n, vec);
+
 	for (auto iter : vec)
 	{
-		ret.push_back(m_vecStars[iter-1]);
+		ret.push_back(m_vecStars[iter.id - 1]);
 	}
 	return ret;
 }
