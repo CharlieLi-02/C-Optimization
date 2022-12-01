@@ -3,8 +3,8 @@
 #include "Station.h"
 
 // Space to implement helper class member functions.
-// ÓÃÓÚÊµÏÖ°ïÖúÆ÷Àà³ÉÔ±º¯ÊıµÄ¿Õ¼ä¡£
-// µØÌúÕ¾ÊÇÒ»¸öÓĞÏòÎŞ»·Í¼
+// ç”¨äºå®ç°å¸®åŠ©å™¨ç±»æˆå‘˜å‡½æ•°çš„ç©ºé—´ã€‚
+// åœ°é“ç«™æ˜¯ä¸€ä¸ªæœ‰å‘æ— ç¯å›¾
 
 const int PI = 32677;
 int Distance[100] = { 0 };
@@ -17,22 +17,22 @@ void Stringsplit(const string& str, const string& splits, vector<string>& res)
     if (str == "") {
         return;
     }
-    //ÔÚ×Ö·û´®Ä©Î²Ò²¼ÓÈë·Ö¸ô·û£¬·½±ã½ØÈ¡×îºóÒ»¶Î
+    //åœ¨å­—ç¬¦ä¸²æœ«å°¾ä¹ŸåŠ å…¥åˆ†éš”ç¬¦ï¼Œæ–¹ä¾¿æˆªå–æœ€åä¸€æ®µ
     string strs = str + splits;
     size_t pos = strs.find(splits);
     int step = (int)splits.size();
-    // ÈôÕÒ²»µ½ÄÚÈİÔò×Ö·û´®ËÑË÷º¯Êı·µ»Ø npos
+    // è‹¥æ‰¾ä¸åˆ°å†…å®¹åˆ™å­—ç¬¦ä¸²æœç´¢å‡½æ•°è¿”å› npos
     while (pos != strs.npos)
     {
         string temp = strs.substr(0, pos);
         res.push_back(temp);
-        //È¥µôÒÑ·Ö¸îµÄ×Ö·û´®,ÔÚÊ£ÏÂµÄ×Ö·û´®ÖĞ½øĞĞ·Ö¸î
+        //å»æ‰å·²åˆ†å‰²çš„å­—ç¬¦ä¸²,åœ¨å‰©ä¸‹çš„å­—ç¬¦ä¸²ä¸­è¿›è¡Œåˆ†å‰²
         strs = strs.substr(pos + step, strs.size());
         pos = strs.find(splits);
     }
 }
 
-// »ñÈ¡±ê¼Ç
+// è·å–æ ‡è®°
 int locateVex(AMGGraph *AMG, string vexName) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].name.compare(vexName) == 0) {
@@ -42,7 +42,7 @@ int locateVex(AMGGraph *AMG, string vexName) {
     return -1;
 }
 
-// »ñÈ¡Ãû³Æ
+// è·å–åç§°
 string localteVex(AMGGraph* AMG, int vexId) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].id== vexId) {
@@ -62,15 +62,15 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-//ÏßÂ·¹æ»®
+//çº¿è·¯è§„åˆ’
 void  graphlines(Atlas* atlas, int start, int stop) {
     AMGGraph* amg = atlas->AMG;
     Station* station = atlas->station;
     map<int, vector<line_1>>  aline = station->lines;
     vector<string> startT = localteStatic(atlas, start);
     vector<string> stopT = localteStatic(atlas, stop);
-    //³õÊ¼µ¥Ìõ
-    //ÅĞ¶Ï·½Ïò,ÅĞ¶Ï»»³Ë
+    //åˆå§‹å•æ¡
+    //åˆ¤æ–­æ–¹å‘,åˆ¤æ–­æ¢ä¹˜
     for (int i = 0;  i < startT.size();  i++) {
         for (int j = 0; j < stopT.size(); j++) {
             if (startT[i].compare(stopT[j]) == 0) {
@@ -102,7 +102,7 @@ void  graphlines(Atlas* atlas, int start, int stop) {
     
 }
 
-//»ñÈ¡ÏßÂ·Ãû³Æ
+//è·å–çº¿è·¯åç§°
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
     Station*  station=atlas->station;
@@ -111,7 +111,7 @@ vector<string> localteStatic(Atlas* atlas,int vexId) {
     return names;
 }
 
-//ÅĞ¶Ï·½Ïò£¨ÆğÊ¼µã µ½ÖÕµã 0 £¬ÖÕµã µ½ÆğÊ¼µã·½Ïò 1 £©£¬ÅĞ¶Ï»»³ËÏßÂ·
+//åˆ¤æ–­æ–¹å‘ï¼ˆèµ·å§‹ç‚¹ åˆ°ç»ˆç‚¹ 0 ï¼Œç»ˆç‚¹ åˆ°èµ·å§‹ç‚¹æ–¹å‘ 1 ï¼‰ï¼Œåˆ¤æ–­æ¢ä¹˜çº¿è·¯
 void initTrip(Trip * trips) {
     trips->legs.clear();
 }
@@ -121,7 +121,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
@@ -134,15 +134,15 @@ void dijastral(Atlas* atlas, int start, int stop){
     s[start] = true;
     Distance[start] = 0;
     int min = 100000;
-    int pos = 0; // Î»ÖÃÏÂ±ê
-    //³õÊ¼»¯½áÊø
+    int pos = 0; // ä½ç½®ä¸‹æ ‡
+    //åˆå§‹åŒ–ç»“æŸ
     for (int i = 1; i < amg->m_vexNum; i++) {
-        // µÚÒ»´ÎÑ­»·
+        // ç¬¬ä¸€æ¬¡å¾ªç¯
         min = PI;
         for (int j = 0; j < amg->m_vexNum; j++) {
          if (!s[j] && Distance[j] < min) {
                 pos = j;
-                min = Distance[j];  //»ñÈ¡×îĞ¡µãĞÅÏ¢
+                min = Distance[j];  //è·å–æœ€å°ç‚¹ä¿¡æ¯
             }
            
         }
@@ -152,7 +152,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 //cout << "Distance" << Distance[pos]<<endl;
                 //cout << "m_arcWeight" << amg->m_arcWeight[pos][k] << endl;
                 int ace = amg->m_arcWeight[pos][k] + Distance[pos];
-                //cout <<"¾àÀë" << ace << endl;
+                //cout <<"è·ç¦»" << ace << endl;
                 Distance[k] = ace;
                 path[k] = pos;
             }
@@ -162,9 +162,9 @@ void dijastral(Atlas* atlas, int start, int stop){
     showPath(amg, start, stop);
      // app[localteVex(amg, stop)] =(amg->transfer[localteVex(amg, stop)]);
     app.push_back(localteVex(amg, stop));
-    //È·ÈÏÆğÊ¼Õ¾
+    //ç¡®è®¤èµ·å§‹ç«™
     trips->start = localteVex(amg, start);
-    //ÏßÂ·---
+    //çº¿è·¯---
     for (int i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
         vector<string> vec = amg->transfer[app[i]];
@@ -191,7 +191,7 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            // ¼ÙÈçÔÚ»»³ËÕ¾
+            // å‡å¦‚åœ¨æ¢ä¹˜ç«™
             int aps = i + 1;
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (int j = 0; j < vec.size(); j++) {
@@ -236,7 +236,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     //        trips->legs.push_back(lgs);
     //    }
     //    else {
-    //        // ¼ÙÈçÔÚ»»³ËÕ¾
+    //        // å‡å¦‚åœ¨æ¢ä¹˜ç«™
     //        vector<string> vec2 = (oc++)->second;
     //        for (int j = 0; j < vec.size(); j++) {
     //            for (int k = 0; k < vec.size(); k++) {
@@ -246,7 +246,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     //                }
     //            }
     //        }
-    //        // ²Ù×÷ÍêÖ¸Õë»ØÀ´
+    //        // æ“ä½œå®ŒæŒ‡é’ˆå›æ¥
     //        oc--;
     //        for (auto joc = app.begin(); joc != app.end(); joc++) {
     //            vector<string> vec2 = joc->second;
@@ -260,9 +260,9 @@ void dijastral(Atlas* atlas, int start, int stop){
     //    }
 
     //}
-    std::cout << "ÏûºÄµÄÊ±¼ä" << Distance[stop]<<endl;
+    //std::cout << "time cost" << Distance[stop]<<endl;
     disDelete();
-    std::cout << "-------Íê³É--------" << endl;
+    //std::cout << "completed" << endl;
 }
 
 
@@ -272,7 +272,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
         string vex = localteVex(AMG, path[endVexAdd]);
         //AMG->transfer[vex]
         app.push_back(vex);
-        cout << "ÑØÍ¾¾­¹ı" << localteVex(AMG, path[endVexAdd]) << endl;
+        //cout << "pass" << localteVex(AMG, path[endVexAdd]) << endl;
         
     }
 }
