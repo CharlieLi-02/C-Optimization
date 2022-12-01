@@ -138,12 +138,12 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop =  locateVex(AMG, dst);
-    if (start == -1) {
+    /*if (start == -1) {
         cout << "no" << src << "stop info" << endl;
     }
     if (stop == -1) {
         cout << "no" << dst << "stop info" << endl;
-    }
+    }*/
     dijastral(this, start, stop);
 	return  *trip;
 }
