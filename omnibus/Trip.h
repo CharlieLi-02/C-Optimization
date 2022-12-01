@@ -14,8 +14,7 @@ struct Trip {
   };
 
   std::string      start; // What station do you start at?
-  
-  std::vector<Leg> legs;  // Each leg of the trip, in order. 
+  std::vector<Leg> legs;  // Each leg of the trip, in order.
 };
 
 #endif
