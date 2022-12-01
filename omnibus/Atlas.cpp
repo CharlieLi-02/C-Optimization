@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include "Station.h"
-#include <cstddef>
+
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
@@ -62,12 +62,12 @@ Atlas::Atlas(std::istream& stream) {
         int  m_vexNum = 0;
         int  m_arcNum = int(plm.size() - 1);
         int gid = -1; // index
-        for(size_t i = 0; i < plm.size(); ++i)
+        for(unsigned int i = 0; i < plm.size(); ++i)
         {
             platform  prm = plm[i];
             vexName  vName;
             bool  flags = false;
-            for (unsigned int j=0; j < AMG->m_vexName.size();++j ) {
+            for (size_t j=0; j < AMG->m_vexName.size();++j ) {
                 if (!(AMG->m_vexName[j].name.compare(prm.name))) {
                     flags = true;
                     gid = AMG->m_vexName[j].id;

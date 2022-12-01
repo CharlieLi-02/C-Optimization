@@ -47,7 +47,7 @@ string localteVex(AMGGraph* AMG, int vexId) {
 
 platform  getPlatform(vector<platform>  platform_1,string name) {
     platform  form;
-    for (int i= 0; i < platform_1.size(); i++) {
+    for (size_t i= 0; i < platform_1.size(); i++) {
         if (platform_1[i].name.compare(name)) {
             form = platform_1[i];
         }
@@ -61,8 +61,8 @@ void  graphlines(Atlas* atlas, int start, int stop) {
     map<int, vector<line_1>>  aline = station->lines;
     vector<string> startT = localteStatic(atlas, start);
     vector<string> stopT = localteStatic(atlas, stop);
-    for (int i = 0;  i < startT.size();  i++) {
-        for (int j = 0; j < stopT.size(); j++) {
+    for (size_t i = 0;  i < startT.size();  i++) {
+        for (size_t j = 0; j < stopT.size(); j++) {
             if (startT[i].compare(stopT[j]) == 0) {
                 line_1 li;
                  li.line = startT[i];
@@ -108,7 +108,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
     initTrip(trips);
-    for (int i = 0; i < amg->m_vexNum; i++) {
+    for (size_t i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
          if (Distance[i] > 0 && Distance[i]!=1500) {
              path[i] = start;
@@ -132,7 +132,7 @@ void dijastral(Atlas* atlas, int start, int stop){
            
         }
         s[pos] = true;
-        for (int k = 0; k < amg->m_vexNum; k++) {
+        for (size_t k = 0; k < amg->m_vexNum; k++) {
             if (!s[k] && Distance[k] > amg->m_arcWeight[pos][k] + Distance[pos]) {
                 //cout << "Distance" << Distance[pos]<<endl;
                 //cout << "m_arcWeight" << amg->m_arcWeight[pos][k] << endl;
@@ -147,13 +147,13 @@ void dijastral(Atlas* atlas, int start, int stop){
      // app[localteVex(amg, stop)] =(amg->transfer[localteVex(amg, stop)]);
     app.push_back(localteVex(amg, stop));
     trips->start = localteVex(amg, start);
-    for (int i = 0 ; i <  app.size();  i++) {
+    for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
         vector<string> vec = amg->transfer[app[i]];
         if (vec.size() == 1) {
             lgs.line = vec[0];
             bool flags = false;
-            for (auto j = (i+1); j < app.size(); j++) {
+            for (size_t j = (i+1); j < app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[j]];
                 if (vec2.size() > 1 &&  j!= (app.size()-1)) {
                     vector<string> vec3 = amg->transfer[app[j+1]];
@@ -173,9 +173,9 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            int aps = i + 1;
+            size_t aps = i + 1;
             vector<string> vec2 = amg->transfer[app[(aps)]];
-            for (int j = 0; j < vec.size(); j++) {
+            for (size_t j = 0; j < vec.size(); j++) {
                 for (int k = 0; k < vec2.size(); k++) {
                     if (vec[j].compare(vec2[k]) == 0) {
                         lgs.line = vec[j];
@@ -184,7 +184,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 }
             }
 
-            for (auto j = i; j <app.size(); j++) {
+            for (size_t j = i; j <app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[(aps)]];
                 if (vec2.size() > 1 && j != (app.size() - 1)) {
                     vector<string> vec3 = amg->transfer[app[j + 1]];
@@ -214,7 +214,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (int i = 0; i < 100; i++) {
+     for (size_t i = 0; i < 100; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;

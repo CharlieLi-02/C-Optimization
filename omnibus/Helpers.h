@@ -9,8 +9,8 @@
 #include <vector>
 #include <iostream>
 #include <map>
-#include "Station.h"
 #include <cstddef>
+#include "Station.h"
 class Atlas;
 
 
@@ -30,11 +30,11 @@ struct AMGGraph {
 
 void Stringsplit(const string& str, const string& splits, vector<string>& res);
 int locateVex(AMGGraph *AMG, string vexName);
-string localteVex(AMGGraph* AMG, size_t vexId);
-vector<string> localteStatic(Atlas* atlas, size_t vexId);
+string localteVex(AMGGraph* AMG, int vexId);
+vector<string> localteStatic(Atlas* atlas, int vexId);
 platform  getPlatform(vector<platform>  platform_1, string name);
-void  graphlines(Atlas* atlas, size_t start, size_t stop);
-void showPath(AMGGraph* AMG, size_t startVexAdd, size_t endVexAdd);
-void dijastral(Atlas* atlas, size_t start, size_t stop);
+void  graphlines(Atlas* atlas, int start, int stop);
+void showPath(AMGGraph* AMG, int startVexAdd, int endVexAdd);
+void dijastral(Atlas* atlas, int start, int stop);
 void disDelete();
 #endif
