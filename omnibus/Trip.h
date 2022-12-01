@@ -9,12 +9,12 @@
 
 struct Trip {
   struct Leg {
-    std::string line; // What transit line do you take?  你乘坐哪条公交线
-    std::string stop; // What station do you get off at?  你在哪一站下车
+    std::string line; // What transit line do you take?
+    std::string stop; // What station do you get off at?
   };
 
-  std::string      start; // What station do you start at? 你从哪个车站出发
-  std::vector<Leg> legs;  // Each leg of the trip, in order.  //行程的每一段，按顺序
+  std::string      start; // What station do you start at?
+  std::vector<Leg> legs;  // Each leg of the trip, in order. 
 };
 
 #endif

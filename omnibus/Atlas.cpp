@@ -6,9 +6,7 @@
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
-  // 这个默认实现可能会满足您的需要。
   // if you use a different constructor, you'll need to change it.
-  // 如果使用不同的构造函数，则需要更改它。
 
   return new Atlas(stream);
 }
@@ -24,7 +22,7 @@ Atlas::Atlas(std::istream& stream) {
             AMG->m_arcWeight[i][j] = 1500;
         }
     }
-    // 加载数据
+    // input
     std::string line;
     string name = "";
     while (!stream.eof())
@@ -54,7 +52,7 @@ Atlas::Atlas(std::istream& stream) {
         }      
     }
     AMG->transfer = fer;
-    //构建有向图临界矩阵
+    //build platform
     map<string, vector<platform>>  psm = station->mymap;
     int vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
@@ -63,7 +61,7 @@ Atlas::Atlas(std::istream& stream) {
         platform  original = plm[0];       
         int  m_vexNum = 0;
         int  m_arcNum = int(plm.size() - 1);
-        int gid = -1; // 当前对象标量
+        int gid = -1; // index
         for(unsigned int i = 0; i < plm.size(); ++i)
         {
             platform  prm = plm[i];
@@ -84,7 +82,6 @@ Atlas::Atlas(std::istream& stream) {
             } 
             if (original.name.compare(prm.name) == 0) {
                 if (gid != -1) {
-                    //插入交叉自身距离
                     AMG->m_arcWeight[gid][gid] = 0;
                     gid = -1;
                 }else {
@@ -94,8 +91,6 @@ Atlas::Atlas(std::istream& stream) {
             }else {
                 int time = prm.timer - original.timer;
                 if (gid != -1) {
-                    //有相同站点
-                    //如果存在交叉，和临近距离
                     int  temp = 0;
                     for (int k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
@@ -107,9 +102,6 @@ Atlas::Atlas(std::istream& stream) {
                     AMG->m_arcWeight[temp][gid] = time;
                     gid = -1;
                 }else {
-                    //if (vName.id == 28) {
-                    //    cout << "测试" << endl;
-                    //}
                     int  temp = 0;
                     for (int k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
@@ -138,12 +130,6 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop =  locateVex(AMG, dst);
-    /*if (start == -1) {
-        cout << "no" << src << "stop info" << endl;
-    }
-    if (stop == -1) {
-        cout << "no" << dst << "stop info" << endl;
-    }*/
     dijastral(this, start, stop);
 	return  *trip;
 }
