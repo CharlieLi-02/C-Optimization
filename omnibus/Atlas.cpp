@@ -62,12 +62,12 @@ Atlas::Atlas(std::istream& stream) {
         int  m_vexNum = 0;
         int  m_arcNum = int(plm.size() - 1);
         int gid = -1; // 当前对象标量
-        for(auto i = 0; i < plm.size(); ++i)
+        for(size_t i = 0; i < plm.size(); ++i)
         {
             platform  prm = plm[i];
             vexName  vName;
             bool  flags = false;
-            for (auto j=0; j < AMG->m_vexName.size();++j ) {
+            for (size_t j = 0; j < AMG->m_vexName.size(); ++j) {
                 if (!(AMG->m_vexName[j].name.compare(prm.name))) {
                     flags = true;
                     gid = AMG->m_vexName[j].id;
@@ -95,7 +95,7 @@ Atlas::Atlas(std::istream& stream) {
                     //有相同站点
                     //如果存在交叉，和临近距离
                     int  temp = 0;
-                    for (auto k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
@@ -106,7 +106,7 @@ Atlas::Atlas(std::istream& stream) {
                     gid = -1;
                 }else {
                     int  temp = 0;
-                    for (auto k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
