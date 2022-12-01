@@ -1,4 +1,4 @@
-﻿#include "Atlas.h"
+#include "Atlas.h"
 #include <fstream>
 #include <iostream>
 #include "Station.h"
