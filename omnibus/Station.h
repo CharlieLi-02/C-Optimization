@@ -14,7 +14,7 @@ class platform {
 
 class line_1 {
  public:
-    string startName; // 
+    string startName; //
     string stopName;  //
     int  direction = 0; //
     string line;   //

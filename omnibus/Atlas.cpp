@@ -6,7 +6,9 @@
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
+  // 这个默认实现可能会满足您的需要。
   // if you use a different constructor, you'll need to change it.
+  // 如果使用不同的构造函数，则需要更改它。
 
   return new Atlas(stream);
 }
@@ -22,7 +24,7 @@ Atlas::Atlas(std::istream& stream) {
             AMG->m_arcWeight[i][j] = 1500;
         }
     }
-    // input
+    // 加载数据
     std::string line;
     string name = "";
     while (!stream.eof())
@@ -34,7 +36,6 @@ Atlas::Atlas(std::istream& stream) {
             vector<platform> from;
             station->mymap[train[1]] = from;
             name = train[1];
-            //std::cout << line << std::endl;
         }else if(!line.find("-")) {
             vector<string> train;
             Stringsplit(line, "\t", train);
@@ -48,11 +49,10 @@ Atlas::Atlas(std::istream& stream) {
             as.push_back(name);
             fer[train[1]]= as;
             station->mymap[name] = from;
-            //std::cout << line << std::endl;
         }      
     }
     AMG->transfer = fer;
-    //build platform
+    //构建有向图临界矩阵
     map<string, vector<platform>>  psm = station->mymap;
     int vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
@@ -61,13 +61,13 @@ Atlas::Atlas(std::istream& stream) {
         platform  original = plm[0];       
         int  m_vexNum = 0;
         int  m_arcNum = int(plm.size() - 1);
-        int gid = -1; // index
-        for(size_t i = 0; i < plm.size(); ++i)
+        int gid = -1; // 当前对象标量
+        for(auto i = 0; i < plm.size(); ++i)
         {
             platform  prm = plm[i];
             vexName  vName;
             bool  flags = false;
-            for (size_t j=0; j < AMG->m_vexName.size();++j ) {
+            for (auto j=0; j < AMG->m_vexName.size();++j ) {
                 if (!(AMG->m_vexName[j].name.compare(prm.name))) {
                     flags = true;
                     gid = AMG->m_vexName[j].id;
@@ -82,6 +82,7 @@ Atlas::Atlas(std::istream& stream) {
             } 
             if (original.name.compare(prm.name) == 0) {
                 if (gid != -1) {
+                    //插入交叉自身距离
                     AMG->m_arcWeight[gid][gid] = 0;
                     gid = -1;
                 }else {
@@ -91,8 +92,10 @@ Atlas::Atlas(std::istream& stream) {
             }else {
                 int time = prm.timer - original.timer;
                 if (gid != -1) {
+                    //有相同站点
+                    //如果存在交叉，和临近距离
                     int  temp = 0;
-                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (auto k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
@@ -103,7 +106,7 @@ Atlas::Atlas(std::istream& stream) {
                     gid = -1;
                 }else {
                     int  temp = 0;
-                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (auto k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
@@ -130,6 +133,9 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop =  locateVex(AMG, dst);
+    if (start == -1 || stop == -1) {
+        throw std::runtime_error ("No route");
+    }
     dijastral(this, start, stop);
 	return  *trip;
 }
