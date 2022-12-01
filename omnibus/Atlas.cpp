@@ -34,7 +34,7 @@ Atlas::Atlas(std::istream& stream) {
             vector<platform> from;
             station->mymap[train[1]] = from;
             name = train[1];
-            std::cout << line << std::endl;
+            //std::cout << line << std::endl;
         }else if(!line.find("-")) {
             vector<string> train;
             Stringsplit(line, "\t", train);
@@ -48,7 +48,7 @@ Atlas::Atlas(std::istream& stream) {
             as.push_back(name);
             fer[train[1]]= as;
             station->mymap[name] = from;
-            std::cout << line << std::endl;
+            //std::cout << line << std::endl;
         }      
     }
     AMG->transfer = fer;
@@ -62,7 +62,7 @@ Atlas::Atlas(std::istream& stream) {
         int  m_vexNum = 0;
         int  m_arcNum = int(plm.size() - 1);
         int gid = -1; // index
-        for(unsigned int i = 0; i < plm.size(); ++i)
+        for(size_t i = 0; i < plm.size(); ++i)
         {
             platform  prm = plm[i];
             vexName  vName;
