@@ -202,7 +202,7 @@ void dijastral(Atlas* atlas, int start, int stop){
             //
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (size_t j = 0; j < vec.size(); j++) {
-                for (int k = 0; k < vec2.size(); k++) {
+                for (size_t k = 0; k < vec2.size(); k++) {
                     if (vec[j].compare(vec2[k]) == 0) {
                         lgs.line = vec[j];
                         break;
