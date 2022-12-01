@@ -108,7 +108,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
     initTrip(trips);
-    for (size_t i = 0; i < amg->m_vexNum; i++) {
+    for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
          if (Distance[i] > 0 && Distance[i]!=1500) {
              path[i] = start;
@@ -132,7 +132,7 @@ void dijastral(Atlas* atlas, int start, int stop){
            
         }
         s[pos] = true;
-        for (size_t k = 0; k < amg->m_vexNum; k++) {
+        for (int k = 0; k < amg->m_vexNum; k++) {
             if (!s[k] && Distance[k] > amg->m_arcWeight[pos][k] + Distance[pos]) {
                 //cout << "Distance" << Distance[pos]<<endl;
                 //cout << "m_arcWeight" << amg->m_arcWeight[pos][k] << endl;
@@ -176,7 +176,7 @@ void dijastral(Atlas* atlas, int start, int stop){
             size_t aps = i + 1;
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (size_t j = 0; j < vec.size(); j++) {
-                for (int k = 0; k < vec2.size(); k++) {
+                for (size_t k = 0; k < vec2.size(); k++) {
                     if (vec[j].compare(vec2[k]) == 0) {
                         lgs.line = vec[j];
                         break;
