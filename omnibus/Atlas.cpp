@@ -53,7 +53,6 @@ Atlas::Atlas(std::istream& stream) {
             continue;
         }
     }
-    std::cout << endl;
     AMG->transfer = fer;
     //构建有向图临界矩阵
     map<string, vector<platform>>  psm = station->mymap;
