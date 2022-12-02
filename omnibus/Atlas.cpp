@@ -98,7 +98,7 @@ Atlas::Atlas(std::istream& stream) {
                     //有相同站点
                     //如果存在交叉，和临近距离
                     int  temp = 0;
-                    for (int k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
@@ -109,7 +109,7 @@ Atlas::Atlas(std::istream& stream) {
                     gid = -1;
                 }else {
                     int  temp = 0;
-                    for (int k = 0; k < AMG->m_vexName.size(); k++) {
+                    for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k].name) == 0) {
                             temp = AMG->m_vexName[k].id;
                             break;
