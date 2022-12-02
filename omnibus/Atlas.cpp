@@ -20,8 +20,8 @@ Atlas::Atlas(std::istream& stream) {
     trip = new Trip();
     AMG = new AMGGraph();
     map<string, vector<string>> fer = AMG->transfer;
-    for (size_t i = 0; i < 100; i++) {
-        for (size_t j = 0; j < 100; j++) {
+    for (int i = 0; i < 100; i++) {
+        for (int j = 0; j < 100; j++) {
             AMG->m_arcWeight[i][j] = QID;
         }
     }
@@ -136,8 +136,6 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     string src_1 = src;
     string dis_1 = dst;
-    trim(src_1);
-    trim(dis_1);
     int start = locateVex(AMG, src_1);
     int stop =  locateVex(AMG, dis_1);
     if (start == -1 || stop == -1) {

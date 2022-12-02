@@ -3,39 +3,14 @@
 #include "Station.h"
 
 // Space to implement helper class member functions.
-// 用于实现帮助器类成员函数的空间。
-// 地铁站是一个有向无环图
-
 
 int Distance[100] = { 0 };
 int path[100] = { 0 };
 bool s[100] = { 0 };
 vector<string>  app;
 
-void Stringsplit(const string& str, const string& splits, vector<string>& res)
-{
-    if (str == "") {
-        return;
-    }
-    //在字符串末尾也加入分隔符，方便截取最后一段
-    string strs = str + splits;
-    size_t pos = strs.find(splits);
-    int step = (int)splits.size();
-    // 若找不到内容则字符串搜索函数返回 npos
-    while (pos != strs.npos)
-    {
-        string temp = strs.substr(0, pos);
-        res.push_back(temp);
-        //去掉已分割的字符串,在剩下的字符串中进行分割
-        strs = strs.substr(pos + step, strs.size());
-        pos = strs.find(splits);
-    }
-}
-
-
-// 获取标记
 int locateVex(AMGGraph *AMG, string vexName) {
-    for (size_t i = 0; i < AMG->m_vexNum; i++) {
+    for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].name.compare(vexName) == 0) {
             return AMG->m_vexName[i].id;
         }
@@ -43,21 +18,9 @@ int locateVex(AMGGraph *AMG, string vexName) {
     return -1;
 }
 
-
-//去掉首尾空格
-void trim(string& s)
-{
-    if (!s.empty())
-    {
-        s.erase(0, s.find_first_not_of(" "));
-        s.erase(s.find_last_not_of(" ") + 1);
-    }
-}
-
-// 获取名称
 string localteVex(AMGGraph* AMG, int vexId) {
-    for (size_t i = 0; i < AMG->m_vexNum; i++) {
-        if (AMG->m_vexName[i].id== vexId) {
+    for (int i = 0; i < AMG->m_vexNum; i++) {
+        if (AMG->m_vexName[i].id == vexId) {
             return AMG->m_vexName[i].name;
         }
     }
@@ -74,15 +37,12 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-//线路规划
 void  graphlines(Atlas* atlas, int start, int stop) {
     AMGGraph* amg = atlas->AMG;
     Station* station = atlas->station;
     map<int, vector<line_1>>  aline = station->lines;
     vector<string> startT = localteStatic(atlas, start);
     vector<string> stopT = localteStatic(atlas, stop);
-    //初始单条
-    //判断方向,判断换乘
     for (size_t i = 0;  i < startT.size();  i++) {
         for (size_t j = 0; j < stopT.size(); j++) {
             if (startT[i].compare(stopT[j]) == 0) {
@@ -105,16 +65,14 @@ void  graphlines(Atlas* atlas, int start, int stop) {
                  vli.push_back(li);
                  (aline)[0] = vli;
                  return;
-             }else{
+             }
+            else {
                          
             }
         }
     }
-
-    
 }
 
-//获取线路名称
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
     string name =localteVex(amg, vexId);
@@ -122,20 +80,17 @@ vector<string> localteStatic(Atlas* atlas,int vexId) {
     return names;
 }
 
-// 获取线路站点
 vector<platform> localteStation(Atlas* atlas,string name) {
     Station* astion = atlas->station;
     vector<platform>  names = astion->mymap[name];
     return names;
 }
 
-//判断方向（起始点 到终点 0 ，终点 到起始点方向 1 ），判断换乘线路
 void initTrip(Trip * trips) {
     trips->legs.clear();
     app.clear();
 }
 
-// 下一站和当前站点共线路
 bool  ThreeStation(vector<string> vec ,string name) {
     bool  flags = false;
     for (size_t k = 0; k < vec.size(); k++) {
@@ -147,7 +102,6 @@ bool  ThreeStation(vector<string> vec ,string name) {
     return flags;
 }
 
-//上线下线 不在同一条线路
 bool Onlineandoffline(Atlas* atlas,string lines,int j) {
     bool flags = false;
     vector<platform>  plmc = localteStation(atlas, lines);
@@ -178,7 +132,6 @@ bool Onlineandoffline(Atlas* atlas,string lines,int j) {
 
 void dijastral(Atlas* atlas, int start, int stop){
 
-    
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
 
@@ -251,10 +204,8 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            //假如在换乘站
             size_t aps = i + 1;
             bool flags = false;
-            //获取线路
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (size_t j = 0; j < vec.size(); j++) {
                 for (size_t k = 0; k < vec2.size(); k++) {
@@ -264,7 +215,6 @@ void dijastral(Atlas* atlas, int start, int stop){
                     }
                 }
             }
-
             for (size_t j = aps; j <app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[(j)]];
                 if (vec2.size() > 1 && j != (size_t)(app.size() - 1)) {
@@ -283,7 +233,6 @@ void dijastral(Atlas* atlas, int start, int stop){
                 i = j;
             }
             if (i==(app.size()-1)) {
-                //到达终点站下车
                 lgs.stop = app[app.size() - 1];
                 trips->legs.push_back(lgs);
                 break;
@@ -293,7 +242,6 @@ void dijastral(Atlas* atlas, int start, int stop){
     }
     disDelete();
 }
-
 
 void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
