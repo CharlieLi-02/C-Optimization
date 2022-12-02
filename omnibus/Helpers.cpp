@@ -169,7 +169,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     showPath(amg, start, stop);
     if (app.size() == 0) {
         disDelete();
-        return;
+        throw std::runtime_error("No route.");
     }
     app.push_back(localteVex(amg, stop));
     trips->start = localteVex(amg, start);
