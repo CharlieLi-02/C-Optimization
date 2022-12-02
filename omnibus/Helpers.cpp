@@ -110,8 +110,6 @@ void  graphlines(Atlas* atlas, int start, int stop) {
             }
         }
     }
-
-    
 }
 
 //获取线路名称
@@ -222,22 +220,20 @@ void dijastral(Atlas* atlas, int start, int stop){
     showPath(amg, start, stop);
     if (app.size() == 0) {
         disDelete();
-        std::cout << "-------完成--------" << endl;
         return;
     }
-    cout << "终点站:" << localteVex(amg, stop) << endl;
     app.push_back(localteVex(amg, stop));
     //确认起始站
     trips->start = localteVex(amg, start);
     //线路---
-    for (int i = 0 ; i <  app.size();  i++) {
+    for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
         vector<string> vec = amg->transfer[app[i]];
         if (vec.size() == 1) {
             // 无换乘情况
             lgs.line = vec[0];
             bool flags = false;
-            for (auto j = (i+1); j < app.size(); j++) {
+            for (size_t j = (i+1); j < app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[j]];
                 if (vec2.size() > 1 &&  j!= (app.size()-1)) {
                     //第三个站点和第一个站点不在一条线上，换乘                   
@@ -268,12 +264,12 @@ void dijastral(Atlas* atlas, int start, int stop){
         }
         else {
             //假如在换乘站
-            int aps = i + 1;
+            size_t aps = i + 1;
             bool flags = false;
             //获取线路
             vector<string> vec2 = amg->transfer[app[(aps)]];
-            for (int j = 0; j < vec.size(); j++) {
-                for (int k = 0; k < vec2.size(); k++) {
+            for (size_t j = 0; j < vec.size(); j++) {
+                for (size_t k = 0; k < vec2.size(); k++) {
                     if (vec[j].compare(vec2[k]) == 0) {
                         lgs.line = vec[j];
                         break;
@@ -281,7 +277,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 }
             }
 
-            for (auto j = aps; j <app.size(); j++) {
+            for (size_t j = aps; j <app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[(j)]];
                 if (vec2.size() > 1 && j != (app.size() - 1)) {
                     vector<string> vec3 = amg->transfer[app[j + 1]];
