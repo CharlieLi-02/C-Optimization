@@ -9,7 +9,6 @@
 #include <vector>
 #include <iostream>
 #include <map>
-#include <cstddef>
 #include "Station.h"
 
 const int PI = 32677;
@@ -36,6 +35,7 @@ struct AMGGraph {
 void Stringsplit(const string& str, const string& splits, vector<string>& res);
 int locateVex(AMGGraph *AMG, string vexName);
 string localteVex(AMGGraph* AMG, int vexId);
+void trim(string& s);
 vector<string> localteStatic(Atlas* atlas, int vexId);
 platform  getPlatform(vector<platform>  platform_1, string name);
 bool  ThreeStation(vector<string> vec, string name);
