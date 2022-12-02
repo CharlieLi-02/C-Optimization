@@ -3,8 +3,8 @@
 #include "Station.h"
 
 // Space to implement helper class member functions.
-// ÓÃÓÚÊµÏÖ°ïÖúÆ÷Àà³ÉÔ±º¯ÊıµÄ¿Õ¼ä¡£
-// µØÌúÕ¾ÊÇÒ»¸öÓĞÏòÎŞ»·Í¼
+// ç”¨äºå®ç°å¸®åŠ©å™¨ç±»æˆå‘˜å‡½æ•°çš„ç©ºé—´ã€‚
+// åœ°é“ç«™æ˜¯ä¸€ä¸ªæœ‰å‘æ— ç¯å›¾
 
 
 int Distance[100] = { 0 };
@@ -17,23 +17,23 @@ void Stringsplit(const string& str, const string& splits, vector<string>& res)
     if (str == "") {
         return;
     }
-    //ÔÚ×Ö·û´®Ä©Î²Ò²¼ÓÈë·Ö¸ô·û£¬·½±ã½ØÈ¡×îºóÒ»¶Î
+    //åœ¨å­—ç¬¦ä¸²æœ«å°¾ä¹ŸåŠ å…¥åˆ†éš”ç¬¦ï¼Œæ–¹ä¾¿æˆªå–æœ€åä¸€æ®µ
     string strs = str + splits;
     size_t pos = strs.find(splits);
     int step = (int)splits.size();
-    // ÈôÕÒ²»µ½ÄÚÈİÔò×Ö·û´®ËÑË÷º¯Êı·µ»Ø npos
+    // è‹¥æ‰¾ä¸åˆ°å†…å®¹åˆ™å­—ç¬¦ä¸²æœç´¢å‡½æ•°è¿”å› npos
     while (pos != strs.npos)
     {
         string temp = strs.substr(0, pos);
         res.push_back(temp);
-        //È¥µôÒÑ·Ö¸îµÄ×Ö·û´®,ÔÚÊ£ÏÂµÄ×Ö·û´®ÖĞ½øĞĞ·Ö¸î
+        //å»æ‰å·²åˆ†å‰²çš„å­—ç¬¦ä¸²,åœ¨å‰©ä¸‹çš„å­—ç¬¦ä¸²ä¸­è¿›è¡Œåˆ†å‰²
         strs = strs.substr(pos + step, strs.size());
         pos = strs.find(splits);
     }
 }
 
 
-// »ñÈ¡±ê¼Ç
+// è·å–æ ‡è®°
 int locateVex(AMGGraph *AMG, string vexName) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].name.compare(vexName) == 0) {
@@ -44,7 +44,7 @@ int locateVex(AMGGraph *AMG, string vexName) {
 }
 
 
-//È¥µôÊ×Î²¿Õ¸ñ
+//å»æ‰é¦–å°¾ç©ºæ ¼
 void trim(string& s)
 {
     if (!s.empty())
@@ -54,7 +54,7 @@ void trim(string& s)
     }
 }
 
-// »ñÈ¡Ãû³Æ
+// è·å–åç§°
 string localteVex(AMGGraph* AMG, int vexId) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].id== vexId) {
@@ -66,7 +66,7 @@ string localteVex(AMGGraph* AMG, int vexId) {
 
 platform  getPlatform(vector<platform>  platform_1,string name) {
     platform  form;
-    for (int i= 0; i < platform_1.size(); i++) {
+    for (size_t i = 0; i < platform_1.size(); i++) {
         if (platform_1[i].name.compare(name)) {
             form = platform_1[i];
         }
@@ -74,17 +74,17 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-//ÏßÂ·¹æ»®
+//çº¿è·¯è§„åˆ’
 void  graphlines(Atlas* atlas, int start, int stop) {
     AMGGraph* amg = atlas->AMG;
     Station* station = atlas->station;
     map<int, vector<line_1>>  aline = station->lines;
     vector<string> startT = localteStatic(atlas, start);
     vector<string> stopT = localteStatic(atlas, stop);
-    //³õÊ¼µ¥Ìõ
-    //ÅĞ¶Ï·½Ïò,ÅĞ¶Ï»»³Ë
-    for (int i = 0;  i < startT.size();  i++) {
-        for (int j = 0; j < stopT.size(); j++) {
+    //åˆå§‹å•æ¡
+    //åˆ¤æ–­æ–¹å‘,åˆ¤æ–­æ¢ä¹˜
+    for (size_t i = 0;  i < startT.size();  i++) {
+        for (size_t j = 0; j < stopT.size(); j++) {
             if (startT[i].compare(stopT[j]) == 0) {
                 line_1 li;
                  li.line = startT[i];
@@ -114,7 +114,7 @@ void  graphlines(Atlas* atlas, int start, int stop) {
     
 }
 
-//»ñÈ¡ÏßÂ·Ãû³Æ
+//è·å–çº¿è·¯åç§°
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
     string name =localteVex(amg, vexId);
@@ -122,23 +122,23 @@ vector<string> localteStatic(Atlas* atlas,int vexId) {
     return names;
 }
 
-// »ñÈ¡ÏßÂ·Õ¾µã
+// è·å–çº¿è·¯ç«™ç‚¹
 vector<platform> localteStation(Atlas* atlas,string name) {
     Station* astion = atlas->station;
     vector<platform>  names = astion->mymap[name];
     return names;
 }
 
-//ÅĞ¶Ï·½Ïò£¨ÆğÊ¼µã µ½ÖÕµã 0 £¬ÖÕµã µ½ÆğÊ¼µã·½Ïò 1 £©£¬ÅĞ¶Ï»»³ËÏßÂ·
+//åˆ¤æ–­æ–¹å‘ï¼ˆèµ·å§‹ç‚¹ åˆ°ç»ˆç‚¹ 0 ï¼Œç»ˆç‚¹ åˆ°èµ·å§‹ç‚¹æ–¹å‘ 1 ï¼‰ï¼Œåˆ¤æ–­æ¢ä¹˜çº¿è·¯
 void initTrip(Trip * trips) {
     trips->legs.clear();
     app.clear();
 }
 
-// ÏÂÒ»Õ¾ºÍµ±Ç°Õ¾µã¹²ÏßÂ·
+// ä¸‹ä¸€ç«™å’Œå½“å‰ç«™ç‚¹å…±çº¿è·¯
 bool  ThreeStation(vector<string> vec ,string name) {
     bool  flags = false;
-    for (int k = 0; k < vec.size(); k++) {
+    for (size_t k = 0; k < vec.size(); k++) {
         if (vec[k].compare(name) == 0) {
             flags = true;
             break;
@@ -147,11 +147,11 @@ bool  ThreeStation(vector<string> vec ,string name) {
     return flags;
 }
 
-//ÉÏÏßÏÂÏß ²»ÔÚÍ¬Ò»ÌõÏßÂ·
+//ä¸Šçº¿ä¸‹çº¿ ä¸åœ¨åŒä¸€æ¡çº¿è·¯
 bool Onlineandoffline(Atlas* atlas,string lines,int j) {
     bool flags = false;
     vector<platform>  plmc = localteStation(atlas, lines);
-    for (int k = 0; k < plmc.size(); k++) {
+    for (size_t k = 0; k < plmc.size(); k++) {
         if (plmc[k].name.compare(app[j]) == 0) {
             if (k == 0) {
                 if (plmc[(k + 1)].name.compare(app[(j + 1)]) == 0) {
@@ -182,7 +182,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
@@ -195,15 +195,15 @@ void dijastral(Atlas* atlas, int start, int stop){
     s[start] = true;
     Distance[start] = 0;
     int min = PI;
-    int pos = 0; // Î»ÖÃÏÂ±ê
-    //³õÊ¼»¯½áÊø
+    int pos = 0; // ä½ç½®ä¸‹æ ‡
+    //åˆå§‹åŒ–ç»“æŸ
     for (int i = 1; i < amg->m_vexNum; i++) {
-        // µÚÒ»´ÎÑ­»·
+        // ç¬¬ä¸€æ¬¡å¾ªç¯
         min = PI;
         for (int j = 0; j < amg->m_vexNum; j++) {
          if (!s[j] && Distance[j] < min) {
                 pos = j;
-                min = Distance[j];  //»ñÈ¡×îĞ¡µãĞÅÏ¢
+                min = Distance[j];  //è·å–æœ€å°ç‚¹ä¿¡æ¯
             }
            
         }
@@ -213,7 +213,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 //cout << "Distance" << Distance[pos]<<endl;
                 //cout << "m_arcWeight" << amg->m_arcWeight[pos][k] << endl;
                 int ace = amg->m_arcWeight[pos][k] + Distance[pos];
-                //cout <<"¾àÀë" << ace << endl;
+                //cout <<"è·ç¦»" << ace << endl;
                 Distance[k] = ace;
                 path[k] = pos;
             }
@@ -222,34 +222,34 @@ void dijastral(Atlas* atlas, int start, int stop){
     showPath(amg, start, stop);
     if (app.size() == 0) {
         disDelete();
-        std::cout << "-------Íê³É--------" << endl;
+        std::cout << "-------å®Œæˆ--------" << endl;
         return;
     }
-    cout << "ÖÕµãÕ¾:" << localteVex(amg, stop) << endl;
+    cout << "ç»ˆç‚¹ç«™:" << localteVex(amg, stop) << endl;
     app.push_back(localteVex(amg, stop));
-    //È·ÈÏÆğÊ¼Õ¾
+    //ç¡®è®¤èµ·å§‹ç«™
     trips->start = localteVex(amg, start);
-    //ÏßÂ·---
+    //çº¿è·¯---
     for (int i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
         vector<string> vec = amg->transfer[app[i]];
         if (vec.size() == 1) {
-            // ÎŞ»»³ËÇé¿ö
+            // æ— æ¢ä¹˜æƒ…å†µ
             lgs.line = vec[0];
             bool flags = false;
             for (auto j = (i+1); j < app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[j]];
                 if (vec2.size() > 1 &&  j!= (app.size()-1)) {
-                    //µÚÈı¸öÕ¾µãºÍµÚÒ»¸öÕ¾µã²»ÔÚÒ»ÌõÏßÉÏ£¬»»³Ë                   
+                    //ç¬¬ä¸‰ä¸ªç«™ç‚¹å’Œç¬¬ä¸€ä¸ªç«™ç‚¹ä¸åœ¨ä¸€æ¡çº¿ä¸Šï¼Œæ¢ä¹˜                   
                     vector<string> vec3 = amg->transfer[app[(j + 1)]];
                     flags =ThreeStation(vec3, lgs.line);
-                    //ÑØÏß²éÑ¯
+                    //æ²¿çº¿æŸ¥è¯¢
                     if (flags) {
-                        //ÉÏÏßÏÂÏß ²»ÔÚÍ¬Ò»ÌõÏßÂ·
+                        //ä¸Šçº¿ä¸‹çº¿ ä¸åœ¨åŒä¸€æ¡çº¿è·¯
                         flags = Onlineandoffline(atlas, lgs.line, j);
                     }
                     if (!flags) {
-                        //·¢Éú»»³Ë
+                        //å‘ç”Ÿæ¢ä¹˜
                         lgs.stop = app[j];
                         flags = false;
                         break;
@@ -259,7 +259,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 i = j;
             }
             if (i == (app.size() - 1)) {
-                //µ½´ïÖÕµãÕ¾ÏÂ³µ
+                //åˆ°è¾¾ç»ˆç‚¹ç«™ä¸‹è½¦
                 lgs.stop = app[app.size() - 1];
                 trips->legs.push_back(lgs);
                 break;
@@ -267,10 +267,10 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            //¼ÙÈçÔÚ»»³ËÕ¾
+            //å‡å¦‚åœ¨æ¢ä¹˜ç«™
             int aps = i + 1;
             bool flags = false;
-            //»ñÈ¡ÏßÂ·
+            //è·å–çº¿è·¯
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (int j = 0; j < vec.size(); j++) {
                 for (int k = 0; k < vec2.size(); k++) {
@@ -285,14 +285,14 @@ void dijastral(Atlas* atlas, int start, int stop){
                 vector<string> vec2 = amg->transfer[app[(j)]];
                 if (vec2.size() > 1 && j != (app.size() - 1)) {
                     vector<string> vec3 = amg->transfer[app[j + 1]];
-                    //µÚÈı¸öÕ¾µãºÍµÚÒ»¸öÕ¾µã²»ÔÚÒ»ÌõÏßÉÏ£¬»»³Ë
+                    //ç¬¬ä¸‰ä¸ªç«™ç‚¹å’Œç¬¬ä¸€ä¸ªç«™ç‚¹ä¸åœ¨ä¸€æ¡çº¿ä¸Šï¼Œæ¢ä¹˜
                     flags = ThreeStation(vec3, lgs.line);
                     if (flags) {
-                        //ÉÏÏßÏÂÏß ²»ÔÚÍ¬Ò»ÌõÏßÂ·
+                        //ä¸Šçº¿ä¸‹çº¿ ä¸åœ¨åŒä¸€æ¡çº¿è·¯
                         flags = Onlineandoffline(atlas, lgs.line, j);
                     }
                     if (!flags) {
-                        //·¢Éú»»³Ë
+                        //å‘ç”Ÿæ¢ä¹˜
                         lgs.stop = app[j];
                         flags = false;
                         break;
@@ -302,7 +302,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                 i = j;
             }
             if (i==(app.size()-1)) {
-                //µ½´ïÖÕµãÕ¾ÏÂ³µ
+                //åˆ°è¾¾ç»ˆç‚¹ç«™ä¸‹è½¦
                 lgs.stop = app[app.size() - 1];
                 trips->legs.push_back(lgs);
                 break;
@@ -310,9 +310,7 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
     }
-    std::cout << "ÏûºÄµÄÊ±¼ä:" << Distance[stop]<<endl;
     disDelete();
-    std::cout << "-------Íê³É--------" << endl;
 }
 
 
@@ -322,8 +320,6 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
         string vex = localteVex(AMG, path[endVexAdd]);
         //AMG->transfer[vex]
         app.push_back(vex);
-        cout << "ÑØÍ¾¾­¹ı:" << localteVex(AMG, path[endVexAdd]) << endl;
-        
     }
 }
 
