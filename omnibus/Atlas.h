@@ -4,7 +4,6 @@
 #include <istream>
 #include <string>
 #include <cstddef>
-
 #include "Trip.h"
 #include "Helpers.h"
 

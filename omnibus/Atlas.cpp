@@ -21,7 +21,7 @@ Atlas::Atlas(std::istream& stream) {
     map<string, vector<string>> fer = AMG->transfer;
     for (int i = 0; i < 100; i++) {
         for (int j = 0; j < 100; j++) {
-            AMG->m_arcWeight[i][j] = 1500;
+            AMG->m_arcWeight[i][j] = QID;
         }
     }
     // 加载数据
@@ -67,7 +67,7 @@ Atlas::Atlas(std::istream& stream) {
             platform  prm = plm[i];
             vexName  vName;
             bool  flags = false;
-            for (size_t j = 0; j < AMG->m_vexName.size(); ++j) {
+            for (size_t j = 0; j < AMG->m_vexName.size();++j ) {
                 if (!(AMG->m_vexName[j].name.compare(prm.name))) {
                     flags = true;
                     gid = AMG->m_vexName[j].id;
@@ -134,7 +134,7 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop =  locateVex(AMG, dst);
     if (start == -1 || stop == -1) {
-        throw std::runtime_error ("No route");
+        throw std::runtime_error ("No route.");
     }
     dijastral(this, start, stop);
 	return  *trip;

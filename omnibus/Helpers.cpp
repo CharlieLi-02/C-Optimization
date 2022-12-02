@@ -4,7 +4,7 @@
 
 // Space to implement helper class member functions.
 
-const int PI = 32677;
+
 int Distance[100] = { 0 };
 int path[100] = { 0 };
 bool s[100] = { 0 };
@@ -15,22 +15,18 @@ void Stringsplit(const string& str, const string& splits, vector<string>& res)
     if (str == "") {
         return;
     }
-    //
     string strs = str + splits;
     size_t pos = strs.find(splits);
     int step = (int)splits.size();
-    //
     while (pos != strs.npos)
     {
         string temp = strs.substr(0, pos);
         res.push_back(temp);
-        //
         strs = strs.substr(pos + step, strs.size());
         pos = strs.find(splits);
     }
 }
 
-//
 int locateVex(AMGGraph *AMG, string vexName) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].name.compare(vexName) == 0) {
@@ -40,7 +36,6 @@ int locateVex(AMGGraph *AMG, string vexName) {
     return -1;
 }
 
-//
 string localteVex(AMGGraph* AMG, int vexId) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
         if (AMG->m_vexName[i].id== vexId) {
@@ -60,15 +55,12 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-//
 void  graphlines(Atlas* atlas, int start, int stop) {
     AMGGraph* amg = atlas->AMG;
     Station* station = atlas->station;
     map<int, vector<line_1>>  aline = station->lines;
     vector<string> startT = localteStatic(atlas, start);
     vector<string> stopT = localteStatic(atlas, stop);
-    //
-    //
     for (size_t i = 0;  i < startT.size();  i++) {
         for (size_t j = 0; j < stopT.size(); j++) {
             if (startT[i].compare(stopT[j]) == 0) {
@@ -91,16 +83,13 @@ void  graphlines(Atlas* atlas, int start, int stop) {
                  vli.push_back(li);
                  (aline)[0] = vli;
                  return;
-             }else{
+             } else{
                          
             }
         }
     }
-
-    
 }
 
-//
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
     string name =localteVex(amg, vexId);
@@ -108,22 +97,64 @@ vector<string> localteStatic(Atlas* atlas,int vexId) {
     return names;
 }
 
-//
+vector<platform> localteStation(Atlas* atlas,string name) {
+    Station* astion = atlas->station;
+    vector<platform>  names = astion->mymap[name];
+    return names;
+}
+
 void initTrip(Trip * trips) {
     trips->legs.clear();
     app.clear();
 }
 
-void dijastral(Atlas* atlas, int start, int stop){
+bool  ThreeStation(vector<string> vec ,string name) {
+    bool  flags = false;
+    for (size_t k = 0; k < vec.size(); k++) {
+        if (vec[k].compare(name) == 0) {
+            flags = true;
+            break;
+        }
+    }
+    return flags;
+}
 
-    
+bool Onlineandoffline(Atlas* atlas,string lines,size_t j) {
+    bool flags = false;
+    vector<platform>  plmc = localteStation(atlas, lines);
+    for (size_t k = 0; k < plmc.size(); k++) {
+        if (plmc[k].name.compare(app[j]) == 0) {
+            if (k == 0) {
+                if (plmc[(k + 1)].name.compare(app[(j + 1)]) == 0) {
+                    flags = true;
+                    break;
+                }
+            }
+            else if (k == (plmc.size() - 1)) {
+                if (plmc[(k - 1)].name.compare(app[(j + 1)]) == 0) {
+                    flags = true;
+                    break;
+                }
+            }
+            else {
+                if ((plmc[(k - 1)].name.compare(app[(j + 1)]) == 0) || (plmc[(k + 1)].name.compare(app[(j + 1)])==0)) {
+                    flags = true;
+                    break;
+                }
+            }
+        }
+    }
+    return flags;
+}
+
+void dijastral(Atlas* atlas, int start, int stop){
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
-    //
+
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
-         if (Distance[i] > 0 && Distance[i]!=1500) {
+         if (Distance[i] > 0 && Distance[i]!= QID) {
              path[i] = start;
          }else {
              path[i] = -1;
@@ -131,16 +162,14 @@ void dijastral(Atlas* atlas, int start, int stop){
     }
     s[start] = true;
     Distance[start] = 0;
-    int min = 100000;
-    int pos = 0; //
-    //
+    int min = PI;
+    int pos = 0;
     for (int i = 1; i < amg->m_vexNum; i++) {
-        //
         min = PI;
         for (int j = 0; j < amg->m_vexNum; j++) {
          if (!s[j] && Distance[j] < min) {
                 pos = j;
-                min = Distance[j];  //
+                min = Distance[j];
             }
            
         }
@@ -154,31 +183,27 @@ void dijastral(Atlas* atlas, int start, int stop){
         }
     }   
     showPath(amg, start, stop);
-
+    if (app.size() == 0) {
+        disDelete();
+        return;
+    }
     app.push_back(localteVex(amg, stop));
-    //
     trips->start = localteVex(amg, start);
-    //
-    for (size_t i = 0 ; i < app.size();  i++) {
+    for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
         vector<string> vec = amg->transfer[app[i]];
         if (vec.size() == 1) {
-            //
             lgs.line = vec[0];
             bool flags = false;
             for (size_t j = (i+1); j < app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[j]];
                 if (vec2.size() > 1 &&  j!= (app.size()-1)) {
-                    //
-                    vector<string> vec3 = amg->transfer[app[j+1]];
-                    for (size_t k = 0; k < vec3.size(); k++) {
-                        if (vec3[k].compare(lgs.line) == 0) {
-                            flags = true;
-                            break;
-                        }
+                    vector<string> vec3 = amg->transfer[app[(j + 1)]];
+                    flags =ThreeStation(vec3, lgs.line);
+                    if (flags) {
+                        flags = Onlineandoffline(atlas, lgs.line, j);
                     }
                     if (!flags) {
-                        //
                         lgs.stop = app[j];
                         flags = false;
                         break;
@@ -188,7 +213,6 @@ void dijastral(Atlas* atlas, int start, int stop){
                 i = j;
             }
             if (i == (app.size() - 1)) {
-                //
                 lgs.stop = app[app.size() - 1];
                 trips->legs.push_back(lgs);
                 break;
@@ -196,10 +220,8 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            //
             size_t aps = i + 1;
             bool flags = false;
-            //
             vector<string> vec2 = amg->transfer[app[(aps)]];
             for (size_t j = 0; j < vec.size(); j++) {
                 for (size_t k = 0; k < vec2.size(); k++) {
@@ -210,15 +232,13 @@ void dijastral(Atlas* atlas, int start, int stop){
                 }
             }
 
-            for (size_t j = aps; j <app.size(); j++) {
+            for (size_t j = aps; j < app.size(); j++) {
                 vector<string> vec2 = amg->transfer[app[(j)]];
                 if (vec2.size() > 1 && j != (app.size() - 1)) {
                     vector<string> vec3 = amg->transfer[app[j + 1]];
-                    for (size_t k = 0; k < vec3.size(); k++) {
-                        if (vec3[k].compare(lgs.line) == 0) {
-                            flags = true;
-                            break;
-                        }
+                    flags = ThreeStation(vec3, lgs.line);
+                    if (flags) {
+                        flags = Onlineandoffline(atlas, lgs.line, j);
                     }
                     if (!flags) {
                         lgs.stop = app[j];
@@ -236,7 +256,9 @@ void dijastral(Atlas* atlas, int start, int stop){
             }
             trips->legs.push_back(lgs);
         }
+
     }
+
     disDelete();
 }
 
@@ -247,6 +269,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
         string vex = localteVex(AMG, path[endVexAdd]);
         //AMG->transfer[vex]
         app.push_back(vex);
+        
     }
 }
 
