@@ -7,7 +7,7 @@
 #include "Trip.h"
 #include "Helpers.h"
 
-class Station;
+
 
 class Atlas {
 public:

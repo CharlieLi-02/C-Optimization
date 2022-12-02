@@ -247,7 +247,6 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
         showPath(AMG, startVexAdd, path[endVexAdd]);
         string vex = localteVex(AMG, path[endVexAdd]);
-        AMG->transfer[vex];
         app.push_back(vex);
     }
 }
