@@ -133,7 +133,7 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop =  locateVex(AMG, dst);
-    if (start == -1 || stop == -1) {
+    if (start == -1 && stop == -1) {
         throw std::runtime_error ("No route.");
     }
     dijastral(this, start, stop);
