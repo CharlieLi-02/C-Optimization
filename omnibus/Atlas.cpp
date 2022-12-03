@@ -36,7 +36,7 @@ Atlas::Atlas(std::istream& stream) {
         stream >> name;
         if ( !name.find("TRAIN:") || !name.find("BUS:")){
             vector<platform> *from=new vector<platform>;
-            std::getline(stream >> std::ws, name_line);
+            std::getline(stream>> std::ws, name_line);
             station->mymap.insert(pair<string, vector<platform>*>(name_line, from));
             if (!name.find("BUS:")) {
                 T_B = "B";
@@ -149,8 +149,15 @@ Atlas::Atlas(std::istream& stream) {
 }
 
 Atlas::~Atlas() {
+    map<string, vector<platform>*>  psm = station->mymap;
+    for (auto oc = psm.begin(); oc != psm.end(); oc++)
+    {
+        delete oc->second;
+        oc->second = NULL;
+        psm.erase(oc);
+    }
     delete station;
-    station = NULL;
+    station = NULL;    
     delete AMG;
     AMG = NULL;
     delete trip;

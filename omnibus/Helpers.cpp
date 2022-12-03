@@ -4,9 +4,9 @@
 
 // Space to implement helper class member functions.
 
-int Distance[100] = { 0 };
-int path[100] = { 0 };
-bool s[100] = { 0 };
+int Distance[250] = { 0 };
+int path[250] = { 0 };
+bool s[250] = { 0 };
 vector<string>  app;
 
 int locateVex(AMGGraph *AMG, string vexName) {
@@ -254,7 +254,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (size_t i = 0; i < 100; i++) {
+     for (size_t i = 0; i < 250; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
