@@ -37,53 +37,53 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-void  graphlines(Atlas* atlas, int start, int stop) {
-    AMGGraph* amg = atlas->AMG;
-    Station* station = atlas->station;
-    map<int, vector<line_1>>  aline = station->lines;
-    vector<string> startT = localteStatic(atlas, start);
-    vector<string> stopT = localteStatic(atlas, stop);
-    for (size_t i = 0;  i < startT.size();  i++) {
-        for (size_t j = 0; j < stopT.size(); j++) {
-            if (startT[i].compare(stopT[j]) == 0) {
-                line_1 li;
-                 li.line = startT[i];
-                 li.startName = localteVex(amg, start);
-                 li.stopName =  localteVex(amg, stop);
-                 vector<platform> plform =station->mymap[li.line];
-                 platform startform = getPlatform(plform, li.startName);
-                 platform stopform = getPlatform(plform, li.stopName);
-                 if (startform.timer > stopform.timer) {
-                     li.direction = 1;
-                     li.times = startform.timer - stopform.timer;
-                 }
-                 else {
-                     li.direction = 0;
-                     li.times = stopform.timer - startform.timer;
-                 }
-                 vector<line_1>  vli;
-                 vli.push_back(li);
-                 (aline)[0] = vli;
-                 return;
-             }
-            else {
-                         
-            }
-        }
-    }
-}
+//void  graphlines(Atlas* atlas, int start, int stop) {
+//    AMGGraph* amg = atlas->AMG;
+//    Station* station = atlas->station;
+//    map<int, vector<line_1>>  aline = station->lines;
+//    vector<string> startT = localteStatic(atlas, start);
+//    vector<string> stopT = localteStatic(atlas, stop);
+//    for (size_t i = 0;  i < startT.size();  i++) {
+//        for (size_t j = 0; j < stopT.size(); j++) {
+//            if (startT[i].compare(stopT[j]) == 0) {
+//                line_1 li;
+//                 li.line = startT[i];
+//                 li.startName = localteVex(amg, start);
+//                 li.stopName =  localteVex(amg, stop);
+//                 vector<platform> plform =station->mymap[li.line];
+//                 platform startform = getPlatform(plform, li.startName);
+//                 platform stopform = getPlatform(plform, li.stopName);
+//                 if (startform.timer > stopform.timer) {
+//                     li.direction = 1;
+//                     li.times = startform.timer - stopform.timer;
+//                 }
+//                 else {
+//                     li.direction = 0;
+//                     li.times = stopform.timer - startform.timer;
+//                 }
+//                 vector<line_1>  vli;
+//                 vli.push_back(li);
+//                 (aline)[0] = vli;
+//                 return;
+//             }
+//            else {
+//                         
+//            }
+//        }
+//    }
+//}
 
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
     string name =localteVex(amg, vexId);
-    vector<string>  names = amg->transfer[name];
+    vector<string>  names = (amg->transfer)[name];
     return names;
 }
 
 vector<platform> localteStation(Atlas* atlas,string name) {
     Station* astion = atlas->station;
-    vector<platform>  names = astion->mymap[name];
-    return names;
+    vector<platform>  *names = astion->mymap[name];
+    return *names;
 }
 
 void initTrip(Trip * trips) {
@@ -94,7 +94,7 @@ void initTrip(Trip * trips) {
 bool  ThreeStation(vector<string> vec ,string name) {
     bool  flags = false;
     for (size_t k = 0; k < vec.size(); k++) {
-        if (vec[k].compare(name) == 0) {
+        if ((vec)[k].compare(name) == 0) {
             flags = true;
             break;
         }
@@ -166,8 +166,9 @@ void dijastral(Atlas* atlas, int start, int stop){
             }
         }
     }   
+    app.push_back(localteVex(amg, start));
     showPath(amg, start, stop);
-    if (app.size() == 0) {
+    if (app.size() == 1) {
         disDelete();
         throw std::runtime_error("No route.");
     }
@@ -175,14 +176,14 @@ void dijastral(Atlas* atlas, int start, int stop){
     trips->start = localteVex(amg, start);
     for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
-        vector<string> vec = amg->transfer[app[i]];
+        vector<string> vec =( amg->transfer)[app[i]];
         if (vec.size() == 1) {
-            lgs.line = vec[0];
+            lgs.line = (vec)[0];
             bool flags = false;
             for (size_t j = (i+1); j < app.size(); j++) {
-                vector<string> vec2 = amg->transfer[app[j]];
+                vector<string> vec2 = (amg->transfer)[app[j]];
                 if (vec2.size() > 1 &&  j!= (app.size()-1)) {
-                    vector<string> vec3 = amg->transfer[app[(j + 1)]];
+                    vector<string> vec3 = (amg->transfer)[app[(j + 1)]];
                     flags =ThreeStation(vec3, lgs.line);
                     if (flags) {
                         flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
@@ -206,7 +207,7 @@ void dijastral(Atlas* atlas, int start, int stop){
         else {
             size_t aps = i + 1;
             bool flags = false;
-            vector<string> vec2 = amg->transfer[app[(aps)]];
+            vector<string> vec2 = (amg->transfer)[app[(aps)]];
             for (size_t j = 0; j < vec.size(); j++) {
                 for (size_t k = 0; k < vec2.size(); k++) {
                     if (vec[j].compare(vec2[k]) == 0) {
@@ -216,9 +217,9 @@ void dijastral(Atlas* atlas, int start, int stop){
                 }
             }
             for (size_t j = aps; j <app.size(); j++) {
-                vector<string> vec2 = amg->transfer[app[(j)]];
+                vec2 =(amg->transfer)[app[(j)]];
                 if (vec2.size() > 1 && j != (size_t)(app.size() - 1)) {
-                    vector<string> vec3 = amg->transfer[app[j + 1]];
+                    vector<string> vec3 = (amg->transfer)[app[j + 1]];
                     flags = ThreeStation(vec3, lgs.line);
                     if (flags) {
                         flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
@@ -247,6 +248,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
         showPath(AMG, startVexAdd, path[endVexAdd]);
         string vex = localteVex(AMG, path[endVexAdd]);
+        //cout << vex << endl;
         app.push_back(vex);
     }
 }

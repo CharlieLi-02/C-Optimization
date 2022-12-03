@@ -16,9 +16,9 @@ Atlas* Atlas::create(std::istream& stream) {
 
 
 Atlas::Atlas(std::istream& stream) {
-    station = new Station();
-    trip = new Trip();
-    AMG = new AMGGraph();
+    station = new Station;
+    trip = new Trip;
+    AMG = new AMGGraph;
     map<string, vector<string>> fer = AMG->transfer;
     for (int i = 0; i < 100; i++) {
         for (int j = 0; j < 100; j++) {
@@ -30,43 +30,66 @@ Atlas::Atlas(std::istream& stream) {
     std::string time_train;
     std::string name_train;
     std::string name_line;
+    string T_B = "T";
     while (!stream.eof())
     {
         stream >> name;
         if ( !name.find("TRAIN:") || !name.find("BUS:")){
-            vector<platform> from;
+            vector<platform> *from=new vector<platform>;
             std::getline(stream >> std::ws, name_line);
-            station->mymap[name_line] = from;
+            station->mymap.insert(pair<string, vector<platform>*>(name_line, from));
+            if (!name.find("BUS:")) {
+                T_B = "B";
+            }
+            if (!name.find("TRAIN:")) {
+                T_B = "T";
+            }
             continue;
         }else if(!name.find("-")) {
             stream >> time_train;
             std::getline(stream >> std::ws, name_train);
-            vector<platform> from = station->mymap[name_line];
+            vector<platform> *from = station->mymap[name_line];
             platform  pm;
-            pm.timer =(short) atoi(time_train.c_str());
+            if (T_B.compare("B") == 0) {
+                pm.timer = 0;
+            }
+            else {
+                pm.timer = (short)atoi(time_train.c_str());
+            }            
             pm.name = name_train;
-            from.push_back(pm);
-            vector<string>  as = fer[name_train];
+            from->push_back(pm);
+            //
+            vector<string>  as;
+            for (auto oc = AMG->transfer.begin(); oc != AMG->transfer.end(); oc++)
+            {
+                if (oc->first.compare(name_train) == 0) {
+                        as = oc->second;
+                        AMG->transfer.erase(oc);
+                        break;
+                }
+            }
             as.push_back(name_line);
-            fer[name_train]= as;
-            station->mymap[name_line] = from;
+            //fer[name_train]= as; 
+            AMG->transfer.insert(pair<string,vector<string>>(name_train, as));
+            //AMG->transfer2.insert(pair<string,string>(name_train, name_line));
+            station->mymap.insert(pair<string, vector<platform>*>(name_line, from));
             continue;
         }
     }
-    AMG->transfer = fer;
+    //AMG->transfer = fer;
     //构建有向图临界矩阵
-    map<string, vector<platform>>  psm = station->mymap;
+    map<string, vector<platform>*>  psm = station->mymap;
     int vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
     {
-        vector<platform>  plm = oc->second;
-        platform  original = plm[0];
+        vector<platform>  *plm = oc->second;
+        platform  original = (*plm)[0];
         int  m_vexNum = 0;
-        int  m_arcNum = int(plm.size() - 1);
+        int  m_arcNum = int(plm->size() - 1);
         int gid = -1; // 当前对象标量
-        for(size_t i = 0; i < plm.size(); ++i)
+        for(size_t i = 0; i < plm->size(); ++i)
         {
-            platform  prm = plm[i];
+            platform  prm = (*plm)[i];
             vexName  vName;
             bool  flags = false;
             for (size_t j = 0; j < AMG->m_vexName.size(); ++j) {
@@ -127,8 +150,11 @@ Atlas::Atlas(std::istream& stream) {
 
 Atlas::~Atlas() {
     delete station;
+    station = NULL;
     delete AMG;
+    AMG = NULL;
     delete trip;
+    trip = NULL;
 }
 
 

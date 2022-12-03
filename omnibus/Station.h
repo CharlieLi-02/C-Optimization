@@ -19,7 +19,7 @@ struct line_1 {
 }; //线路
 
 struct Station {
-	map<string,vector<platform>>  mymap;
+	map<string,vector<platform>*>  mymap;
 	map<int,vector<line_1>>        lines;// 线路集合
 };
 

@@ -22,14 +22,15 @@ using namespace std;
 
 struct vexName {
     string name;
-    int id=0;
+    int id = 0;
 };
 
 struct AMGGraph {
-    int m_vexNum=0 , m_arcNum =0;//
+    int m_vexNum = 0, m_arcNum = 0;//
     vector<vexName> m_vexName; //
-    int m_arcWeight[100][100] = { 12520 };   //
+    int m_arcWeight[100][100] = { 12520 }; //
     map<string, vector<string>>   transfer; //
+    map<string, string>   transfer2;
 };
 
 int locateVex(AMGGraph *AMG, string vexName);
@@ -39,7 +40,7 @@ platform  getPlatform(vector<platform>  platform_1, string name);
 bool  ThreeStation(vector<string> vec, string name);
 vector<platform> localteStation(Atlas* atlas, string name);
 bool Onlineandoffline(Atlas* atlas, string lines, int j);
-void  graphlines(Atlas* atlas, int start, int stop);
+//void  graphlines(Atlas* atlas, int start, int stop);
 void showPath(AMGGraph* AMG, int startVexAdd, int endVexAdd);
 void dijastral(Atlas* atlas, int start, int stop);
 void disDelete();
