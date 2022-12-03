@@ -7,9 +7,9 @@
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
-  // Õâ¸öÄ¬ÈÏÊµÏÖ¿ÉÄÜ»áÂú×ãÄúµÄĞèÒª¡£
+  // è¿™ä¸ªé»˜è®¤å®ç°å¯èƒ½ä¼šæ»¡è¶³æ‚¨çš„éœ€è¦ã€‚
   // if you use a different constructor, you'll need to change it.
-  // Èç¹ûÊ¹ÓÃ²»Í¬µÄ¹¹Ôìº¯Êı£¬ÔòĞèÒª¸ü¸ÄËü¡£
+  // å¦‚æœä½¿ç”¨ä¸åŒçš„æ„é€ å‡½æ•°ï¼Œåˆ™éœ€è¦æ›´æ”¹å®ƒã€‚
 
   return new Atlas(stream);
 }
@@ -32,7 +32,7 @@ Atlas::Atlas(std::istream& stream) {
         }
     }
 
-    // ¼ÓÔØÊı¾İ
+    // åŠ è½½æ•°æ®
     std::string name = "";
     std::string time_train;
     std::string name_train;
@@ -84,7 +84,7 @@ Atlas::Atlas(std::istream& stream) {
         }
     }
     //AMG->transfer = fer;
-    //¹¹½¨ÓĞÏòÍ¼ÁÙ½ç¾ØÕó
+    //æ„å»ºæœ‰å‘å›¾ä¸´ç•ŒçŸ©é˜µ
     map<string, vector<platform>*>  psm = station->mymap;
     int vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
@@ -93,7 +93,7 @@ Atlas::Atlas(std::istream& stream) {
         platform  original = (*plm)[0];
         int  m_vexNum = 0;
         int  m_arcNum = int(plm->size() - 1);
-        int gid = -1; // µ±Ç°¶ÔÏó±êÁ¿
+        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡
         for(size_t i = 0; i < plm->size(); ++i)
         {
             platform  prm = (*plm)[i];
@@ -114,7 +114,7 @@ Atlas::Atlas(std::istream& stream) {
             }
             if(original.name.compare(prm.name) == 0) {
                 if (gid != -1) {
-                    //²åÈë½»²æ×ÔÉí¾àÀë
+                    //æ’å…¥äº¤å‰è‡ªèº«è·ç¦»
                     AMG->m_arcWeight[gid][gid] = 0;
                     gid = -1;
                 }else {
@@ -124,8 +124,8 @@ Atlas::Atlas(std::istream& stream) {
             }else {
                 int time = prm.timer - original.timer;
                 if (gid != -1) {
-                    //ÓĞÏàÍ¬Õ¾µã
-                    //Èç¹û´æÔÚ½»²æ£¬ºÍÁÙ½ü¾àÀë
+                    //æœ‰ç›¸åŒç«™ç‚¹
+                    //å¦‚æœå­˜åœ¨äº¤å‰ï¼Œå’Œä¸´è¿‘è·ç¦»
                     int  temp = 0;
                     for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k]->name) == 0) {
