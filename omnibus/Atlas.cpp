@@ -26,7 +26,7 @@ Atlas::Atlas(std::istream& stream) {
        AMG->m_arcWeight[i] = new int[250];
     }
 
-    for (int i = 0; i < 250; i++){
+    for(int i = 0; i < 250; i++){
         for (int j = 0; j <250; j++){
             AMG->m_arcWeight[i][j] = QID;
         }
@@ -97,28 +97,28 @@ Atlas::Atlas(std::istream& stream) {
         for(size_t i = 0; i < plm->size(); ++i)
         {
             platform  prm = (*plm)[i];
-            vexName  vName;
+            vexName  *vName = new vexName;
             bool  flags = false;
             for (size_t j = 0; j < AMG->m_vexName.size(); ++j) {
-                if (!(AMG->m_vexName[j].name.compare(prm.name))) {
+                if (!(AMG->m_vexName[j]->name.compare(prm.name))) {
                     flags = true;
-                    gid = AMG->m_vexName[j].id;
+                    gid = AMG->m_vexName[j]->id;
                     break;
                 }
             }
             if (!flags) {
-                vName.name = prm.name;
-                vName.id = vName_id++;
+                vName->name = prm.name;
+                vName->id = vName_id++;
                 m_vexNum++;
                 AMG->m_vexName.push_back(vName);
             }
             if (original.name.compare(prm.name) == 0) {
                 if (gid != -1) {
                     //插入交叉自身距离
-                    AMG->m_arcWeight[gid][gid] = -1;
+                    AMG->m_arcWeight[gid][gid] = 0;
                     gid = -1;
                 }else {
-                    AMG->m_arcWeight[vName.id][vName.id] = -1;
+                    AMG->m_arcWeight[vName->id][vName->id] =0;
                 }
                 
             }else {
@@ -128,8 +128,8 @@ Atlas::Atlas(std::istream& stream) {
                     //如果存在交叉，和临近距离
                     int  temp = 0;
                     for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
-                        if (original.name.compare(AMG->m_vexName[k].name) == 0) {
-                            temp = AMG->m_vexName[k].id;
+                        if (original.name.compare(AMG->m_vexName[k]->name) == 0) {
+                            temp = AMG->m_vexName[k]->id;
                             break;
                         }
                     }
@@ -139,13 +139,15 @@ Atlas::Atlas(std::istream& stream) {
                 }else {
                     int  temp = 0;
                     for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
-                        if (original.name.compare(AMG->m_vexName[k].name) == 0) {
-                            temp = AMG->m_vexName[k].id;
+                        if (original.name.compare(AMG->m_vexName[k]->name) == 0) {
+                            temp = AMG->m_vexName[k]->id;
                             break;
                         }
                     }
-                    AMG->m_arcWeight[vName.id][temp] = time;
-                    AMG->m_arcWeight[temp][vName.id] = time;
+                    //AMG->m_arcWeight[vName_id][temp] = time;
+                    //AMG->m_arcWeight[temp][vName_id] = time
+                    AMG->m_arcWeight[vName->id][temp] = time;
+                    AMG->m_arcWeight[temp][vName->id] = time;
                 }
             }
             original = prm;
@@ -170,7 +172,6 @@ Atlas::~Atlas() {
     {
         delete[] AMG->m_arcWeight[i];
     }
-    // 然后回收高一级的动态数组.
     delete[] AMG->m_arcWeight;
     AMG->m_arcWeight = NULL;
     delete AMG;

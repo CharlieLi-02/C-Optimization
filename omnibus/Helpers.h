@@ -27,7 +27,7 @@ struct vexName {
 
 struct AMGGraph {
     int m_vexNum = 0, m_arcNum = 0;//
-    vector<vexName> m_vexName; //
+    vector<vexName*> m_vexName; //
     int** m_arcWeight; //
     map<string, vector<string>>   transfer; //
     map<string, string>   transfer2;

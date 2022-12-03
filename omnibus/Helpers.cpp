@@ -11,8 +11,8 @@ vector<string>  app;
 
 int locateVex(AMGGraph *AMG, string vexName) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
-        if (AMG->m_vexName[i].name.compare(vexName) == 0) {
-            return AMG->m_vexName[i].id;
+        if (AMG->m_vexName[i]->name.compare(vexName) == 0) {
+            return AMG->m_vexName[i]->id;
         }
     }
     return -1;
@@ -20,8 +20,8 @@ int locateVex(AMGGraph *AMG, string vexName) {
 
 string localteVex(AMGGraph* AMG, int vexId) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
-        if (AMG->m_vexName[i].id == vexId) {
-            return AMG->m_vexName[i].name;
+        if (AMG->m_vexName[i]->id == vexId) {
+            return AMG->m_vexName[i]->name;
         }
     }
     return "no";
@@ -134,11 +134,10 @@ void dijastral(Atlas* atlas, int start, int stop){
 
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
-
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
-         if (Distance[i] > -1 && Distance[i]!= QID) {
+         if (Distance[i] >0  && Distance[i]!=  QID) {
              path[i] = start;
          }else {
              path[i] = -1;
@@ -214,6 +213,7 @@ void dijastral(Atlas* atlas, int start, int stop){
                         lgs.line = vec[j];
                         break;
                     }
+                    break;
                 }
             }
             for (size_t j = aps; j <app.size(); j++) {
@@ -248,7 +248,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
         showPath(AMG, startVexAdd, path[endVexAdd]);
         string vex = localteVex(AMG, path[endVexAdd]);
-        //cout << vex << endl;
+        cout << vex << endl;
         app.push_back(vex);
     }
 }
