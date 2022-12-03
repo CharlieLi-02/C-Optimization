@@ -4,10 +4,22 @@
 
 // Space to implement helper class member functions.
 
-int Distance[250] = { 0 };
-int path[250] = { 0 };
-bool s[250] = { 0 };
+int* Distance =NULL;
+int* path = NULL; 
+bool* s = NULL;
 vector<string>  app;
+int  startSize = 0;
+void  initDisPath(int size) {
+    Distance = new int[size];
+    path = new int[size];
+    s = new bool[size];
+    startSize = size;
+    for (int i = 0; i < size; i++) {
+        Distance[i] = 0;
+        path[i] = 0;
+        s[i] = false;
+    }
+}
 
 int locateVex(AMGGraph *AMG, string vexName) {
     for (int i = 0; i < AMG->m_vexNum; i++) {
@@ -137,12 +149,13 @@ void dijastral(Atlas* atlas, int start, int stop){
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
-         if (Distance[i] >0  && Distance[i]!=  QID) {
+         if (Distance[i] >-1  && Distance[i]!=  QID) {
              path[i] = start;
          }else {
              path[i] = -1;
          }
     }
+
     s[start] = true;
     Distance[start] = 0;
     int min = PI;
@@ -165,9 +178,9 @@ void dijastral(Atlas* atlas, int start, int stop){
             }
         }
     }   
-    app.push_back(localteVex(amg, start));
+    //app.push_back(localteVex(amg, start));
     showPath(amg, start, stop);
-    if (app.size() == 1) {
+    if (app.size() == 0) {
         disDelete();
         throw std::runtime_error("No route.");
     }
@@ -204,22 +217,29 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
         else {
-            size_t aps = i + 1;
+            size_t aps = i;
             bool flags = false;
             vector<string> vec2 = (amg->transfer)[app[(aps)]];
             for(size_t j = 0; j < vec.size(); j++){
-                for (size_t k = 0; k < vec2.size(); k++) {
-                    if (vec[j].compare(vec2[k]) == 0) {
-                        lgs.line = vec[j];
-                        flags = true;
-                        break;
-                    }
-                }
+                //for (size_t k = 0; k < vec2.size(); k++) {
+                //    if (vec[j].compare(vec2[k]) == 0) {
+                //        lgs.line = vec[j];
+                //        flags = true;
+                //        break;
+                //    }
+                //}
+                //if (flags){
+                //    flags = false;
+                //    break;
+                //}
+                flags = Onlineandoffline(atlas, vec[j], static_cast<int>(aps));
                 if (flags) {
+                    lgs.line = vec[j];
                     flags = false;
                     break;
                 }
             }
+
             for (size_t j = aps; j <app.size(); j++) {
                 vec2 =(amg->transfer)[app[(j)]];
                 if (vec2.size() > 1 && j != (size_t)(app.size() - 1)) {
@@ -258,9 +278,15 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (size_t i = 0; i < 250; i++) {
+     for (size_t i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
-     }
+    }
+}
+
+void disDe() {
+    delete [] Distance;
+    delete [] path;
+    delete [] s;
 }
