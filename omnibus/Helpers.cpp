@@ -138,7 +138,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
-         if (Distance[i] > 0 && Distance[i]!= QID) {
+         if (Distance[i] > -1 && Distance[i]!= QID) {
              path[i] = start;
          }else {
              path[i] = -1;

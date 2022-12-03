@@ -19,12 +19,19 @@ Atlas::Atlas(std::istream& stream) {
     station = new Station;
     trip = new Trip;
     AMG = new AMGGraph;
-    map<string, vector<string>> fer = AMG->transfer;
-    for (int i = 0; i < 100; i++) {
-        for (int j = 0; j < 100; j++) {
+    map<string, vector<string>> fer = AMG->transfer; 
+    AMG->m_arcWeight = new int*[250];
+    for (int i = 0; i < 250; ++i)
+    {
+       AMG->m_arcWeight[i] = new int[250];
+    }
+
+    for (int i = 0; i < 250; i++){
+        for (int j = 0; j <250; j++){
             AMG->m_arcWeight[i][j] = QID;
         }
     }
+
     // 加载数据
     std::string name = "";
     std::string time_train;
@@ -108,10 +115,10 @@ Atlas::Atlas(std::istream& stream) {
             if (original.name.compare(prm.name) == 0) {
                 if (gid != -1) {
                     //插入交叉自身距离
-                    AMG->m_arcWeight[gid][gid] = 0;
+                    AMG->m_arcWeight[gid][gid] = -1;
                     gid = -1;
                 }else {
-                    AMG->m_arcWeight[vName.id][vName.id] = 0;
+                    AMG->m_arcWeight[vName.id][vName.id] = -1;
                 }
                 
             }else {
@@ -146,18 +153,26 @@ Atlas::Atlas(std::istream& stream) {
         AMG->m_vexNum = AMG->m_vexNum + m_vexNum;
         AMG->m_arcNum = AMG->m_arcNum + m_arcNum;
     }
+
 }
 
 Atlas::~Atlas() {
     map<string, vector<platform>*>  psm = station->mymap;
-    for (auto oc = psm.begin(); oc != psm.end(); oc++)
+    for (auto oc = psm.begin(); oc != psm.end();)
     {
         delete oc->second;
         oc->second = NULL;
-        psm.erase(oc);
+        psm.erase(oc++);
     }
     delete station;
-    station = NULL;    
+    station = NULL;
+    for (int i = 0; i < 250; i++)
+    {
+        delete[] AMG->m_arcWeight[i];
+    }
+    // 然后回收高一级的动态数组.
+    delete[] AMG->m_arcWeight;
+    AMG->m_arcWeight = NULL;
     delete AMG;
     AMG = NULL;
     delete trip;
