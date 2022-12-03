@@ -278,7 +278,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (size_t i = 0; i < startSize; i++) {
+     for (int i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
