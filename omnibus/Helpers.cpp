@@ -4,14 +4,14 @@
 
 // Space to implement helper class member functions.
 
-int* Distance =NULL;
-int* path = NULL; 
+short* Distance =NULL;
+short* path = NULL; 
 bool* s = NULL;
 vector<string>  app;
 int  startSize = 0;
 void  initDisPath(int size) {
-    Distance = new int[size];
-    path = new int[size];
+    Distance = new short[size];
+    path = new short[size];
     s = new bool[size];
     startSize = size;
     for (int i = 0; i < size; i++) {
@@ -145,9 +145,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     }   
     //app.push_back(localteVex(amg, start));
     showPath(amg, start, stop);
-
-
-    //±ê×¼µÏ½ÜÌØ
+    //��׼�Ͻ���
 
     if (app.size() == 0) {
         disDelete();
@@ -247,7 +245,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (int i = 0; i < startSize; i++) {
+     for (size_t i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;

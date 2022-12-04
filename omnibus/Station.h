@@ -6,7 +6,7 @@
 using namespace std;
 
 struct platform {
-	int timer=0;
+	short timer=0;
 	string name;
 };
 

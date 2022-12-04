@@ -7,9 +7,9 @@
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
-  // è¿™ä¸ªé»˜è®¤å®ç°å¯èƒ½ä¼šæ»¡è¶³æ‚¨çš„éœ€è¦ã€‚
+  // Õâ¸öÄ¬ÈÏÊµÏÖ¿ÉÄÜ»áÂú×ãÄúµÄĞèÒª¡£
   // if you use a different constructor, you'll need to change it.
-  // å¦‚æœä½¿ç”¨ä¸åŒçš„æ„é€ å‡½æ•°ï¼Œåˆ™éœ€è¦æ›´æ”¹å®ƒã€‚
+  // Èç¹ûÊ¹ÓÃ²»Í¬µÄ¹¹Ôìº¯Êı£¬ÔòĞèÒª¸ü¸ÄËü¡£
 
   return new Atlas(stream);
 }
@@ -18,17 +18,17 @@ Atlas* Atlas::create(std::istream& stream) {
 Atlas::Atlas(std::istream& stream) {
 
     //chrono::milliseconds ms = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "å½“å‰æ—¶é—´" << ms.count() << endl;
+    //cout << "µ±Ç°Ê±¼ä" << ms.count() << endl;
     station = new Station();
     trip = new Trip();
     AMG = new AMGGraph();
-    //åŠ è½½æ•°æ®
+    //¼ÓÔØÊı¾İ
     std::string name = "";
     std::string time_train;
     std::string name_train;
     std::string name_line;
     string T_B = "T";
-    // è¯»æ–‡ä»¶
+    // ¶ÁÎÄ¼ş
     while (!stream.eof())
     {
         stream >> name;
@@ -47,12 +47,15 @@ Atlas::Atlas(std::istream& stream) {
             stream >> time_train;
             std::getline(stream >> std::ws, name_train);
             vector<platform> *from = station->mymap[name_line];
+            if (from == NULL) {
+                continue;
+            }
             platform  pm;
             if (T_B.compare("B") == 0){
                 pm.timer = 0;
             }
             else {
-                pm.timer = atoi(time_train.c_str());
+                pm.timer = (short)atoi(time_train.c_str());
             }            
             pm.name = name_train;
             from->push_back(pm);
@@ -72,62 +75,72 @@ Atlas::Atlas(std::istream& stream) {
         }
     }
     //chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "å½“å‰åŠ è½½æ–‡ä»¶æ—¶é—´" <<(stop.count() - ms.count())<< endl;
-    AMG->m_arcWeight = new int* [AMG->transfer.size()];
-    for (size_t i = 0; i < AMG->transfer.size(); i++)
+    //cout << "µ±Ç°¼ÓÔØÎÄ¼şÊ±¼ä" <<(stop.count() - ms.count())<< endl;
+    AMG->m_arcWeight = new short* [AMG->transfer.size()];
+    for (int i = 0; i < AMG->transfer.size(); i++)
     {
-        AMG->m_arcWeight[i] = new int[AMG->transfer.size()];
+        AMG->m_arcWeight[i] = new short[AMG->transfer.size()];
     }
 
-    for (size_t i = 0; i < AMG->transfer.size(); i++) {
-        for (size_t j = 0; j < AMG->transfer.size(); j++) {
+    for (int i = 0; i < AMG->transfer.size(); i++) {
+        for (int j = 0; j < AMG->transfer.size(); j++) {
             AMG->m_arcWeight[i][j] = QID;
         }
     }
 
     initDisPath((int)AMG->transfer.size());
     //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "å½“å‰åˆå§‹åŒ–æ—¶é—´" << (stop2.count()- stop.count())<< endl;
+    //cout << "µ±Ç°³õÊ¼»¯Ê±¼ä" << (stop2.count()- stop.count())<< endl;
     //AMG->transfer = fer;
-    //æ„å»ºæœ‰å‘å›¾ä¸´ç•ŒçŸ©é˜µ
+    //¹¹½¨ÓĞÏòÍ¼ÁÙ½ç¾ØÕó
     map<string, vector<platform>*>  psm = station->mymap;
     int vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
     {
         vector<platform>  *plm = oc->second;
+        if (plm == NULL) {
+            continue;
+        }
         platform  original = (*plm->begin());
         //int  m_arcNum = int(plm->size() - 1);
-        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡
+        int gid = -1; // µ±Ç°¶ÔÏó±êÁ¿
         for(auto ac = plm->begin(); ac !=plm->end(); ac++)
         {
-            vexName  *vName = new vexName;
+            vexName* vName = new vexName;
             bool  flags = false;
             for (size_t j = 0; j < AMG->m_vexName.size(); ++j) {
                 if (!(AMG->m_vexName[j]->name.compare(ac->name))) {
                     flags = true;
                     gid = AMG->m_vexName[j]->id;
+                    
                     break;
                 }
             }
-            if (!flags) {
+            if (!flags) {                
                 vName->name = ac->name;
                 vName->id = vName_id++;
                 AMG->m_vexName.push_back(vName);
             }
+            else {
+                delete vName;
+                vName = NULL;
+            }
             if(original.name.compare(ac->name) == 0) {
                 if (gid != -1) {
-                    //æ’å…¥äº¤å‰è‡ªèº«è·ç¦»
+                    //²åÈë½»²æ×ÔÉí¾àÀë
                     AMG->m_arcWeight[gid][gid] =  -1;
                     gid = -1;
                 }else {
-                    AMG->m_arcWeight[vName->id][vName->id] =-1;
+                    if (vName != NULL) {
+                        AMG->m_arcWeight[vName->id][vName->id] = -1;
+                    }                  
                 }                
             }else {
-                int  temp = 0;
+                int temp = 0;
                 int time = ac->timer - original.timer;
                 if (gid != -1) {
-                    //æœ‰ç›¸åŒç«™ç‚¹
-                    //å¦‚æœå­˜åœ¨äº¤å‰ï¼Œå’Œä¸´è¿‘è·ç¦»
+                    //ÓĞÏàÍ¬Õ¾µã
+                    //Èç¹û´æÔÚ½»²æ£¬ºÍÁÙ½ü¾àÀë
                     for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k]->name) == 0) {
                             temp = AMG->m_vexName[k]->id;
@@ -144,8 +157,10 @@ Atlas::Atlas(std::istream& stream) {
                             break;
                         }
                     }
-                    AMG->m_arcWeight[vName->id][temp] = time;
-                    AMG->m_arcWeight[temp][vName->id] = time;
+                    if (vName != NULL) {
+                        AMG->m_arcWeight[vName->id][temp] = time;
+                        AMG->m_arcWeight[temp][vName->id] = time;
+                    }                    
                 }
             }
             original = (*ac);
@@ -154,7 +169,7 @@ Atlas::Atlas(std::istream& stream) {
     }
     AMG->m_vexNum = (int)AMG->transfer.size();
     //chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "æ„å»ºçŸ©é˜µæ—¶é—´" << (stop3.count() - ms.count()) << endl;
+    //cout << "¹¹½¨¾ØÕóÊ±¼ä" << (stop3.count() - ms.count()) << endl;
 }
 
 Atlas::~Atlas() {
@@ -165,9 +180,10 @@ Atlas::~Atlas() {
         oc->second = NULL;
         psm.erase(oc++);
     }
+    psm.clear();
     delete station;
     station = NULL;
-    for (size_t i = 0; i < AMG->transfer.size(); i++)
+    for (int i = 0; i < AMG->transfer.size(); i++)
     {
         delete[] AMG->m_arcWeight[i];
     }
@@ -198,10 +214,10 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     if (start == -1 || stop == -1) {
         throw std::runtime_error("No route.");
     }
-    //chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     dijastral(this, start, stop);
-    //chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "è®¡ç®—æ—¶é—´" << (s_2.count() - s_1.count()) << endl;
+    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "¼ÆËãÊ±¼ä" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 
