@@ -30,7 +30,7 @@ struct AMGGraph {
     vector<vexName*> m_vexName; //
     int** m_arcWeight = nullptr; //
     map<string, vector<string>>   transfer; //
-    map<string, string>   transfer2;
+    //map<string, string>   transfer2;
 };
 
 int locateVex(AMGGraph *AMG, string vexName);
@@ -40,7 +40,6 @@ platform  getPlatform(vector<platform>  platform_1, string name);
 bool  ThreeStation(vector<string> vec, string name);
 vector<platform> localteStation(Atlas* atlas, string name);
 bool Onlineandoffline(Atlas* atlas, string lines, int j);
-//void  graphlines(Atlas* atlas, int start, int stop);
 void showPath(AMGGraph* AMG, int startVexAdd, int endVexAdd);
 void dijastral(Atlas* atlas, int start, int stop);
 void  initDisPath(int size);

@@ -49,41 +49,6 @@ platform  getPlatform(vector<platform>  platform_1,string name) {
     return form;
 }
 
-//void  graphlines(Atlas* atlas, int start, int stop) {
-//    AMGGraph* amg = atlas->AMG;
-//    Station* station = atlas->station;
-//    map<int, vector<line_1>>  aline = station->lines;
-//    vector<string> startT = localteStatic(atlas, start);
-//    vector<string> stopT = localteStatic(atlas, stop);
-//    for (size_t i = 0;  i < startT.size();  i++) {
-//        for (size_t j = 0; j < stopT.size(); j++) {
-//            if (startT[i].compare(stopT[j]) == 0) {
-//                line_1 li;
-//                 li.line = startT[i];
-//                 li.startName = localteVex(amg, start);
-//                 li.stopName =  localteVex(amg, stop);
-//                 vector<platform> plform =station->mymap[li.line];
-//                 platform startform = getPlatform(plform, li.startName);
-//                 platform stopform = getPlatform(plform, li.stopName);
-//                 if (startform.timer > stopform.timer) {
-//                     li.direction = 1;
-//                     li.times = startform.timer - stopform.timer;
-//                 }
-//                 else {
-//                     li.direction = 0;
-//                     li.times = stopform.timer - startform.timer;
-//                 }
-//                 vector<line_1>  vli;
-//                 vli.push_back(li);
-//                 (aline)[0] = vli;
-//                 return;
-//             }
-//            else {
-//                         
-//            }
-//        }
-//    }
-//}
 
 vector<string> localteStatic(Atlas* atlas,int vexId) {
     AMGGraph* amg = atlas->AMG;
@@ -147,6 +112,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
     initTrip(trips);
+
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
          if (Distance[i] >-1  && Distance[i]!=  QID) {
@@ -163,11 +129,10 @@ void dijastral(Atlas* atlas, int start, int stop){
     for (int i = 1; i < amg->m_vexNum; i++) {
         min = PI;
         for (int j = 0; j < amg->m_vexNum; j++) {
-         if (!s[j] && Distance[j] < min) {
+          if (!s[j] && Distance[j] < min) {
                 pos = j;
                 min = Distance[j];
-            }
-           
+            }          
         }
         s[pos] = true;
         for (int k = 0; k < amg->m_vexNum; k++) {
@@ -180,6 +145,10 @@ void dijastral(Atlas* atlas, int start, int stop){
     }   
     //app.push_back(localteVex(amg, start));
     showPath(amg, start, stop);
+
+
+    //±ê×¼µÏ½ÜÌØ
+
     if (app.size() == 0) {
         disDelete();
         throw std::runtime_error("No route.");
@@ -278,7 +247,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (int i = 0; i < startSize; i++) {
+     for (size_t i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
