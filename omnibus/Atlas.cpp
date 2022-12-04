@@ -167,7 +167,7 @@ Atlas::~Atlas() {
     }
     delete station;
     station = NULL;
-    for (int i = 0; i < AMG->transfer.size(); i++)
+    for (size_t i = 0; i < AMG->transfer.size(); i++)
     {
         delete[] AMG->m_arcWeight[i];
     }
