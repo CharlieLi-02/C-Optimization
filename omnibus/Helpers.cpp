@@ -145,7 +145,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     }   
     //app.push_back(localteVex(amg, start));
     showPath(amg, start, stop);
-    //��׼�Ͻ���
+    //±ê×¼µÏ½ÜÌØ
 
     if (app.size() == 0) {
         disDelete();
@@ -245,7 +245,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (size_t i = 0; i < startSize; i++) {
+     for (int i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
