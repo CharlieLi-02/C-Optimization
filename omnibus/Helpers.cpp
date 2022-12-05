@@ -146,7 +146,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     }
     //showPath(amg, start, stop);
     showPathfor(amg, start, stop);
-    //迪杰斯特拉算法 (Dijkstra)
+    //Dijkstra
     if (app.size() == 0) {
         disDelete();
         throw std::runtime_error("No route.");
@@ -225,7 +225,7 @@ void dijastral(Atlas* atlas, int start, int stop){
     disDelete();
 }
 
-// for 循环 查询站点信息
+// for loop check information of the path
 void showPathfor(AMGGraph* AMG, int startVexAdd, int endVexAdd) {
      while (true) {
          if (path[endVexAdd] != -1) {
