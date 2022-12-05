@@ -146,14 +146,13 @@ void dijastral(Atlas* atlas, int start, int stop){
     }
     //showPath(amg, start, stop);
     showPathfor(amg, start, stop);
-    //µÏ½ÜË¹ÌØÀ­Ëã·¨ (Dijkstra)
+    //è¿ªæ°æ–¯ç‰¹æ‹‰ç®—æ³• (Dijkstra)
     if (app.size() == 0) {
         disDelete();
         throw std::runtime_error("No route.");
     }
     reverse(app.begin(), app.end());
     app.push_back(localteVex(amg, stop));
-    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     trips->start = localteVex(amg, start);
     for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
@@ -190,17 +189,6 @@ void dijastral(Atlas* atlas, int start, int stop){
             bool flags = false;
             vector<string> vec2 = (amg->transfer)[app[(aps)]];
             for(size_t j = 0; j < vec.size(); j++){
-                //for (size_t k = 0; k < vec2.size(); k++) {
-                //    if (vec[j].compare(vec2[k]) == 0) {
-                //        lgs.line = vec[j];
-                //        flags = true;
-                //        break;
-                //    }
-                //}
-                //if (flags){
-                //    flags = false;
-                //    break;
-                //}
                 flags = Onlineandoffline(atlas, vec[j], static_cast<int>(aps));
                 if (flags) {
                     lgs.line = vec[j];
@@ -234,12 +222,10 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
     }
-    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    cout << "¼ÆËãÊ±¼ä" << (s_2.count() - s_1.count()) << endl;
     disDelete();
 }
 
-// for Ñ­»· ²éÑ¯Õ¾µãĞÅÏ¢
+// for å¾ªç¯ æŸ¥è¯¢ç«™ç‚¹ä¿¡æ¯
 void showPathfor(AMGGraph* AMG, int startVexAdd, int endVexAdd) {
      while (true) {
          if (path[endVexAdd] != -1) {
@@ -259,13 +245,12 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
         showPath(AMG, startVexAdd, path[endVexAdd]);
         string vex = localteVex(AMG, path[endVexAdd]);
-        //cout << vex << endl;
         app.push_back(vex);
     }
 }
 
 void disDelete() {   
-     for (size_t i = 0; i < startSize; i++) {
+     for (int i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;
