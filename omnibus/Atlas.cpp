@@ -7,9 +7,7 @@
 
 Atlas* Atlas::create(std::istream& stream) {
   // This default implementation will probably do what you want.
-  // 这个默认实现可能会满足您的需要。
   // if you use a different constructor, you'll need to change it.
-  // 如果使用不同的构造函数，则需要更改它。
 
   return new Atlas(stream);
 }
@@ -20,13 +18,13 @@ Atlas::Atlas(std::istream& stream) {
     station = new Station();
     trip = new Trip();
     AMG = new AMGGraph();
-    //加载数据
+    //load input
     std::string name = "";
     std::string time_train;
     std::string name_train;
     std::string name_line;
     string T_B = "T";
-    // 读文件
+    // read input
     while (!stream.eof())
     {
         stream >> name;
@@ -83,7 +81,7 @@ Atlas::Atlas(std::istream& stream) {
 
     initDisPath((short)AMG->transfer.size());
     chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //构建有向图临界矩阵
+    //build ordered adjacency matrix
     map<string, vector<platform>*>  psm = station->mymap;
     short vName_id = 0;
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
@@ -93,8 +91,7 @@ Atlas::Atlas(std::istream& stream) {
             continue;
         }
         platform  original = (*plm->begin());
-        //int  m_arcNum = int(plm->size() - 1);
-        int gid = -1; // 当前对象标量
+        int gid = -1; // current target index
         for(auto ac = plm->begin(); ac !=plm->end(); ac++)
         {
             vexName* vName = new vexName;
@@ -118,7 +115,7 @@ Atlas::Atlas(std::istream& stream) {
             }
             if(original.name.compare(ac->name) == 0) {
                 if (gid != -1) {
-                    //插入交叉自身距离
+                    //insert self-cross distance
                     AMG->m_arcWeight[gid][gid] =  -1;
                     gid = -1;
                 }else {
@@ -130,8 +127,8 @@ Atlas::Atlas(std::istream& stream) {
                 int temp = 0;
                 int time = ac->timer - original.timer;
                 if (gid != -1) {
-                    //有相同站点
-                    //如果存在交叉，和临近距离
+                    //if same station exists
+                    //if cross exist and close distance exist
                     for (size_t k = 0; k < AMG->m_vexName.size(); k++) {
                         if (original.name.compare(AMG->m_vexName[k]->name) == 0) {
                             temp = AMG->m_vexName[k]->id;
@@ -156,7 +153,6 @@ Atlas::Atlas(std::istream& stream) {
             }
             original = (*ac);
         }      
-        //AMG->m_arcNum = AMG->m_arcNum + m_arcNum;
     }
     AMG->m_vexNum = (short)AMG->transfer.size();
 }
