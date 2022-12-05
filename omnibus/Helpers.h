@@ -9,10 +9,11 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <algorithm>
 #include "Station.h"
 
 const int PI = 32677;
-const int QID = 12520; // ×î´ó¾àÀë
+const int QID = 12520; // Ã—Ã®Â´Ã³Â¾Ã Ã€Ã«
 
 
 class Atlas;
