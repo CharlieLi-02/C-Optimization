@@ -1,15 +1,16 @@
 #include "Helpers.h"
 #include "Atlas.h"
 #include "Station.h"
-
+#include <chrono>
 // Space to implement helper class member functions.
 
 short* Distance =NULL;
 short* path = NULL; 
 bool* s = NULL;
 vector<string>  app;
-int  startSize = 0;
-void  initDisPath(int size) {
+short  startSize = 0;
+
+void  initDisPath(short size) {
     Distance = new short[size];
     path = new short[size];
     s = new bool[size];
@@ -111,8 +112,8 @@ void dijastral(Atlas* atlas, int start, int stop){
 
     AMGGraph* amg = atlas->AMG;
     Trip*  trips =atlas->trip;
-    initTrip(trips);
 
+    initTrip(trips);
     for (int i = 0; i < amg->m_vexNum; i++) {
          Distance[i] = amg->m_arcWeight[start][i];
          if (Distance[i] >-1  && Distance[i]!=  QID) {
@@ -139,23 +140,24 @@ void dijastral(Atlas* atlas, int start, int stop){
             if (!s[k] && Distance[k] > amg->m_arcWeight[pos][k] + Distance[pos]) {
                 int ace = amg->m_arcWeight[pos][k] + Distance[pos];
                 Distance[k] = ace;
-                path[k] = static_cast<int>(pos);
+                path[k] = static_cast<short>(pos);
             }
         }
-    }   
-    //app.push_back(localteVex(amg, start));
-    showPath(amg, start, stop);
-    //卤锚脳录碌脧陆脺脤脴
-
+    }
+    //showPath(amg, start, stop);
+    showPathfor(amg, start, stop);
+    //迪杰斯特拉算法 (Dijkstra)
     if (app.size() == 0) {
         disDelete();
         throw std::runtime_error("No route.");
     }
+    reverse(app.begin(), app.end());
     app.push_back(localteVex(amg, stop));
+    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     trips->start = localteVex(amg, start);
     for (size_t i = 0 ; i <  app.size();  i++) {
         Trip::Leg  lgs;
-        vector<string> vec =( amg->transfer)[app[i]];
+        vector<string> vec =(amg->transfer)[app[i]];
         if (vec.size() == 1) {
             lgs.line = (vec)[0];
             bool flags = false;
@@ -232,9 +234,27 @@ void dijastral(Atlas* atlas, int start, int stop){
             trips->legs.push_back(lgs);
         }
     }
+    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "计算时间" << (s_2.count() - s_1.count()) << endl;
     disDelete();
 }
 
+// for 循环 查询站点信息
+void showPathfor(AMGGraph* AMG, int startVexAdd, int endVexAdd) {
+     while (true) {
+         if (path[endVexAdd] != -1) {
+             string vex = localteVex(AMG, path[endVexAdd]);
+             app.push_back(vex);
+             if (startVexAdd == path[endVexAdd]) {
+                 break;
+             }
+             endVexAdd = path[endVexAdd];
+         }
+         else {
+             break;
+         }
+     }
+}
 void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
     if (path[endVexAdd] != -1) {
         showPath(AMG, startVexAdd, path[endVexAdd]);
@@ -245,7 +265,7 @@ void showPath(AMGGraph *AMG, int startVexAdd, int endVexAdd) {
 }
 
 void disDelete() {   
-     for (int i = 0; i < startSize; i++) {
+     for (size_t i = 0; i < startSize; i++) {
          Distance[i] = 0;
          path[i] = 0;
          s[i] = false;

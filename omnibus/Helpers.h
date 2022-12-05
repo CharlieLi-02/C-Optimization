@@ -26,7 +26,7 @@ struct vexName {
 };
 
 struct AMGGraph {
-    int m_vexNum = 0, m_arcNum = 0;//
+    short m_vexNum = 0, m_arcNum = 0;//
     vector<vexName*> m_vexName; //
     short** m_arcWeight = nullptr; //
     map<string, vector<string>>   transfer; //
@@ -41,8 +41,9 @@ bool  ThreeStation(vector<string> vec, string name);
 vector<platform> localteStation(Atlas* atlas, string name);
 bool Onlineandoffline(Atlas* atlas, string lines, int j);
 void showPath(AMGGraph* AMG, int startVexAdd, int endVexAdd);
+void showPathfor(AMGGraph* AMG, int startVexAdd, int endVexAdd);
 void dijastral(Atlas* atlas, int start, int stop);
-void  initDisPath(int size);
+void  initDisPath(short size);
 void disDelete();
 void disDe();
 #endif
