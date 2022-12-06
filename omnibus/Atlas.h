@@ -7,8 +7,6 @@
 #include "Trip.h"
 #include "Helpers.h"
 
-
-
 class Atlas {
 public:
   // Required Class Function
@@ -16,7 +14,7 @@ public:
   Station* station = NULL;
   AMGGraph* AMG = NULL;
   Trip* trip = NULL;
-
+  AGraph* G = NULL;
 private:
   // Member Variables
 
