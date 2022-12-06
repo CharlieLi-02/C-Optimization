@@ -101,7 +101,6 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
     int* dist = (int*)malloc(sizeof(int) * atlas->G->numNodes);    
-    AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
     initTrip(trips);
     Dijkstra(atlas, dist, path, start, stop);
@@ -113,7 +112,7 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     print_line(atlas, start);
 }
 
-//´òÓ¡Â·¾¶ĞÅÏ¢ 
+//æ‰“å°è·¯å¾„ä¿¡æ¯ 
 void  print_line(Atlas* atlas, int start) {
     AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
@@ -189,13 +188,13 @@ void  print_line(Atlas* atlas, int start) {
 }
 
 
-// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
+// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //¸øÈı¸öÊı×é¸³³õÖµ
+    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -244,7 +243,7 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
     //DFSPrint(AT->AMG, v, stop, path);
 }
 
-//»ñµÃ±ßµÄÈ¨ÖØ
+//è·å¾—è¾¹çš„æƒé‡
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -261,11 +260,10 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//´´½¨Í¼
+//åˆ›å»ºå›¾
 void CreateGraph(AGraph* G, Atlas* atlas)
 {
     int i;
-    int m = 0, n = 0, weight = 0;
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
     for (i = 0; i < G->numNodes; i++)
@@ -276,7 +274,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
     {
         vector<platform>* plm = oc->second;
-        int gid = -1; // µ±Ç°¶ÔÏó±êÁ¿  
+        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡  
         platform  original = (*plm->begin());
         for (auto ac = plm->begin(); ac != plm->end(); ac++)
         {
@@ -298,7 +296,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                 vector<vexName*>::iterator v_N2 = find_if(atlas->AMG->m_vexName.begin(), atlas->AMG->m_vexName.end(), finder_t(original.name));               
                 if (gid != -1) {
                     pe->adjvex = gid;
-                    //µ±Ç°¶ÔÏóÓĞÖØ¸´
+                    //å½“å‰å¯¹è±¡æœ‰é‡å¤
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[gid].firstarc;
                     G->adjlist[gid].firstarc = reverse;
@@ -306,7 +304,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                     G->adjlist[(*v_N2)->id].firstarc = pe;
                     gid = -1;
                 }else {
-                    // µ±Ç°¶ÔÏóÎŞÖØ¸´                   
+                    // å½“å‰å¯¹è±¡æ— é‡å¤                   
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[vName_id - 1].firstarc;
                     G->adjlist[vName_id - 1].firstarc = reverse;
@@ -328,7 +326,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
 }
 
 
-//Êä³öÂ·¾¶
+//è¾“å‡ºè·¯å¾„
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -353,7 +351,7 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
+//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
@@ -392,32 +390,32 @@ void Dijkstra(Atlas* AT, int v0, int n)
     AGraph* g = AT->G;
     for (int i = 1; i <= n; i++)
     {
-        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
-        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
-        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
-        visited[i] = 0;     //³õÊ¼ÎªËùÓĞ½áµã¶¼Ã»ÓĞ·ÃÎÊ¹ı
+        dist2[i].id = i;     //ä»æºv0åˆ°ç»“ç‚¹i
+        dist2[i].w = INF;    //åˆå§‹è·ç¦»ä¸ºINF
+        path2[i] = -1;       //åˆå§‹æœ€çŸ­è·¯å¾„çš„å‰ä¸€ä¸ªç»“ç‚¹ä¸º-1
+        visited[i] = 0;     //åˆå§‹ä¸ºæ‰€æœ‰ç»“ç‚¹éƒ½æ²¡æœ‰è®¿é—®è¿‡
     }
     dist2[v0].w = 0;
-    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁĞ
+    q.push(dist2[v0]);       //å°†æºç‚¹å…¥ä¼˜å…ˆé˜Ÿåˆ—
     while (!q.empty())
     {
-        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îĞ¡Öµ¶ÔÓ¦µÄ½áµã
+        Node node = q.top();  //å–å¾—å½“å‰æƒå€¼wæœ€å°å€¼å¯¹åº”çš„ç»“ç‚¹
         q.pop();
         int u = node.id;
-        if (visited[u])     //Èôµ±Ç°½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı
+        if (visited[u])     //è‹¥å½“å‰ç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡
             continue;
         visited[u] = 1;
-        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
+        ArcNode* p = g->adjlist[u].firstarc;    //å–å¾—å½“å‰ç»“ç‚¹å¯¹åº”çš„ç¬¬ä¸€æ¡è¾¹
         while (p)
         {
             int tempv = p->adjvex;
             int tempw = p->weight;
 
-            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµĞ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üĞÂÈ¨Öµ
+            //è‹¥è¯¥è¾¹å¯¹åº”çš„å¦å¤–ä¸€ä¸ªç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡å¹¶ä¸”æºç‚¹åˆ°uåŠ ä¸Šuåˆ°tempvçš„æƒå€¼å°äºæºç‚¹ç›´æ¥åˆ°tempvçš„æƒå€¼ï¼Œæ›´æ–°æƒå€¼
             if (!visited[tempv] && dist2[tempv].w > dist2[u].w + tempw)
             {
                 dist2[tempv].w = dist2[u].w + tempw;
-                path2[tempv] = u;        // ¸üĞÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
+                path2[tempv] = u;        // æ›´æ–°æºç‚¹åˆ°tempvçš„æœ€çŸ­è·¯å¾„çš„tempvå‰ä¸€ç»“ç‚¹ä¸ºu
                 q.push(dist2[tempv]);
             }
             p = p->nextarc;
