@@ -183,13 +183,13 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
 }
 
 
-// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
+// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //¸øÈı¸öÊı×é¸³³õÖµ
+    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -236,7 +236,7 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
     //DFSPrint(AT->AMG, v, stop, path);
 }
 
-//»ñµÃ±ßµÄÈ¨ÖØ
+//è·å¾—è¾¹çš„æƒé‡
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -253,11 +253,10 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//´´½¨Í¼
+//åˆ›å»ºå›¾
 void CreateGraph(AGraph* G, Atlas* atlas)
 {
     int i;
-    int m = 0, n = 0, weight = 0;
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
     for (i = 0; i < G->numNodes; i++)
@@ -271,7 +270,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
         if (plm == NULL) {
             continue;
         }
-        int gid = -1; // µ±Ç°¶ÔÏó±êÁ¿  
+        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡  
         platform  original = (*plm->begin());
         for (auto ac = plm->begin(); ac != plm->end(); ac++)
         {
@@ -292,7 +291,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                 vector<vexName*>::iterator v_N2 = find_if(atlas->AMG->m_vexName.begin(), atlas->AMG->m_vexName.end(), finder_t(original.name));
                 if (gid != -1) {
                     pe->adjvex = gid;
-                    //µ±Ç°¶ÔÏóÓĞÖØ¸´
+                    //å½“å‰å¯¹è±¡æœ‰é‡å¤
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[gid].firstarc;
                     G->adjlist[gid].firstarc = reverse;
@@ -301,7 +300,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                     gid = -1;
                 }
                 else {
-                    // µ±Ç°¶ÔÏóÎŞÖØ¸´                   
+                    // å½“å‰å¯¹è±¡æ— é‡å¤                   
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[vName_id - 1].firstarc;
                     G->adjlist[vName_id - 1].firstarc = reverse;
@@ -321,7 +320,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
 }
 
 
-//Êä³öÂ·¾¶
+//è¾“å‡ºè·¯å¾„
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -344,7 +343,7 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
+//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
