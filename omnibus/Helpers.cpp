@@ -7,8 +7,6 @@
 #include <stack>
 // Space to implement helper class member functions.
 
-
-
 vector<string>  app;
 
 int locateVex(AMGGraph* AMG, string vexName) {
@@ -38,7 +36,6 @@ platform  getPlatform(vector<platform>  platform_1, string name) {
     }
     return form;
 }
-
 
 vector<string> localteStatic(Atlas* atlas, int vexId) {
     AMGGraph* amg = atlas->AMG;
@@ -96,7 +93,6 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
     }
     return flags;
 }
-
 
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
@@ -182,7 +178,6 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     
 }
 
-
 // 构建邻接表 矩阵
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
@@ -196,7 +191,6 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
         path[i] = -1;
         dist[i] = INF;
     }
-
     ArcNode* p = G->adjlist[v].firstarc;
     while (p != NULL)
     {
@@ -207,7 +201,6 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
     path[v] = -1;
     set[v] = 1;
     dist[v] = 0;
-
     for (i = 1; i < G->numNodes; i++)
     {
         min = INF;
@@ -231,7 +224,6 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
             }
         }
     }
-    //DFSPrint(AT->AMG, v, stop, path);
 }
 
 //获得边的权重
@@ -319,20 +311,17 @@ void CreateGraph(AGraph* G, Atlas* atlas)
     G->numEdges = atlas->AMG->m_arcNum;
 }
 
-
 //输出路径
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
     st.push(v1);
-
     while (!st.empty()) {
         if (path[v1] == -1) {
             while (!st.empty()) {
                 v1 = st.top();
                 string vex = localteVex(AMG, v1);
                 app.push_back(vex);
-                //cout << vex << endl;
                 st.pop();
             }
         }
