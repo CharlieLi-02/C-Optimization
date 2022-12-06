@@ -231,10 +231,6 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
             }
         }
     }
-    for (int i = 0; i < G->numNodes; i++) {
-        cout << path[i] << endl;
-    }
-    print_path(AT->AMG, path, stop);
     //DFSPrint(AT->AMG, v, stop, path);
 }
 
@@ -354,17 +350,15 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
     {
-        cout << s << " ";
         string vex = localteVex(AMG,s);
         app.push_back(vex);
-        cout << vex << endl;
         return;
     }
-    else {
+    else 
+    {
         DFSPrint(AMG, s, path[v], path);
         string vex = localteVex(AMG, v);
         app.push_back(vex);
-        cout << vex << endl;
     }
 
 }
