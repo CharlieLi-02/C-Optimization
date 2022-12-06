@@ -348,17 +348,14 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
     {
-        cout << s << " ";
         string vex = localteVex(AMG,s);
         app.push_back(vex);
-        cout << vex << endl;
         return;
     }
     else {
         DFSPrint(AMG, s, path[v], path);
         string vex = localteVex(AMG, v);
         app.push_back(vex);
-        cout << vex << endl;
     }
 
 }
