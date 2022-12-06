@@ -8,7 +8,7 @@
 #include <map>
 #include <vector>
 #include "Trip.h"
-#define MAXVEX 30000
+#define MAXVEX 50000
 #define maxSize 12520
 #define INF 32677
 
@@ -101,4 +101,8 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop);
 int getWeight(AGraph* G, int u, int j);
 void print_path(AMGGraph* AMG, int path[], int v1);
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[]);
+void  print_line(Atlas* atlas, int start);
+// ------
+void Dijkstra2(Atlas* AT, int v, int stop);
+void Dijkstra(Atlas* AT, int v0, int n);
 #endif

@@ -8,25 +8,28 @@
 
 Atlas* Atlas::create(std::istream& stream) {
     // This default implementation will probably do what you want.
-    // è¿™ä¸ªé»˜è®¤å®ç°å¯èƒ½ä¼šæ»¡è¶³æ‚¨çš„éœ€è¦ã€‚
+    // Õâ¸öÄ¬ÈÏÊµÏÖ¿ÉÄÜ»áÂú×ãÄúµÄĞèÒª¡£
     // if you use a different constructor, you'll need to change it.
-    // å¦‚æœä½¿ç”¨ä¸åŒçš„æ„é€ å‡½æ•°ï¼Œåˆ™éœ€è¦æ›´æ”¹å®ƒã€‚
+    // Èç¹ûÊ¹ÓÃ²»Í¬µÄ¹¹Ôìº¯Êı£¬ÔòĞèÒª¸ü¸ÄËü¡£
 
     return new Atlas(stream);
 }
 
 
 Atlas::Atlas(std::istream& stream) {
+
+    //chrono::milliseconds ms = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "µ±Ç°Ê±¼ä" << ms.count() << endl;
     station = new Station();
     trip = new Trip();
     AMG = new AMGGraph();
-    //åŠ è½½æ•°æ®
+    //¼ÓÔØÊı¾İ
     std::string name = "";
     std::string time_train;
     std::string name_train;
     std::string name_line;
     string T_B = "T";
-    // è¯»æ–‡ä»¶
+    // ¶ÁÎÄ¼ş
     while (!stream.eof())
     {
         stream >> name;
@@ -45,10 +48,10 @@ Atlas::Atlas(std::istream& stream) {
         else if (!name.find("-")) {
             stream >> time_train;
             std::getline(stream >> std::ws, name_train);
-            vector<platform>* from = station->mymap[name_line];
-            if (from == NULL) {
+            if (name_line == "") {
                 continue;
             }
+            vector<platform>* from = station->mymap[name_line];
             platform  pm;
             if (T_B.compare("B") == 0) {
                 pm.timer = 0;
@@ -71,9 +74,12 @@ Atlas::Atlas(std::istream& stream) {
             continue;
         }
     }
+    //chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     G = (AGraph*)malloc(sizeof(AGraph));
     AMG->m_vexNum = (short)AMG->transfer.size();
     CreateGraph(G, this);
+    //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "¹¹½¨ÁÚ½Ó±íÊ±¼ä" << (stop2.count() - stop.count()) << endl;
 }
 
 
@@ -135,7 +141,11 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     if (start == -1 || stop == -1) {
         throw std::runtime_error("No route.");
     }
-    intDijkstra(this, start, stop);
+    //chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //intDijkstra(this, start, stop);
+    Dijkstra2(this, start, stop);
+    //chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "¼ÆËãÊ±¼ä" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 

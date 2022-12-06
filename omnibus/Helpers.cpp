@@ -110,6 +110,13 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     if (app.size() == 1) {
         throw std::runtime_error("No route.");
     }
+    print_line(atlas, start);
+}
+
+//´òÓ¡Â·¾¶ĞÅÏ¢ 
+void  print_line(Atlas* atlas, int start) {
+    AMGGraph* amg = atlas->AMG;
+    Trip* trips = atlas->trip;
     trips->start = localteVex(amg, start);
     for (size_t i = 0; i < app.size(); i++) {
         Trip::Leg  lgs;
@@ -179,17 +186,16 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
             trips->legs.push_back(lgs);
         }
     }
-    
 }
 
 
-// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
+// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
+    //¸øÈı¸öÊı×é¸³³õÖµ
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -231,11 +237,14 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
             }
         }
     }
+    //for (int i = 0; i < G->numNodes; i++) {
+    //    cout << path[i] << endl;
+    //}
     print_path(AT->AMG, path, stop);
     //DFSPrint(AT->AMG, v, stop, path);
 }
 
-//è·å¾—è¾¹çš„æƒé‡
+//»ñµÃ±ßµÄÈ¨ÖØ
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -252,10 +261,11 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//åˆ›å»ºå›¾
+//´´½¨Í¼
 void CreateGraph(AGraph* G, Atlas* atlas)
 {
     int i;
+    int m = 0, n = 0, weight = 0;
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
     for (i = 0; i < G->numNodes; i++)
@@ -266,10 +276,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
     {
         vector<platform>* plm = oc->second;
-        if (plm == NULL) {
-            continue;
-        }
-        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡  
+        int gid = -1; // µ±Ç°¶ÔÏó±êÁ¿  
         platform  original = (*plm->begin());
         for (auto ac = plm->begin(); ac != plm->end(); ac++)
         {
@@ -291,7 +298,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                 vector<vexName*>::iterator v_N2 = find_if(atlas->AMG->m_vexName.begin(), atlas->AMG->m_vexName.end(), finder_t(original.name));               
                 if (gid != -1) {
                     pe->adjvex = gid;
-                    //å½“å‰å¯¹è±¡æœ‰é‡å¤
+                    //µ±Ç°¶ÔÏóÓĞÖØ¸´
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[gid].firstarc;
                     G->adjlist[gid].firstarc = reverse;
@@ -299,7 +306,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
                     G->adjlist[(*v_N2)->id].firstarc = pe;
                     gid = -1;
                 }else {
-                    // å½“å‰å¯¹è±¡æ— é‡å¤                   
+                    // µ±Ç°¶ÔÏóÎŞÖØ¸´                   
                     reverse->adjvex = (*v_N2)->id;
                     reverse->nextarc = G->adjlist[vName_id - 1].firstarc;
                     G->adjlist[vName_id - 1].firstarc = reverse;
@@ -321,7 +328,7 @@ void CreateGraph(AGraph* G, Atlas* atlas)
 }
 
 
-//è¾“å‡ºè·¯å¾„
+//Êä³öÂ·¾¶
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -346,11 +353,12 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
+//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
     {
+        cout << s << " ";
         string vex = localteVex(AMG,s);
         app.push_back(vex);
         cout << vex << endl;
@@ -360,8 +368,59 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
         DFSPrint(AMG, s, path[v], path);
         string vex = localteVex(AMG, v);
         app.push_back(vex);
+        cout << vex << endl;
     }
 
 }
 
 
+int path2[MAXVEX];
+int visited[MAXVEX] = { 0 };
+Node dist2[MAXVEX];
+priority_queue<Node>q;
+
+
+void Dijkstra2(Atlas* AT, int v, int stop) {
+
+    Dijkstra(AT, v, AT->AMG->m_vexNum);
+    print_path(AT->AMG, path2, stop);
+    print_line(AT, v);
+}
+
+void Dijkstra(Atlas* AT, int v0, int n)
+{
+    AGraph* g = AT->G;
+    for (int i = 1; i <= n; i++)
+    {
+        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
+        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
+        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
+        visited[i] = 0;     //³õÊ¼ÎªËùÓĞ½áµã¶¼Ã»ÓĞ·ÃÎÊ¹ı
+    }
+    dist2[v0].w = 0;
+    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁĞ
+    while (!q.empty())
+    {
+        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îĞ¡Öµ¶ÔÓ¦µÄ½áµã
+        q.pop();
+        int u = node.id;
+        if (visited[u])     //Èôµ±Ç°½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı
+            continue;
+        visited[u] = 1;
+        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
+        while (p)
+        {
+            int tempv = p->adjvex;
+            int tempw = p->weight;
+
+            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµĞ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üĞÂÈ¨Öµ
+            if (!visited[tempv] && dist2[tempv].w > dist2[u].w + tempw)
+            {
+                dist2[tempv].w = dist2[u].w + tempw;
+                path2[tempv] = u;        // ¸üĞÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
+                q.push(dist2[tempv]);
+            }
+            p = p->nextarc;
+        }
+    }
+}
