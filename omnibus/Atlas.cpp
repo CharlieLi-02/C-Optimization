@@ -132,7 +132,7 @@ Atlas::~Atlas() {
     }
 
     if (G->adjlist != NULL) {
-        delete G->adjlist;
+        delete [] G->adjlist;
         G->adjlist = NULL;
     }
     if (G != NULL) {
