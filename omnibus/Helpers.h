@@ -16,7 +16,7 @@ using namespace std;
 
 
 struct platform {
-	short timer = 0;
+	int timer = 0;
 	string name;
 };
 
@@ -26,8 +26,8 @@ struct Station {
 
 typedef struct ArcNode
 {
-	int weight = 0;		//è®°å½•æƒå€¼
-	int adjvex = 0;		//é‚»æ¥ç‚¹
+	int weight = 0;		//¼ÇÂ¼È¨Öµ
+	int adjvex = 0;		//ÁÚ½Óµã
 	struct ArcNode* nextarc;
 }ArcNode;
 typedef struct VNode
@@ -37,18 +37,18 @@ typedef struct VNode
 }VNode;
 typedef struct AGraph
 {
-	VNode adjlist[MAXVEX];
+	VNode *adjlist;
 	int numNodes, numEdges;
 }AGraph;
 
 
-//é¡¶ç‚¹èŠ‚ç‚¹ï¼Œä¿å­˜idå’Œåˆ°æºé¡¶ç‚¹çš„ä¼°ç®—è·ç¦»ï¼Œä¼˜å…ˆé˜Ÿåˆ—éœ€è¦çš„ç±»å‹
+//¶¥µã½Úµã£¬±£´æidºÍµ½Ô´¶¥µãµÄ¹ÀËã¾àÀë£¬ÓÅÏÈ¶ÓÁĞĞèÒªµÄÀàĞÍ
 struct Node
 {
-    int id;     //ä»æºåˆ°ç›®æ ‡é¡¶ç‚¹id
-    int w;      //ä»æºåˆ°idçš„è·ç¦»
+    int id;     //´ÓÔ´µ½Ä¿±ê¶¥µãid
+    int w;      //´ÓÔ´µ½idµÄ¾àÀë
 
-    //å› è¦å®ç°æœ€å°å †ï¼ŒæŒ‰å‡åºæ’åˆ—ï¼Œå› è€Œéœ€è¦é‡è½½è¿ç®—ç¬¦ï¼Œé‡å®šä¹‰ä¼˜å…ˆçº§ï¼Œä½¿å¾—ç»“ç‚¹å‡åº
+    //ÒòÒªÊµÏÖ×îĞ¡¶Ñ£¬°´ÉıĞòÅÅÁĞ£¬Òò¶øĞèÒªÖØÔØÔËËã·û£¬ÖØ¶¨ÒåÓÅÏÈ¼¶£¬Ê¹µÃ½áµãÉıĞò
     friend bool operator < (struct Node a, struct Node b)
     {
         return a.w > b.w;
@@ -68,7 +68,7 @@ typedef struct finder_t
     finder_t(string _name)
         :name(_name)
     {}
-    //é‡è½½()--->cppçš„ä»¿å‡½æ•°ä»£æ›¿å‡½æ•°æŒ‡é’ˆ
+    //ÖØÔØ()--->cppµÄ·Âº¯Êı´úÌæº¯ÊıÖ¸Õë
     bool operator()(vexName* f)
     {
         return (name == f->name);
@@ -91,10 +91,10 @@ private:
 };
 
 struct AMGGraph {
-    short m_vexNum = 0, m_arcNum = 0;//
-    map<string,int> m_vexId;// idå’Œåç§°
-    map<int, string> m_vexName; // åç§°å’Œid
-    map<int, int*> path;  // è·¯å¾„
+    int m_vexNum = 0, m_arcNum = 0;//
+    map<string,int> m_vexId;// idºÍÃû³Æ
+    map<int, string> m_vexName; // Ãû³ÆºÍid
+    map<int, int*> path;  // Â·¾¶
     map<string, vector<string>>   transfer; //
 };
 
