@@ -98,7 +98,6 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
     int* dist = (int*)malloc(sizeof(int) * atlas->G->numNodes);    
-    AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
     initTrip(trips);
     Dijkstra(atlas, dist, path, start, stop);
@@ -110,7 +109,7 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     print_line(atlas, start);
 }
 
-//´òÓ¡Â·¾¶ÐÅÏ¢ 
+//print path
 void  print_line(Atlas* atlas, int start) {
     AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
@@ -188,13 +187,12 @@ void  print_line(Atlas* atlas, int start) {
 }
 
 
-// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
+// æž„å»ºé‚»æŽ¥è¡¨ çŸ©é˜µ
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //¸øÈý¸öÊý×é¸³³õÖµ
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -240,7 +238,6 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 
 }
 
-//»ñµÃ±ßµÄÈ¨ÖØ
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -257,7 +254,7 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//´´½¨ÁÚ½Ó±í
+//åˆ›å»ºé‚»æŽ¥è¡¨
  void CreateGraph(AGraph* G, Atlas* atlas)
 {
     map<string, vector<platform>*>  psm = atlas->station->mymap;
@@ -302,7 +299,7 @@ int getWeight(AGraph* G, int u, int j)
 }
 
 
-//Êä³öÂ·¾¶
+//è¾“å‡ºè·¯å¾„
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -326,22 +323,19 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//Êä³ö´ÓÆðµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
+//è¾“å‡ºä»Žèµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
     {
-        cout << s << " ";
         string vex = localteVex(AMG,s);
         app.push_back(vex);
-        cout << vex << endl;
         return;
     }
     else {
         DFSPrint(AMG, s, path[v], path);
         string vex = localteVex(AMG, v);
         app.push_back(vex);
-        cout << vex << endl;
     }
 }
 
@@ -352,7 +346,6 @@ Node dist2[MAXVEX];
 int visited[MAXVEX] = { 0 };
 priority_queue<Node>q;
 void Dijkstra2(Atlas* AT, int v, int stop) {
-    //chrono::milliseconds stop1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     Trip* trips = AT->trip;
     initTrip(trips);
     int *path2= new int[AT->AMG->m_vexNum];
@@ -361,7 +354,6 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
     app.push_back(localteVex(AT->AMG, temp));
     while (path2[temp] != -1) {
          app.push_back(localteVex(AT->AMG, path2[temp]));
-         //cout << localteVex(AT->AMG, path2[temp])<<endl;
          temp = path2[temp];
     }
     AT->AMG->path.insert(pair<int, int*>(v, path2));
@@ -369,14 +361,8 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
         throw std::runtime_error("No route.");
     }
     reverse(app.begin(), app.end());     
-    chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "²éÑ¯Ê±¼ä" << (stop2.count() - stop1.count()) << endl;
     print_line(AT, v);
-    chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    cout << "´òÓ¡Ê±¼ä" << (stop3.count() - stop2.count()) << endl;
 }
-
-
 
 
 inline void  Dijkstra(Atlas* AT, int v0, int n,int path2[])
@@ -384,34 +370,34 @@ inline void  Dijkstra(Atlas* AT, int v0, int n,int path2[])
     AGraph* g = AT->G;
     for (int i = 0; i < n; i++)
     {
-        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
-        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
-        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
-        visited[i] = 0;     //³õÊ¼ÎªËùÓÐ½áµã¶¼Ã»ÓÐ·ÃÎÊ¹ý
+        dist2[i].id = i;     //ä»Žæºv0åˆ°ç»“ç‚¹i
+        dist2[i].w = INF;    //åˆå§‹è·ç¦»ä¸ºINF
+        path2[i] = -1;       //åˆå§‹æœ€çŸ­è·¯å¾„çš„å‰ä¸€ä¸ªç»“ç‚¹ä¸º-1
+        visited[i] = 0;     //åˆå§‹ä¸ºæ‰€æœ‰ç»“ç‚¹éƒ½æ²¡æœ‰è®¿é—®è¿‡
     }
     dist2[v0].w = 0;
-    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁÐ
+    q.push(dist2[v0]);       //å°†æºç‚¹å…¥ä¼˜å…ˆé˜Ÿåˆ—
 
     while (!q.empty())
     {
-        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îÐ¡Öµ¶ÔÓ¦µÄ½áµã
+        Node node = q.top();  //å–å¾—å½“å‰æƒå€¼wæœ€å°å€¼å¯¹åº”çš„ç»“ç‚¹
         q.pop();
         int u = node.id;
         if (visited[u]) {
             continue;
-        }     //Èôµ±Ç°½áµã»¹Ã»ÓÐ·ÃÎÊ¹ý         
+        }     //è‹¥å½“å‰ç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡         
         visited[u] = 1;
-        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
+        ArcNode* p = g->adjlist[u].firstarc;    //å–å¾—å½“å‰ç»“ç‚¹å¯¹åº”çš„ç¬¬ä¸€æ¡è¾¹
 
         while (p)
         {
             int tempv = p->adjvex;
             int tempw = p->weight;
-            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓÐ·ÃÎÊ¹ý²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµÐ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üÐÂÈ¨Öµ
+            //è‹¥è¯¥è¾¹å¯¹åº”çš„å¦å¤–ä¸€ä¸ªç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡å¹¶ä¸”æºç‚¹åˆ°uåŠ ä¸Šuåˆ°tempvçš„æƒå€¼å°äºŽæºç‚¹ç›´æŽ¥åˆ°tempvçš„æƒå€¼ï¼Œæ›´æ–°æƒå€¼
             if (!visited[tempv] && dist2[tempv].w >=dist2[u].w + tempw)
             {
                 dist2[tempv].w = dist2[u].w + tempw;
-                path2[tempv] = u;        // ¸üÐÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
+                path2[tempv] = u;        // æ›´æ–°æºç‚¹åˆ°tempvçš„æœ€çŸ­è·¯å¾„çš„tempvå‰ä¸€ç»“ç‚¹ä¸ºu
                 q.push(dist2[tempv]);
             }
             p = p->nextarc;
