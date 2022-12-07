@@ -262,7 +262,7 @@ int getWeight(AGraph* G, int u, int j)
 {
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
-    short vName_id = 0;
+    int vName_id = 0;
     G->adjlist = new VNode[G->numNodes];
     for (int i = 0; i < G->numNodes; i++)
     {
