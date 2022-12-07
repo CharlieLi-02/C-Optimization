@@ -59,7 +59,7 @@ struct vexName {
     string name;
     int id = 0;
     bool operator == (const string& pos) {
-        return ((this->name).compare(pos) == 0);
+        return ((this->name)== pos);
     }
 };
 
@@ -78,9 +78,23 @@ typedef struct finder_t
 }finder_t;
 
 
+struct map_value_finder
+{
+public:
+    map_value_finder(const std::string& cmp_string) :m_s_cmp_string(cmp_string) {}
+    bool operator ()(const std::map<int, std::string>::value_type& pair)
+    {
+        return pair.second == m_s_cmp_string;
+    }
+private:
+    const std::string& m_s_cmp_string;
+};
+
 struct AMGGraph {
     short m_vexNum = 0, m_arcNum = 0;//
-    vector<vexName*> m_vexName; //
+    map<string,int> m_vexId;// id和名称
+    map<int, string> m_vexName; // 名称和id
+    map<int, int*> path;  // 路径
     map<string, vector<string>>   transfer; //
 };
 
@@ -93,7 +107,7 @@ void initTrip(Trip* trips);
 vector<string> localteStatic(Atlas* atlas, int vexId);
 platform  getPlatform(vector<platform>  platform_1, string name);
 bool  ThreeStation(vector<string> vec, string name);
-vector<platform> localteStation(Atlas* atlas, string name);
+vector<platform>* localteStation(Atlas* atlas, string name);
 bool Onlineandoffline(Atlas* atlas, string lines, int j);
 void intDijkstra(Atlas* atlas, int start, int stop);
 void CreateGraph(AGraph* G, Atlas* atlas);
@@ -104,5 +118,5 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[]);
 void  print_line(Atlas* atlas, int start);
 // ------
 void Dijkstra2(Atlas* AT, int v, int stop);
-void Dijkstra(Atlas* AT, int v0, int n);
+void  Dijkstra(Atlas* AT, int v0, int n, int path2[]);
 #endif

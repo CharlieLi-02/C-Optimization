@@ -5,6 +5,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+
 // Space to implement helper class member functions.
 
 
@@ -12,19 +13,17 @@
 vector<string>  app;
 
 int locateVex(AMGGraph* AMG, string vexName) {
-    for (int i = 0; i < AMG->m_vexNum; i++) {
-        if (AMG->m_vexName[i]->name.compare(vexName) == 0) {
-            return AMG->m_vexName[i]->id;
-        }
+    map<string, int>::iterator as = AMG->m_vexId.find(vexName);
+    if (as != AMG->m_vexId.end()) {
+        return  as->second;
     }
     return -1;
 }
 
 string localteVex(AMGGraph* AMG, int vexId) {
-    for (int i = 0; i < AMG->m_vexNum; i++) {
-        if (AMG->m_vexName[i]->id == vexId) {
-            return AMG->m_vexName[i]->name;
-        }
+    map<int, string>::iterator as =AMG->m_vexName.find(vexId);
+    if (as != AMG->m_vexName.end()) {
+        return  as->second;
     }
     return "no";
 }
@@ -47,10 +46,8 @@ vector<string> localteStatic(Atlas* atlas, int vexId) {
     return names;
 }
 
-vector<platform> localteStation(Atlas* atlas, string name) {
-    Station* astion = atlas->station;
-    vector<platform>* names = astion->mymap[name];
-    return *names;
+vector<platform>* localteStation(Atlas* atlas, string name) {
+    return atlas->station->mymap[name];
 }
 
 void initTrip(Trip* trips) {
@@ -71,23 +68,23 @@ bool  ThreeStation(vector<string> vec, string name) {
 
 bool Onlineandoffline(Atlas* atlas, string lines, int j) {
     bool flags = false;
-    vector<platform>  plmc = localteStation(atlas, lines);
-    for (size_t k = 0; k < plmc.size(); k++) {
-        if (plmc[k].name.compare(app[j]) == 0) {
+    vector<platform>  *plmc = localteStation(atlas, lines);
+    for (size_t k = 0; k <(*plmc).size(); k++) {
+        if ((*plmc)[k].name.compare(app[j]) == 0) {
             if (k == 0) {
-                if (plmc[(k + 1)].name.compare(app[(j + 1)]) == 0) {
+                if ((*plmc)[(k + 1)].name.compare(app[(j + 1)]) == 0) {
                     flags = true;
                     break;
                 }
             }
-            else if (k == (plmc.size() - 1)) {
-                if (plmc[(k - 1)].name.compare(app[(j + 1)]) == 0) {
+            else if (k == ((*plmc).size() - 1)) {
+                if ((*plmc)[(k - 1)].name.compare(app[(j + 1)]) == 0) {
                     flags = true;
                     break;
                 }
             }
             else {
-                if ((plmc[(k - 1)].name.compare(app[(j + 1)]) == 0) || (plmc[(k + 1)].name.compare(app[(j + 1)]) == 0)) {
+                if (((*plmc)[(k - 1)].name.compare(app[(j + 1)]) == 0) || ((*plmc)[(k + 1)].name.compare(app[(j + 1)]) == 0)) {
                     flags = true;
                     break;
                 }
@@ -101,6 +98,7 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
     int* dist = (int*)malloc(sizeof(int) * atlas->G->numNodes);    
+    AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
     initTrip(trips);
     Dijkstra(atlas, dist, path, start, stop);
@@ -112,7 +110,7 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     print_line(atlas, start);
 }
 
-//æ‰“å°è·¯å¾„ä¿¡æ¯ 
+//´òÓ¡Â·¾¶ĞÅÏ¢ 
 void  print_line(Atlas* atlas, int start) {
     AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
@@ -188,13 +186,13 @@ void  print_line(Atlas* atlas, int start) {
 }
 
 
-// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
+// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
+    //¸øÈı¸öÊı×é¸³³õÖµ
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -236,14 +234,11 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
             }
         }
     }
-    //for (int i = 0; i < G->numNodes; i++) {
-    //    cout << path[i] << endl;
-    //}
     print_path(AT->AMG, path, stop);
-    //DFSPrint(AT->AMG, v, stop, path);
+
 }
 
-//è·å¾—è¾¹çš„æƒé‡
+//»ñµÃ±ßµÄÈ¨ÖØ
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -260,78 +255,57 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//åˆ›å»ºå›¾
-void CreateGraph(AGraph* G, Atlas* atlas)
+//´´½¨ÁÚ½Ó±í
+ void CreateGraph(AGraph* G, Atlas* atlas)
 {
-    int i;
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
-    for (i = 0; i < G->numNodes; i++)
+    short vName_id = 0;
+    for (int i = 0; i < G->numNodes; i++)
     {
         G->adjlist[i].firstarc = NULL;
     }
-    short vName_id = 0;
+    for (auto acp = atlas->AMG->transfer.begin(); acp != atlas->AMG->transfer.end(); acp++) {
+        
+        atlas->AMG->m_vexName.insert(pair<int, string > (vName_id, acp->first));
+        atlas->AMG->m_vexId.insert(pair<string, int>(acp->first, vName_id));
+        vName_id++;
+    }
     for (auto oc = psm.begin(); oc != psm.end(); oc++)
     {
         vector<platform>* plm = oc->second;
-        int gid = -1; // å½“å‰å¯¹è±¡æ ‡é‡  
         platform  original = (*plm->begin());
-        for (auto ac = plm->begin(); ac != plm->end(); ac++)
-        {
-            vexName* vName = NULL;
-            vector<vexName*>::iterator v_N = find_if(atlas->AMG->m_vexName.begin(), atlas->AMG->m_vexName.end(), finder_t(ac->name));
-            if (v_N != atlas->AMG->m_vexName.end()) {
-                gid = (*v_N)->id;
-            }
-            else {
-                vName = new vexName;
-                vName->name = ac->name;
-                vName->id = vName_id++;
-                atlas->AMG->m_vexName.push_back(vName);
-            }
+        for (auto ac = plm->begin(); ac != plm->end(); ac++) {
+            int next = locateVex(atlas->AMG, ac->name);
             if (original.name.compare(ac->name) != 0) {
-
+                int prev = locateVex(atlas->AMG, original.name);
                 ArcNode* pe = (ArcNode*)malloc(sizeof(ArcNode));
                 ArcNode* reverse = (ArcNode*)malloc(sizeof(ArcNode));
-                vector<vexName*>::iterator v_N2 = find_if(atlas->AMG->m_vexName.begin(), atlas->AMG->m_vexName.end(), finder_t(original.name));               
-                if (gid != -1) {
-                    pe->adjvex = gid;
-                    //å½“å‰å¯¹è±¡æœ‰é‡å¤
-                    reverse->adjvex = (*v_N2)->id;
-                    reverse->nextarc = G->adjlist[gid].firstarc;
-                    G->adjlist[gid].firstarc = reverse;
-                    pe->nextarc = G->adjlist[(*v_N2)->id].firstarc;
-                    G->adjlist[(*v_N2)->id].firstarc = pe;
-                    gid = -1;
-                }else {
-                    // å½“å‰å¯¹è±¡æ— é‡å¤                   
-                    reverse->adjvex = (*v_N2)->id;
-                    reverse->nextarc = G->adjlist[vName_id - 1].firstarc;
-                    G->adjlist[vName_id - 1].firstarc = reverse;
-                    pe->adjvex = vName_id-1;
-                    pe->nextarc = G->adjlist[(*v_N2)->id].firstarc;
-                    G->adjlist[(*v_N2)->id].firstarc = pe;
+                if (pe != NULL && reverse != NULL) {
+                    reverse->adjvex = next;
+                    reverse->nextarc = G->adjlist[prev].firstarc;
+                    G->adjlist[prev].firstarc = reverse;
+                    pe->adjvex = prev;
+                    pe->nextarc = G->adjlist[next].firstarc;
+                    G->adjlist[next].firstarc = pe;
+                    pe->weight = (int)((ac->timer) - original.timer);
+                    reverse->weight = (int)((ac->timer) - original.timer);
                 }
-                
-                pe->weight = (int)((ac->timer) - original.timer);
-                reverse->weight = (int)((ac->timer) - original.timer);
             }
-            gid = -1;
             original = (*ac);
         }
-        int  m_arcNum = int(plm->size() - 1);
+        int  m_arcNum = int((plm->size() - 1)*2);
         atlas->AMG->m_arcNum = atlas->AMG->m_arcNum + m_arcNum;
     }
     G->numEdges = atlas->AMG->m_arcNum;
 }
 
 
-//è¾“å‡ºè·¯å¾„
+//Êä³öÂ·¾¶
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
     st.push(v1);
-
     while (!st.empty()) {
         if (path[v1] == -1) {
             while (!st.empty()) {
@@ -351,7 +325,7 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
+//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
@@ -372,50 +346,72 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 }
 
 
-int path2[MAXVEX];
-int visited[MAXVEX] = { 0 };
+
+
 Node dist2[MAXVEX];
+int visited[MAXVEX] = { 0 };
 priority_queue<Node>q;
-
-
 void Dijkstra2(Atlas* AT, int v, int stop) {
-
-    Dijkstra(AT, v, AT->AMG->m_vexNum);
-    print_path(AT->AMG, path2, stop);
+    //chrono::milliseconds stop1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    Trip* trips = AT->trip;
+    initTrip(trips);
+    int *path2= new int[AT->AMG->m_vexNum];
+    Dijkstra(AT, v, AT->AMG->m_vexNum,path2);
+    int temp = stop;
+    app.push_back(localteVex(AT->AMG, temp));
+    while (path2[temp] != -1) {
+         app.push_back(localteVex(AT->AMG, path2[temp]));
+         //cout << localteVex(AT->AMG, path2[temp])<<endl;
+         temp = path2[temp];
+    }
+    AT->AMG->path.insert(pair<int, int*>(v, path2));
+    if (app.size() == 1) {
+        throw std::runtime_error("No route.");
+    }
+    reverse(app.begin(), app.end());     
+    //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "²éÑ¯Ê±¼ä" << (stop2.count() - stop1.count()) << endl;
     print_line(AT, v);
+    chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "" << (stop3.count() - stop2.count()) << endl;
 }
 
-void Dijkstra(Atlas* AT, int v0, int n)
+
+
+
+inline void  Dijkstra(Atlas* AT, int v0, int n,int path2[])
 {
     AGraph* g = AT->G;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        dist2[i].id = i;     //ä»æºv0åˆ°ç»“ç‚¹i
-        dist2[i].w = INF;    //åˆå§‹è·ç¦»ä¸ºINF
-        path2[i] = -1;       //åˆå§‹æœ€çŸ­è·¯å¾„çš„å‰ä¸€ä¸ªç»“ç‚¹ä¸º-1
-        visited[i] = 0;     //åˆå§‹ä¸ºæ‰€æœ‰ç»“ç‚¹éƒ½æ²¡æœ‰è®¿é—®è¿‡
+        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
+        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
+        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
+        visited[i] = 0;     //³õÊ¼ÎªËùÓĞ½áµã¶¼Ã»ÓĞ·ÃÎÊ¹ı
     }
     dist2[v0].w = 0;
-    q.push(dist2[v0]);       //å°†æºç‚¹å…¥ä¼˜å…ˆé˜Ÿåˆ—
+    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁĞ
+
     while (!q.empty())
     {
-        Node node = q.top();  //å–å¾—å½“å‰æƒå€¼wæœ€å°å€¼å¯¹åº”çš„ç»“ç‚¹
+        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îĞ¡Öµ¶ÔÓ¦µÄ½áµã
         q.pop();
         int u = node.id;
-        if (visited[u])     //è‹¥å½“å‰ç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡
+        if (visited[u]) {
             continue;
+        }     //Èôµ±Ç°½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı         
         visited[u] = 1;
-        ArcNode* p = g->adjlist[u].firstarc;    //å–å¾—å½“å‰ç»“ç‚¹å¯¹åº”çš„ç¬¬ä¸€æ¡è¾¹
+        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
+
         while (p)
         {
             int tempv = p->adjvex;
             int tempw = p->weight;
-
-            //è‹¥è¯¥è¾¹å¯¹åº”çš„å¦å¤–ä¸€ä¸ªç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡å¹¶ä¸”æºç‚¹åˆ°uåŠ ä¸Šuåˆ°tempvçš„æƒå€¼å°äºæºç‚¹ç›´æ¥åˆ°tempvçš„æƒå€¼ï¼Œæ›´æ–°æƒå€¼
-            if (!visited[tempv] && dist2[tempv].w > dist2[u].w + tempw)
+            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµĞ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üĞÂÈ¨Öµ
+            if (!visited[tempv] && dist2[tempv].w >=dist2[u].w + tempw)
             {
                 dist2[tempv].w = dist2[u].w + tempw;
-                path2[tempv] = u;        // æ›´æ–°æºç‚¹åˆ°tempvçš„æœ€çŸ­è·¯å¾„çš„tempvå‰ä¸€ç»“ç‚¹ä¸ºu
+                path2[tempv] = u;        // ¸üĞÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
                 q.push(dist2[tempv]);
             }
             p = p->nextarc;

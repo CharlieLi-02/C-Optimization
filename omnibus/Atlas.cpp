@@ -5,6 +5,7 @@
 #include <chrono>
 #include <algorithm>
 
+extern vector<string>  app;
 
 Atlas* Atlas::create(std::istream& stream) {
     // This default implementation will probably do what you want.
@@ -74,12 +75,12 @@ Atlas::Atlas(std::istream& stream) {
             continue;
         }
     }
-    //chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     G = (AGraph*)malloc(sizeof(AGraph));
     AMG->m_vexNum = (short)AMG->transfer.size();
     CreateGraph(G, this);
-    //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "构建邻接表时间" << (stop2.count() - stop.count()) << endl;
+    chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "构建邻接表时间" << (stop2.count() - stop.count()) << endl;
 }
 
 
@@ -97,15 +98,16 @@ Atlas::~Atlas() {
     delete station;
     station = NULL;
 
-    for (auto iter = AMG->m_vexName.begin(); iter != AMG->m_vexName.end(); ++iter)
+    for (auto oc = AMG->path.begin(); oc != AMG->path.end();)
     {
-        if (*iter != NULL)
-        {
-            delete (*iter);
-            (*iter) = NULL;
+        if (oc->second != nullptr) {
+            delete [] oc->second;
+            oc->second = NULL;
         }
+        AMG->path.erase(oc++);
     }
-    AMG->m_vexName.clear();
+
+    AMG->path.clear();
 
     if (AMG != NULL) {
         delete AMG;
@@ -141,11 +143,27 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     if (start == -1 || stop == -1) {
         throw std::runtime_error("No route.");
     }
-    //chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //intDijkstra(this, start, stop);
-    Dijkstra2(this, start, stop);
-    //chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "计算时间" << (s_2.count() - s_1.count()) << endl;
+    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    map<int, int*>::iterator as = AMG->path.find(start);
+    if (as != AMG->path.end()){
+          app.clear();
+          int *path =as->second;
+          app.push_back(localteVex(AMG, stop));
+          while (path[stop] != -1) {
+              app.push_back(localteVex(AMG, path[stop]));
+              stop = path[stop];
+          }
+          if (app.size() == 1) {             
+              throw std::runtime_error("No route.");
+          }
+          reverse(app.begin(), app.end());
+          print_line(this, start);
+    }
+    else {
+        Dijkstra2(this, start, stop);
+    }
+    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "计算时间" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 
