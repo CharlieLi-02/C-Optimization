@@ -70,19 +70,19 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
     for (size_t k = 0; k <(*plmc).size(); k++) {
         if ((*plmc)[k].name.compare(app[j]) == 0) {
             if(k == 0) {
-                if ((*plmc)[(k + 1)].name.compare(app[j]) == 0) {
+                if ((*plmc)[(k + 1)].name.compare(app[j+1]) == 0) {
                     flags = true;
                     break;
                 }
             }
             else if (k == ((*plmc).size() - 1)) {
-                if ((*plmc)[(k - 1)].name.compare(app[j]) == 0) {
+                if ((*plmc)[(k - 1)].name.compare(app[j+1]) == 0) {
                     flags = true;
                     break;
                 }
             }
             else {
-                if (((*plmc)[(k - 1)].name.compare(app[j]) == 0) || ((*plmc)[(k + 1)].name.compare(app[j]) == 0)) {
+                if (((*plmc)[(k - 1)].name.compare(app[j+1]) == 0) || ((*plmc)[(k + 1)].name.compare(app[j+1]) == 0)) {
                     flags = true;
                     break;
                 }
@@ -96,6 +96,7 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
     int* dist = (int*)malloc(sizeof(int) * atlas->G->numNodes);    
+    AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
     initTrip(trips);
     Dijkstra(atlas, dist, path, start, stop);
@@ -107,7 +108,7 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     print_line(atlas, start);
 }
 
-//æ‰“å°è·¯å¾„ä¿¡æ¯ 
+//´òÓ¡Â·¾¶ĞÅÏ¢ 
 void  print_line(Atlas* atlas, int start) {
     AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
@@ -125,12 +126,12 @@ void  print_line(Atlas* atlas, int start) {
                     vector<string> vec3 = (amg->transfer)[app[(j + 1)]];
                     flags = ThreeStation(vec3, lgs.line);
                     if (flags) {
-                        flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j+1));
+                        flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
                     }
                     if (!flags) {
                         lgs.stop = app[j];
                         flags = false;
-                        i = j;
+                        //i = j;
                         break;
                     }
                     flags = false;
@@ -148,16 +149,19 @@ void  print_line(Atlas* atlas, int start) {
             size_t aps = i;
             bool flags = false;
             vector<string> vec2 = (amg->transfer)[app[(aps)]];
-            for (size_t j = 0; j < vec.size(); j++) {
-                flags = Onlineandoffline(atlas, vec[j], static_cast<int>(aps));
-                if (flags) {
-                    lgs.line = vec[j];
-                    flags = false;
-                    break;
+            if (vec2.size() == 1) {
+                lgs.line = vec2[0];
+            }else {
+                for (size_t j = 0; j < vec.size(); j++) {
+                    flags = Onlineandoffline(atlas, vec[j], static_cast<int>(aps));
+                    if (flags) {
+                        lgs.line = vec[j];
+                        flags = false;
+                        break;
+                    }
                 }
             }
             for (size_t j = aps; j < app.size(); j++) {
-                vec2 = (amg->transfer)[app[(j)]];
                 if (vec2.size() > 1 && j != tempSize) {
                     vector<string> vec3 = (amg->transfer)[app[j + 1]];
                     flags = ThreeStation(vec3, lgs.line);
@@ -167,7 +171,7 @@ void  print_line(Atlas* atlas, int start) {
                     if (!flags) {
                         lgs.stop = app[j];
                         flags = false;
-                        i = j;
+                        //i = j;
                         break;
                     }
                     flags = false;
@@ -185,13 +189,13 @@ void  print_line(Atlas* atlas, int start) {
 }
 
 
-// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
+// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
+    //¸øÈı¸öÊı×é¸³³õÖµ
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -237,7 +241,7 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 
 }
 
-//è·å¾—è¾¹çš„æƒé‡
+//»ñµÃ±ßµÄÈ¨ÖØ
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -254,7 +258,7 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//åˆ›å»ºé‚»æ¥è¡¨
+//´´½¨ÁÚ½Ó±í
  void CreateGraph(AGraph* G, Atlas* atlas)
 {
     map<string, vector<platform>*>  psm = atlas->station->mymap;
@@ -302,7 +306,7 @@ int getWeight(AGraph* G, int u, int j)
 }
 
 
-//è¾“å‡ºè·¯å¾„
+//Êä³öÂ·¾¶
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -326,7 +330,7 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
+//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
@@ -352,6 +356,7 @@ Node dist2[MAXVEX];
 int visited[MAXVEX] = { 0 };
 priority_queue<Node>q;
 void Dijkstra2(Atlas* AT, int v, int stop) {
+    //chrono::milliseconds stop1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     Trip* trips = AT->trip;
     initTrip(trips);
     int *path2= new int[AT->AMG->m_vexNum];
@@ -360,6 +365,7 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
     app.push_back(localteVex(AT->AMG, temp));
     while (path2[temp] != -1) {
          app.push_back(localteVex(AT->AMG, path2[temp]));
+         //cout << localteVex(AT->AMG, path2[temp])<<endl;
          temp = path2[temp];
     }
     AT->AMG->path.insert(pair<int, int*>(v, path2));
@@ -367,7 +373,11 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
         throw std::runtime_error("No route.");
     }
     reverse(app.begin(), app.end());     
+    chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "²éÑ¯Ê±¼ä" << (stop2.count() - stop1.count()) << endl;
     print_line(AT, v);
+    chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "´òÓ¡Ê±¼ä" << (stop3.count() - stop2.count()) << endl;
 }
 
 
@@ -378,34 +388,34 @@ inline void  Dijkstra(Atlas* AT, int v0, int n,int path2[])
     AGraph* g = AT->G;
     for (int i = 0; i < n; i++)
     {
-        dist2[i].id = i;     //ä»æºv0åˆ°ç»“ç‚¹i
-        dist2[i].w = INF;    //åˆå§‹è·ç¦»ä¸ºINF
-        path2[i] = -1;       //åˆå§‹æœ€çŸ­è·¯å¾„çš„å‰ä¸€ä¸ªç»“ç‚¹ä¸º-1
-        visited[i] = 0;     //åˆå§‹ä¸ºæ‰€æœ‰ç»“ç‚¹éƒ½æ²¡æœ‰è®¿é—®è¿‡
+        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
+        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
+        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
+        visited[i] = 0;     //³õÊ¼ÎªËùÓĞ½áµã¶¼Ã»ÓĞ·ÃÎÊ¹ı
     }
     dist2[v0].w = 0;
-    q.push(dist2[v0]);       //å°†æºç‚¹å…¥ä¼˜å…ˆé˜Ÿåˆ—
+    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁĞ
 
     while (!q.empty())
     {
-        Node node = q.top();  //å–å¾—å½“å‰æƒå€¼wæœ€å°å€¼å¯¹åº”çš„ç»“ç‚¹
+        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îĞ¡Öµ¶ÔÓ¦µÄ½áµã
         q.pop();
         int u = node.id;
         if (visited[u]) {
             continue;
-        }     //è‹¥å½“å‰ç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡         
+        }     //Èôµ±Ç°½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı         
         visited[u] = 1;
-        ArcNode* p = g->adjlist[u].firstarc;    //å–å¾—å½“å‰ç»“ç‚¹å¯¹åº”çš„ç¬¬ä¸€æ¡è¾¹
+        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
 
         while (p)
         {
             int tempv = p->adjvex;
             int tempw = p->weight;
-            //è‹¥è¯¥è¾¹å¯¹åº”çš„å¦å¤–ä¸€ä¸ªç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡å¹¶ä¸”æºç‚¹åˆ°uåŠ ä¸Šuåˆ°tempvçš„æƒå€¼å°äºæºç‚¹ç›´æ¥åˆ°tempvçš„æƒå€¼ï¼Œæ›´æ–°æƒå€¼
+            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµĞ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üĞÂÈ¨Öµ
             if (!visited[tempv] && dist2[tempv].w >=dist2[u].w + tempw)
             {
                 dist2[tempv].w = dist2[u].w + tempw;
-                path2[tempv] = u;        // æ›´æ–°æºç‚¹åˆ°tempvçš„æœ€çŸ­è·¯å¾„çš„tempvå‰ä¸€ç»“ç‚¹ä¸ºu
+                path2[tempv] = u;        // ¸üĞÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
                 q.push(dist2[tempv]);
             }
             p = p->nextarc;

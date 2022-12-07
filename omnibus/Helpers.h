@@ -10,7 +10,7 @@
 #include "Trip.h"
 #define MAXVEX 100000
 #define maxSize 12520
-#define INF 32677
+#define INF 98822550
 
 using namespace std;
 
@@ -35,6 +35,7 @@ typedef struct VNode
 	int data = 0;
 	ArcNode* firstarc;
 }VNode;
+
 typedef struct AGraph
 {
 	VNode *adjlist;

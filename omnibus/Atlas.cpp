@@ -9,9 +9,9 @@ extern vector<string>  app;
 
 Atlas* Atlas::create(std::istream& stream) {
     // This default implementation will probably do what you want.
-    // è¿™ä¸ªé»˜è®¤å®ç°å¯èƒ½ä¼šæ»¡è¶³æ‚¨çš„éœ€è¦ã€‚
+    // Õâ¸öÄ¬ÈÏÊµÏÖ¿ÉÄÜ»áÂú×ãÄúµÄĞèÒª¡£
     // if you use a different constructor, you'll need to change it.
-    // å¦‚æœä½¿ç”¨ä¸åŒçš„æ„é€ å‡½æ•°ï¼Œåˆ™éœ€è¦æ›´æ”¹å®ƒã€‚
+    // Èç¹ûÊ¹ÓÃ²»Í¬µÄ¹¹Ôìº¯Êı£¬ÔòĞèÒª¸ü¸ÄËü¡£
 
     return new Atlas(stream);
 }
@@ -19,17 +19,19 @@ Atlas* Atlas::create(std::istream& stream) {
 
 Atlas::Atlas(std::istream& stream) {
 
+    //chrono::milliseconds ms = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "µ±Ç°Ê±¼ä" << ms.count() << endl;
     station = new Station();
     trip = new Trip();
     AMG = new AMGGraph();
-    //åŠ è½½æ•°æ®
+    //¼ÓÔØÊı¾İ
     std::string name = "";
     std::string time_train;
     std::string name_train;
     std::string name_line;
     string T_B = "T";
-    // è¯»æ–‡ä»¶
-    chrono::milliseconds start = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    // ¶ÁÎÄ¼ş
+    //chrono::milliseconds start = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     while (!stream.eof())
     {
         stream >> name;
@@ -63,8 +65,11 @@ Atlas::Atlas(std::istream& stream) {
                 pm.name = name_train;
                 from->second->push_back(pm);
                 map<string, vector<string>>::iterator as = AMG->transfer.find(name_train);
-                if (as != AMG->transfer.end()) {
-                    as->second.push_back(name_line);
+                if (as != AMG->transfer.end()) {                    
+                   vector<string>::iterator iter = std::find(as->second.begin(), as->second.end(), name_line);
+                   if (iter == as->second.end()) {
+                       as->second.push_back(name_line);
+                   }                  
                 }
                 else {
                     vector<string>  ast;
@@ -76,9 +81,14 @@ Atlas::Atlas(std::istream& stream) {
             continue;
         }
     }
+    //chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "¼ÓÔØÎÄ¼şÊ±¼ä" << (stop.count() - start.count()) << endl;
     G = (AGraph*)malloc(sizeof(AGraph));
     AMG->m_vexNum = (int)AMG->transfer.size();
     CreateGraph(G, this);
+    //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "¹¹½¨ÁÚ½Ó±íÊ±¼ä" << (stop2.count() - stop.count()) << endl;
+
 }
 
 
@@ -113,14 +123,14 @@ Atlas::~Atlas() {
     }
 
     for (int i = 0; i < G->numNodes; i++) {
-        ArcNode* node = G->adjlist[i].firstarc;
-        while (node != NULL)
-         {
-            ArcNode* node1 = node->nextarc;
-            free(node);
-            node = node1;
-         }
+        ArcNode* freeNode;
+        while (NULL != G->adjlist[i].firstarc) {
+            freeNode = G->adjlist[i].firstarc;
+            G->adjlist[i].firstarc = G->adjlist[i].firstarc->nextarc;
+            free(freeNode);
+        }
     }
+
     if (G->adjlist != NULL) {
         delete G->adjlist;
         G->adjlist = NULL;
@@ -143,6 +153,7 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     if (start == -1 || stop == -1) {
         throw std::runtime_error("No route.");
     }
+    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     map<int, int*>::iterator as = AMG->path.find(start);
     if (as != AMG->path.end()){
           initTrip(trip);          
@@ -161,6 +172,8 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     else {
         Dijkstra2(this, start, stop);
     }
+    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "¼ÆËãÊ±¼ä" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 
