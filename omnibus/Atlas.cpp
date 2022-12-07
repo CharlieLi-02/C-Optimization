@@ -31,6 +31,7 @@ Atlas::Atlas(std::istream& stream) {
     std::string name_line;
     string T_B = "T";
     // 读文件
+    chrono::milliseconds start = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     while (!stream.eof())
     {
         stream >> name;
@@ -51,33 +52,36 @@ Atlas::Atlas(std::istream& stream) {
             std::getline(stream >> std::ws, name_train);
             if (name_line == "") {
                 continue;
+            }          
+            map<string, vector<platform>*>::iterator from = station->mymap.find(name_line);
+            if (from != station->mymap.end()) {
+                platform  pm;
+                if (T_B.compare("B") == 0) {
+                    pm.timer = 0;
+                }
+                else {
+                    pm.timer = atoi(time_train.c_str());
+                }
+                pm.name = name_train;
+                from->second->push_back(pm);
+                map<string, vector<string>>::iterator as = AMG->transfer.find(name_train);
+                if (as != AMG->transfer.end()) {
+                    as->second.push_back(name_line);
+                }
+                else {
+                    vector<string>  ast;
+                    ast.push_back(name_line);
+                    AMG->transfer.insert(pair<string, vector<string>>(name_train, ast));
+                }
+                station->mymap.insert(pair<string, vector<platform>*>(name_line, from->second));
             }
-            vector<platform>* from = station->mymap[name_line];
-            platform  pm;
-            if (T_B.compare("B") == 0) {
-                pm.timer = 0;
-            }
-            else {
-                pm.timer = (short)atoi(time_train.c_str());
-            }
-            pm.name = name_train;
-            from->push_back(pm);
-            map<string, vector<string>>::iterator as = AMG->transfer.find(name_train);
-            if (as != AMG->transfer.end()) {
-                as->second.push_back(name_line);
-            }
-            else {
-                vector<string>  ast;
-                ast.push_back(name_line);
-                AMG->transfer.insert(pair<string, vector<string>>(name_train, ast));
-            }
-            station->mymap.insert(pair<string, vector<platform>*>(name_line, from));
             continue;
         }
     }
     chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "加载文件时间" << (stop.count() - start.count()) << endl;
     G = (AGraph*)malloc(sizeof(AGraph));
-    AMG->m_vexNum = (short)AMG->transfer.size();
+    AMG->m_vexNum = AMG->transfer.size();
     CreateGraph(G, this);
     chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     cout << "构建邻接表时间" << (stop2.count() - stop.count()) << endl;
@@ -139,14 +143,13 @@ Atlas::~Atlas() {
 Trip Atlas::route(const std::string& src, const std::string& dst) {
     int start = locateVex(AMG, src);
     int stop = locateVex(AMG, dst);
-
     if (start == -1 || stop == -1) {
         throw std::runtime_error("No route.");
     }
-    chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     map<int, int*>::iterator as = AMG->path.find(start);
     if (as != AMG->path.end()){
-          app.clear();
+          initTrip(trip);          
           int *path =as->second;
           app.push_back(localteVex(AMG, stop));
           while (path[stop] != -1) {
@@ -162,8 +165,8 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     else {
         Dijkstra2(this, start, stop);
     }
-    chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    cout << "计算时间" << (s_2.count() - s_1.count()) << endl;
+    //chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "计算时间" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 

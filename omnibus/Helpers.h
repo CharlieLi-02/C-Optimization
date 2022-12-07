@@ -16,7 +16,7 @@ using namespace std;
 
 
 struct platform {
-	short timer = 0;
+	int timer = 0;
 	string name;
 };
 
@@ -91,7 +91,7 @@ private:
 };
 
 struct AMGGraph {
-    short m_vexNum = 0, m_arcNum = 0;//
+    int m_vexNum = 0, m_arcNum = 0;//
     map<string,int> m_vexId;// id和名称
     map<int, string> m_vexName; // 名称和id
     map<int, int*> path;  // 路径
