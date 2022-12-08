@@ -16,7 +16,7 @@ vector<string> split(string str, string pattern)
     std::string::size_type pos;
     std::vector<std::string> result;
     str += pattern;//扩展字符串以方便操作
-    int size = str.size();
+    size_t size = str.size();
     for (int i = 0; i < size; i++)
     {
         pos = str.find(pattern, i);
@@ -115,7 +115,6 @@ bool Onlineandoffline(Atlas* atlas, string lines, int j) {
 void  intDijkstra(Atlas* atlas, int start, int stop) {
     int* path = (int*)malloc(sizeof(int) * atlas->G->numNodes);
     int* dist = (int*)malloc(sizeof(int) * atlas->G->numNodes);    
-    AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
     initTrip(trips);
     Dijkstra(atlas, dist, path, start, stop);
@@ -284,7 +283,6 @@ int getWeight(AGraph* G, int u, int j)
 {
     map<string, vector<platform>*>  psm = atlas->station->mymap;
     G->numNodes = atlas->AMG->m_vexNum;
-    int vName_id = 0;
     G->adjlist = new VNode[G->numNodes];
     for (int i = 0; i < G->numNodes; i++)
     {
@@ -330,7 +328,7 @@ int getWeight(AGraph* G, int u, int j)
         if (acp->second.size() > 1) {
             atlas->AMG->m_arcNum = int(atlas->AMG->m_arcNum +acp->second.size() - 1);
             string original = acp->second[0] + "/" + acp->first;
-            for (int j = 0; j < acp->second.size(); j++) {
+            for (size_t j = 0; j < acp->second.size(); j++) {
                 string  acNameB = acp->second[j] + "/" + acp->first;
                 int next = locateVex(atlas->AMG, original);
                 if (next == -1) {
@@ -462,10 +460,9 @@ void  print_line_2(Atlas* AT, int path[],int stop) {
     }
     reverse(app.begin(), app.end());
     unordered_map<string, vector<string>> cpps;
-    bool  flags_1 = true;
     int  s_name_flag = 0;
     string alam=  split(app[0], "/")[0] +";" + to_string(s_name_flag);
-    for (int i = 0; i < app.size(); i++) {
+    for (size_t i = 0; i < app.size(); i++) {
            vector<string> name = split(app[i], "/");
            string name_v = name[0] + ";" + to_string(s_name_flag);
            if (alam.compare(name_v) == 0) {
