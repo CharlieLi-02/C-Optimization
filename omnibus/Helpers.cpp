@@ -108,7 +108,7 @@ void  intDijkstra(Atlas* atlas, int start, int stop) {
     print_line(atlas, start);
 }
 
-//æ‰“å°è·¯å¾„ä¿¡æ¯ 
+//´òÓ¡Â·¾¶ĞÅÏ¢ 
 void  print_line(Atlas* atlas, int start) {
     AMGGraph* amg = atlas->AMG;
     Trip* trips = atlas->trip;
@@ -123,11 +123,12 @@ void  print_line(Atlas* atlas, int start) {
             for (size_t j = (i + 1); j < app.size(); j++) {
                 vector<string> vec2 = (amg->transfer)[app[j]];
                 if (vec2.size() > 1 && j != tempSize) {
-                    vector<string> vec3 = (amg->transfer)[app[(j + 1)]];
-                    flags = ThreeStation(vec3, lgs.line);
-                    if (flags) {
-                        flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
-                    }
+                    //vector<string> vec3 = (amg->transfer)[app[(j + 1)]];
+                    //flags = ThreeStation(vec3, lgs.line);
+                    //if (flags) {
+                    //    flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
+                    //}
+                    flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
                     if (!flags) {
                         lgs.stop = app[j];
                         flags = false;
@@ -163,11 +164,12 @@ void  print_line(Atlas* atlas, int start) {
             }
             for (size_t j = aps; j < app.size(); j++) {
                 if (vec2.size() > 1 && j != tempSize) {
-                    vector<string> vec3 = (amg->transfer)[app[j + 1]];
-                    flags = ThreeStation(vec3, lgs.line);
-                    if (flags) {
-                        flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
-                    }
+                    //vector<string> vec3 = (amg->transfer)[app[j + 1]];
+                    //flags = ThreeStation(vec3, lgs.line);
+                    //if (flags) {
+                    //    flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
+                    //}
+                    flags = Onlineandoffline(atlas, lgs.line, static_cast<int>(j));
                     if (!flags) {
                         lgs.stop = app[j];
                         flags = false;
@@ -189,13 +191,13 @@ void  print_line(Atlas* atlas, int start) {
 }
 
 
-// æ„å»ºé‚»æ¥è¡¨ çŸ©é˜µ
+// ¹¹½¨ÁÚ½Ó±í ¾ØÕó
 void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 {
     AGraph* G = AT->G;
     int set[MAXVEX];
     int i, j, u = 0, min = 0;
-    //ç»™ä¸‰ä¸ªæ•°ç»„èµ‹åˆå€¼
+    //¸øÈı¸öÊı×é¸³³õÖµ
     for (i = 0; i < G->numNodes; i++)
     {
         set[i] = 0;
@@ -241,7 +243,7 @@ void Dijkstra(Atlas* AT, int dist[], int path[], int v, int stop)
 
 }
 
-//è·å¾—è¾¹çš„æƒé‡
+//»ñµÃ±ßµÄÈ¨ÖØ
 int getWeight(AGraph* G, int u, int j)
 {
     if (u == j) {
@@ -258,7 +260,7 @@ int getWeight(AGraph* G, int u, int j)
     return INF;
 }
 
-//åˆ›å»ºé‚»æ¥è¡¨
+//´´½¨ÁÚ½Ó±í
  void CreateGraph(AGraph* G, Atlas* atlas)
 {
     map<string, vector<platform>*>  psm = atlas->station->mymap;
@@ -312,7 +314,7 @@ int getWeight(AGraph* G, int u, int j)
 }
 
 
-//è¾“å‡ºè·¯å¾„
+//Êä³öÂ·¾¶
 void print_path(AMGGraph* AMG, int path[], int v1)
 {
     stack<int> st;
@@ -336,7 +338,7 @@ void print_path(AMGGraph* AMG, int path[], int v1)
     }
 }
 
-//è¾“å‡ºä»èµ·ç‚¹såˆ°é¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„
+//Êä³ö´ÓÆğµãsµ½¶¥µãvµÄ×î¶ÌÂ·¾¶
 void DFSPrint(AMGGraph* AMG, int s, int v, int path[])
 {
     if (v == s)
@@ -379,8 +381,11 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
         throw std::runtime_error("No route.");
     }
     reverse(app.begin(), app.end());     
-    //cout << "æŸ¥è¯¢æ—¶é—´" << (stop2.count() - stop1.count()) << endl;
+    chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    //cout << "²éÑ¯Ê±¼ä" << (stop2.count() - stop1.count()) << endl;
     print_line(AT, v);
+    chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
+    cout << "´òÓ¡Ê±¼ä" << (stop3.count() - stop2.count()) << endl;
 }
 
 
@@ -391,37 +396,118 @@ inline void  Dijkstra(Atlas* AT, int v0, int n,int path2[])
     AGraph* g = AT->G;
     for (int i = 0; i < n; i++)
     {
-        dist2[i].id = i;     //ä»æºv0åˆ°ç»“ç‚¹i
-        dist2[i].w = INF;    //åˆå§‹è·ç¦»ä¸ºINF
-        path2[i] = -1;       //åˆå§‹æœ€çŸ­è·¯å¾„çš„å‰ä¸€ä¸ªç»“ç‚¹ä¸º-1
-        visited[i] = 0;     //åˆå§‹ä¸ºæ‰€æœ‰ç»“ç‚¹éƒ½æ²¡æœ‰è®¿é—®è¿‡
+        dist2[i].id = i;     //´ÓÔ´v0µ½½áµãi
+        dist2[i].w = INF;    //³õÊ¼¾àÀëÎªINF
+        path2[i] = -1;       //³õÊ¼×î¶ÌÂ·¾¶µÄÇ°Ò»¸ö½áµãÎª-1
+        visited[i] = 0;     //³õÊ¼ÎªËùÓĞ½áµã¶¼Ã»ÓĞ·ÃÎÊ¹ı
     }
     dist2[v0].w = 0;
-    q.push(dist2[v0]);       //å°†æºç‚¹å…¥ä¼˜å…ˆé˜Ÿåˆ—
-
+    q.push(dist2[v0]);       //½«Ô´µãÈëÓÅÏÈ¶ÓÁĞ
+    vector<vector<int> > prevPoints;
     while (!q.empty())
     {
-        Node node = q.top();  //å–å¾—å½“å‰æƒå€¼wæœ€å°å€¼å¯¹åº”çš„ç»“ç‚¹
+        Node node = q.top();  //È¡µÃµ±Ç°È¨Öµw×îĞ¡Öµ¶ÔÓ¦µÄ½áµã
         q.pop();
         int u = node.id;
         if (visited[u]) {
             continue;
-        }     //è‹¥å½“å‰ç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡         
+        }     //Èôµ±Ç°½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı         
         visited[u] = 1;
-        ArcNode* p = g->adjlist[u].firstarc;    //å–å¾—å½“å‰ç»“ç‚¹å¯¹åº”çš„ç¬¬ä¸€æ¡è¾¹
+        ArcNode* p = g->adjlist[u].firstarc;    //È¡µÃµ±Ç°½áµã¶ÔÓ¦µÄµÚÒ»Ìõ±ß
 
         while (p)
         {
             int tempv = p->adjvex;
             int tempw = p->weight;
-            //è‹¥è¯¥è¾¹å¯¹åº”çš„å¦å¤–ä¸€ä¸ªç»“ç‚¹è¿˜æ²¡æœ‰è®¿é—®è¿‡å¹¶ä¸”æºç‚¹åˆ°uåŠ ä¸Šuåˆ°tempvçš„æƒå€¼å°äºæºç‚¹ç›´æ¥åˆ°tempvçš„æƒå€¼ï¼Œæ›´æ–°æƒå€¼
-            if (!visited[tempv] && dist2[tempv].w >=dist2[u].w + tempw)
+      
+            //Èô¸Ã±ß¶ÔÓ¦µÄÁíÍâÒ»¸ö½áµã»¹Ã»ÓĞ·ÃÎÊ¹ı²¢ÇÒÔ´µãµ½u¼ÓÉÏuµ½tempvµÄÈ¨ÖµĞ¡ÓÚÔ´µãÖ±½Óµ½tempvµÄÈ¨Öµ£¬¸üĞÂÈ¨Öµ
+            if (!visited[tempv] && dist2[tempv].w >dist2[u].w + tempw)
             {
-                dist2[tempv].w = dist2[u].w + tempw;
-                path2[tempv] = u;        // æ›´æ–°æºç‚¹åˆ°tempvçš„æœ€çŸ­è·¯å¾„çš„tempvå‰ä¸€ç»“ç‚¹ä¸ºu
+                dist2[tempv].w = dist2[u].w + tempw;              
+                path2[tempv] = u;        // ¸üĞÂÔ´µãµ½tempvµÄ×î¶ÌÂ·¾¶µÄtempvÇ°Ò»½áµãÎªu
+                //cout << "Õ¾µã" << localteVex(AT->AMG, p->adjvex) << "È¨ÖØ" << dist2[tempv].w << endl;
                 q.push(dist2[tempv]);
             }
             p = p->nextarc;
         }
+
     }
+    //for (int i = 0; i < n; i++) {
+    //    cout << "²âÊÔ-1" << path2[i] << endl;
+    //    cout << "²âÊÔ" << dist2[i].w << endl;
+    //}
+    
+
 }
+
+
+/**
+  *
+  * @param start Æğµã
+  * @param dest ÖÕµã
+  * @param adj ÁÚ½ÓÁ´±í¡£adj[i][k]±íÊ¾½ÚµãiµÄµÚk¸öÁÚ½ÓµãµÄË÷Òı
+  * @param distance µ½ÆğµãµÄ¾àÀë¡£distance[i]±íÊ¾Æğµãµ½µãiµÄ¾àÀë
+  * @return prevPoints Ç°ÇıµãÊı×é¡£ prevPoints[k]±íÊ¾µ½´ïµãkµÄ×î¶ÌÂ·¾¶ÖĞµÄËùÓĞÇ°Çıµã
+  */
+
+//vector<vector<int> > dijkstra3(Atlas* AT,int start,int dest = -2,vector<int> distance) {
+//    int num = AT->G->numNodes;
+//    vector<bool> visited(num, false);
+//    visited[start] = true;
+//
+//    vector<vector<int> > prevPoints;
+//
+//    //Ç°ÇıµãÊı×é³õÊ¼»¯
+//    for (int i = 0; i < num; ++i) {
+//        if (distance[i] <INF) {
+//            prevPoints.push_back(vector<int>(1, start));
+//        }
+//        else {
+//            prevPoints.push_back(vector<int>(1, -1));
+//        }
+//    }
+//
+//    if (prevPoints[dest][0] == start) {
+//        return prevPoints;
+//    }
+//
+//    for (int i = 1; i < num; ++i) {
+//        // ÕÒÀëÆğµã×î½üµÄµã
+//        // ÕâÀïµÄ¸´ÔÓ¶È»¹ÊÇO(N)£¬¿ÉÒÔÍ¨¹ıÊ¹ÓÃÓÅÏÈ¶ÓÁĞÓÅ»¯
+//        int closest = INF;
+//        int toVisit = -1;
+//        for (int j = 0; j < num; ++j) {
+//            if (!visited[j] && distance[j] < closest) {
+//                closest = distance[j];
+//                toVisit = j;
+//            }
+//        }
+//
+//        //Èç¹ûÊÇÒªÕÒÖ¸¶¨ÖÕµãdest£¬¿ÉÒÔÌáÇ°¼ôÖ¦£¬
+//        //µ«ÕâÑùµÄ»°Î´·ÃÎÊµÄµãµÄÂ·¾¶¾Í²»ÄÜ±£Ö¤ÊÇ×î¶ÌµÄ¡£
+//        if (toVisit != -1 && !(dest != -2 && toVisit == dest)) {
+//            //¸üĞÂ×î¶ÌÂ·¾¶
+//            visited[toVisit] = true;
+//            for (int k = 0; k < adj[toVisit].size(); k++) {
+//                if (adj[toVisit][k] != -1 && !visited[adj[toVisit][k]]) {
+//                    if (distance[adj[toVisit][k]] > distance[toVisit] + 1) {
+//                        //update the distance
+//                        distance[adj[toVisit][k]] = distance[toVisit] + 1;
+//                        //clear the paths,and store the new path
+//                        prevPoints[adj[toVisit][k]].clear();
+//                        prevPoints[adj[toVisit][k]].push_back(toVisit);
+//
+//                    }
+//                    else if (distance[adj[toVisit][k]] == distance[toVisit] + 1) {
+//                        //add the new path
+//                        prevPoints[adj[toVisit][k]].push_back(toVisit);
+//                    }
+//                }
+//            }
+//        }
+//        else {
+//            break;
+//        }
+//    }
+//    return prevPoints;
+//}
