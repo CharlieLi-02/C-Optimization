@@ -10,9 +10,9 @@ extern int index;
 
 Atlas* Atlas::create(std::istream& stream) {
     // This default implementation will probably do what you want.
-    // Õâ¸öÄ¬ÈÏÊµÏÖ¿ÉÄÜ»áÂú×ãÄúµÄĞèÒª¡£
+    // è¿™ä¸ªé»˜è®¤å®ç°å¯èƒ½ä¼šæ»¡è¶³æ‚¨çš„éœ€è¦ã€‚
     // if you use a different constructor, you'll need to change it.
-    // Èç¹ûÊ¹ÓÃ²»Í¬µÄ¹¹Ôìº¯Êı£¬ÔòĞèÒª¸ü¸ÄËü¡£
+    // å¦‚æœä½¿ç”¨ä¸åŒçš„æ„é€ å‡½æ•°ï¼Œåˆ™éœ€è¦æ›´æ”¹å®ƒã€‚
 
     return new Atlas(stream);
 }
@@ -21,17 +21,17 @@ Atlas* Atlas::create(std::istream& stream) {
 Atlas::Atlas(std::istream& stream) {
 
     //chrono::milliseconds ms = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "µ±Ç°Ê±¼ä" << ms.count() << endl;
+    //cout << "å½“å‰æ—¶é—´" << ms.count() << endl;
     station = new Station();
     trip = new Trip();
     AMG = new AMGGraph();
-    //¼ÓÔØÊı¾İ
+    //åŠ è½½æ•°æ®
     std::string name = "";
     std::string time_train;
     std::string name_train;
     std::string name_line;
     string T_B = "T";
-    // ¶ÁÎÄ¼ş
+    // è¯»æ–‡ä»¶
     //chrono::milliseconds start = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     while (!stream.eof())
     {
@@ -69,7 +69,7 @@ Atlas::Atlas(std::istream& stream) {
                 if(as != AMG->transfer.end()) {                    
                    vector<string>::iterator iter = std::find(as->second.begin(), as->second.end(), name_line);
                    if (iter == as->second.end()) {
-                       //È¥µô»·ĞÎÕ¾µã¶ÔÓ¦Öµ
+                       //å»æ‰ç¯å½¢ç«™ç‚¹å¯¹åº”å€¼
                        as->second.push_back(name_line);
                    }                  
                 }
@@ -84,7 +84,7 @@ Atlas::Atlas(std::istream& stream) {
         }
     }
     //chrono::milliseconds stop = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "¼ÓÔØÎÄ¼şÊ±¼ä" << (stop.count() - start.count()) << endl;
+    //cout << "åŠ è½½æ–‡ä»¶æ—¶é—´" << (stop.count() - start.count()) << endl;
     G = (AGraph*)malloc(sizeof(AGraph));
     int vName_id = 0;
     for (auto oc = station->mymap.begin(); oc != station->mymap.end(); oc++)
@@ -99,7 +99,7 @@ Atlas::Atlas(std::istream& stream) {
     }
     CreateGraph(G, this);
     //chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "¹¹½¨ÁÚ½Ó±íÊ±¼ä" << (stop2.count() - stop.count()) << endl;
+    //cout << "æ„å»ºé‚»æ¥è¡¨æ—¶é—´" << (stop2.count() - stop.count()) << endl;
 
 }
 
@@ -181,10 +181,10 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     vector<string> dst1_1 = dst1->second;
     int stop = -1;
     int start = -1;
-    for (int i = 0; i<src1_1.size(); i++) {
+    for (size_t i = 0; i<src1_1.size(); i++) {
         string src_1 = src1_1[i] + "/" + src;
         start = locateVex(AMG, src_1);
-        for (int j = 0; j < dst1_1.size(); j++) {
+        for (size_t j = 0; j < dst1_1.size(); j++) {
             string dst_1 = dst1_1[j] + "/" + dst;
             stop = locateVex(AMG, dst_1);    
             Dijkstra2(this, start, stop);        
@@ -199,7 +199,7 @@ Trip Atlas::route(const std::string& src, const std::string& dst) {
     //chrono::milliseconds s_1 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
 
     //chrono::milliseconds s_2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    //cout << "¼ÆËãÊ±¼ä" << (s_2.count() - s_1.count()) << endl;
+    //cout << "è®¡ç®—æ—¶é—´" << (s_2.count() - s_1.count()) << endl;
     return  *trip;
 }
 
