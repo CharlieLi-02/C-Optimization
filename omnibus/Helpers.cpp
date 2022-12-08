@@ -380,11 +380,8 @@ void Dijkstra2(Atlas* AT, int v, int stop) {
         throw std::runtime_error("No route.");
     }
     reverse(app.begin(), app.end());     
-    chrono::milliseconds stop2 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
     //cout << "查询时间" << (stop2.count() - stop1.count()) << endl;
     print_line(AT, v);
-    chrono::milliseconds stop3 = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch());
-    cout << "打印时间" << (stop3.count() - stop2.count()) << endl;
 }
 
 
