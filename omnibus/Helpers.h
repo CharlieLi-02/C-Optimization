@@ -33,7 +33,7 @@ typedef struct ArcNode
 typedef struct VNode
 {
 	int data = 0;
-	ArcNode* firstarc;
+	ArcNode* firstarc=NULL;
 }VNode;
 
 typedef struct AGraph
@@ -95,7 +95,8 @@ struct AMGGraph {
     int m_vexNum = 0, m_arcNum = 0;//
     map<string,int> m_vexId;// id和名称
     map<int, string> m_vexName; // 名称和id
-    map<int, int*> path;  // 路径
+    map<int, int*>  path;  // 路径
+    map<int, Node*> node;  //距离
     map<string, vector<string>>   transfer; //
 };
 
@@ -103,6 +104,7 @@ class Atlas;
 
 // ------
 int locateVex(AMGGraph* AMG, string vexName);
+vector<string> split(string str, string pattern);
 string localteVex(AMGGraph* AMG, int vexId);
 void initTrip(Trip* trips);
 vector<string> localteStatic(Atlas* atlas, int vexId);
@@ -119,5 +121,6 @@ void DFSPrint(AMGGraph* AMG, int s, int v, int path[]);
 void  print_line(Atlas* atlas, int start);
 // ------
 void Dijkstra2(Atlas* AT, int v, int stop);
-void  Dijkstra(Atlas* AT, int v0, int n, int path2[]);
+inline void  Dijkstra(Atlas* AT, int v0, int n, int path2[], Node dist2[]);
+void  print_line_2(Atlas* AT, int path[], int stop);
 #endif
